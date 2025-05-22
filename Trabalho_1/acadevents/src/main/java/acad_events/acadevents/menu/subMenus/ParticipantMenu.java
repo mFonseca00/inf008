@@ -1,0 +1,35 @@
+package acad_events.acadevents.menu.subMenus;
+
+import java.util.Scanner;
+
+import acad_events.acadevents.menu.Menu;
+import acad_events.acadevents.menu.enums.ParticipantOption;
+
+public class ParticipantMenu extends Menu{
+
+    @Override
+    public void printOptions() {
+        super.printDisplayDivisor();       
+        System.out.println("\tParticipant Menu");
+        super.listOptions(ParticipantOption.values());
+        System.out.printf("\tPlease select an option (1-5): ");
+    }
+
+    @Override
+    public Object readOption(Scanner scan){
+        ParticipantOption option = null;
+        while (option == null){
+            String inputStr = scan.nextLine();
+            if(inputStr.matches("\\d+")){
+                int input = Integer.parseInt(inputStr);
+                option = ParticipantOption.fromInt(input);
+                if(option == null){
+                    System.out.printf("\tInvalid option.\n\tPlease insert a number (1-5): ");
+                }
+            } else{
+                System.out.printf("\tinvalid input.\n\tPlease insert a number (1-5): ");
+            }
+        } 
+        return option;
+    }
+}
