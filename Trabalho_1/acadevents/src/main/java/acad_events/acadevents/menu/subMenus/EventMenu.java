@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import acad_events.acadevents.menu.Menu;
 import acad_events.acadevents.menu.enums.EventOption;
-import acad_events.acadevents.menu.enums.MainMenuOption;
 
 public class EventMenu extends Menu{
     

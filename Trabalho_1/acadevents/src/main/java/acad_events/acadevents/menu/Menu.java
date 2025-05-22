@@ -25,7 +25,7 @@ public abstract class Menu {
         System.out.println(displayDivisor);
     }
 
-    public static void spaceDisplay(){
+    public void spaceDisplay(){
         int space = 10;
         for(int i=0; i<space; i++) System.out.println();
     }
