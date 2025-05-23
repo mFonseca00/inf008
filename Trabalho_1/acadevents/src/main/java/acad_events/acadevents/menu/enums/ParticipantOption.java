@@ -3,7 +3,7 @@ package acad_events.acadevents.menu.enums;
 import acad_events.acadevents.menu.enums.Interfaces.IMenuOption;
 
 public enum ParticipantOption implements IMenuOption{
-    CREATE_PARTICIPANT(1, "Create new participant"),
+    REGISTER_PARTICIPANT(1, "Register new participant"),
     DELETE_PARTICIPANT(2, "Delete participant"),
     LIST_PARTICIPANTS(3, "List participants"),
     GENERATE_CERTIFICATE(4, "Generate a event certificate"),

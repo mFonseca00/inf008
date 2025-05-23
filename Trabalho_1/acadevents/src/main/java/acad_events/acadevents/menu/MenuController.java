@@ -10,6 +10,7 @@ import acad_events.acadevents.menu.subMenus.EventMenu;
 import acad_events.acadevents.menu.subMenus.MainMenu;
 import acad_events.acadevents.menu.subMenus.ParticipantMenu;
 import acad_events.acadevents.menu.subMenus.ReportMenu;
+import acad_events.acadevents.utils.TextSeparators;
 
 public class MenuController {
     private final MainMenu mainMenu = new MainMenu();
@@ -25,7 +26,7 @@ public class MenuController {
             Object optionObj = mainMenu.readOption(scan);
             option = (MainMenuOption) optionObj;
             System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            mainMenu.spaceDisplay();
+            TextSeparators.spaceDisplay();
             switch(option){
                 case MANAGE_EVENTS:
                     eventsSubMenu(scan);
@@ -52,7 +53,7 @@ public class MenuController {
             Object optionObj = eventMenu.readOption(scan);
             option = (EventOption) optionObj;
             System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            eventMenu.spaceDisplay();
+            TextSeparators.spaceDisplay();
             switch (option) {
                 case CREATE_EVENT:
                     // ToDo
@@ -77,9 +78,9 @@ public class MenuController {
             Object optionObj = partMenu.readOption(scan);
             option = (ParticipantOption) optionObj;
             System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            partMenu.spaceDisplay();
+            TextSeparators.spaceDisplay();
             switch (option){
-                case CREATE_PARTICIPANT:
+                case REGISTER_PARTICIPANT:
                     // ToDo
                     break;
                 case DELETE_PARTICIPANT:
@@ -105,7 +106,7 @@ public class MenuController {
             Object optionObj = reportMenu.readOption(scan);
             option = (ReportOption) optionObj;
             System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            reportMenu.spaceDisplay();
+            TextSeparators.spaceDisplay();
             switch (option) {
                 case REPORT_BY_TYPE:
                     // ToDo

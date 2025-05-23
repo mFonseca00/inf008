@@ -4,12 +4,13 @@ import java.util.Scanner;
 
 import acad_events.acadevents.menu.Menu;
 import acad_events.acadevents.menu.enums.MainMenuOption;
+import acad_events.acadevents.utils.TextSeparators;
 
 public class MainMenu extends Menu {
     
     @Override
     public void printOptions() {
-        super.printDisplayDivisor();       
+        TextSeparators.printDisplayDivisor();       
         System.out.println("\tWelcome to the Academy Events !");
         super.listOptions(MainMenuOption.values());
         System.out.printf("\tPlease select an option (1-4): ");
