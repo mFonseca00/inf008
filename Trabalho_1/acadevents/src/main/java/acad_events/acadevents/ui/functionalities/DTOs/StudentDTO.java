@@ -3,7 +3,7 @@ package acad_events.acadevents.ui.functionalities.DTOs;
 public class StudentDTO extends ParticipantDTO{
     private String enrollment;
     
-    StudentDTO(ParticipantDTO basic){
+    public StudentDTO(ParticipantDTO basic){
         this.setCpf(basic.getCpf());
         this.setName(basic.getName());
         this.setEmail(basic.getEmail());

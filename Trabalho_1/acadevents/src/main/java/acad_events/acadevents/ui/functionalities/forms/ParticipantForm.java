@@ -2,10 +2,16 @@ package acad_events.acadevents.ui.functionalities.forms;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.enums.AcademyDepartment;
+import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;
+import acad_events.acadevents.ui.functionalities.DTOs.ExternalDTO;
 import acad_events.acadevents.ui.functionalities.DTOs.ParticipantDTO;
+import acad_events.acadevents.ui.functionalities.DTOs.ProfessorDTO;
+import acad_events.acadevents.ui.functionalities.DTOs.StudentDTO;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
+import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 
 public class ParticipantForm {
 
@@ -54,6 +60,114 @@ public class ParticipantForm {
                 return InputResult.SUCCESS;
             }
             TextBoxUtils.printTitle("Enter the phone in the correct format");
+        }
+    }
+
+    public static InputResult readEnrollment(Scanner scan, StudentDTO dto){
+        while (true) {
+            String enrollment = TextBoxUtils.inputLine(scan, "Enter student enrollment or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(enrollment)) return InputResult.CANCELLED;
+            if (enrollment != null && !enrollment.isBlank()) {
+                dto.setEnrollment(enrollment);
+                return InputResult.SUCCESS;
+            }
+            TextBoxUtils.printTitle("Enrollment must be filled");
+        }
+    }
+
+    public static InputResult readEmployeeId(Scanner scan, ProfessorDTO dto){
+        while (true) {
+            String employeeId = TextBoxUtils.inputLine(scan, "Enter professor's employee ID or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(employeeId)) return InputResult.CANCELLED;
+            if (employeeId != null && !employeeId.isBlank()) {
+                dto.setEmployeeId(employeeId);
+                return InputResult.SUCCESS;
+            }
+            TextBoxUtils.printTitle("Employee ID must be filled");
+        }
+    }
+
+    public static InputResult readOrg(Scanner scan, ExternalDTO dto){
+        while (true) {
+            String org = TextBoxUtils.inputLine(scan, "Enter external's organization (leave blank or type 'None' if not part of any) or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(org)) return InputResult.CANCELLED;
+            if (org == null || org.isBlank() || org.equalsIgnoreCase("None")) {
+                dto.setOrganization(null);
+                return InputResult.SUCCESS;
+            }
+            dto.setOrganization(org);
+            return InputResult.SUCCESS;
+        }
+    }
+
+    public static ParticipantTypeOption selectType(Scanner scan){
+        ParticipantTypeOption option = null;
+        while (option == null) {
+            TextBoxUtils.printTitle("Select participant type");
+            for (ParticipantTypeOption type : ParticipantTypeOption.values()) {
+                TextBoxUtils.printLeftText(type.getValue() + " - " + type.getDescription());
+            }
+            TextBoxUtils.printUnderLineDisplayDivisor();
+            String inputStr = TextBoxUtils.inputLine(scan, "Please select an option (1-4): ");
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (ParticipantTypeOption type : ParticipantTypeOption.values()) {
+                    if (type.getValue() == input) {
+                        option = type;
+                        break;
+                    }
+                }
+                if (option == null) {
+                    TextBoxUtils.printTitle("Invalid option. Please insert a number (1-4).");
+                }
+            } else {
+                TextBoxUtils.printTitle("Invalid input. Please insert a number (1-4).");
+            }
+        }
+        return option;
+    }
+
+    public static InputResult readDepartment(Scanner scan, ProfessorDTO dto){
+        while (true) {
+            TextBoxUtils.printTitle("Select professor's department");
+            for (AcademyDepartment dep : AcademyDepartment.values()) {
+                TextBoxUtils.printLeftText(dep.getValue() + " - " + dep.getDescription());
+            }
+            TextBoxUtils.printUnderLineDisplayDivisor();
+            String inputStr = TextBoxUtils.inputLine(scan, "Select department (number) or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return InputResult.CANCELLED;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (AcademyDepartment dep : AcademyDepartment.values()) {
+                    if (dep.getValue() == input) {
+                        dto.setDepartment(dep);
+                        return InputResult.SUCCESS;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid department. Please select a valid number.");
+        }
+    }
+
+    public static InputResult readRole(Scanner scan, ExternalDTO dto){
+        while (true) {
+            TextBoxUtils.printTitle("Select external's role");
+            for (ExternalRole role : ExternalRole.values()) {
+                TextBoxUtils.printLeftText(role.getValue() + " - " + role.getDescription());
+            }
+            TextBoxUtils.printUnderLineDisplayDivisor();
+            String inputStr = TextBoxUtils.inputLine(scan, "Select role (number) or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return InputResult.CANCELLED;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (ExternalRole role : ExternalRole.values()) {
+                    if (role.getValue() == input) {
+                        dto.setRole(role);
+                        return InputResult.SUCCESS;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid role. Please select a valid number.");
         }
     }
 }

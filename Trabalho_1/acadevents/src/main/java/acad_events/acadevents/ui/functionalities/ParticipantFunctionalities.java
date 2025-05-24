@@ -2,8 +2,12 @@ package acad_events.acadevents.ui.functionalities;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.ui.functionalities.DTOs.ExternalDTO;
 import acad_events.acadevents.ui.functionalities.DTOs.ParticipantDTO;
+import acad_events.acadevents.ui.functionalities.DTOs.ProfessorDTO;
+import acad_events.acadevents.ui.functionalities.DTOs.StudentDTO;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
+import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 import acad_events.acadevents.ui.functionalities.forms.ParticipantForm;
 
 public class ParticipantFunctionalities {
@@ -18,10 +22,28 @@ public class ParticipantFunctionalities {
         if(ParticipantForm.readPhone(scan, participant) == InputResult.CANCELLED) return false;
 
         // seleciona o tipo de participante (student, professor, external) opção para retornar para menu anterior também
-            // switch case
-                // se student, solicita enrollment (matrícula)
-                // se professor, solicita emplyeeID e pede para selecionar o departamento (utilizar switch case + enum)
-                // se external, solicita organização e pede para selecionar role no evento (utilizar switch case + enum)
+        ParticipantTypeOption type = ParticipantForm.selectType(scan);
+
+        // switch case
+            // se student, solicita enrollment (matrícula)
+            // se professor, solicita emplyeeID e pede para selecionar o departamento (utilizar switch case + enum)
+            // se external, solicita organização e pede para selecionar role no evento (utilizar switch case + enum)
+        switch(type){
+            case STUDENT:
+                StudentDTO student = new StudentDTO(participant);
+                
+                break;
+            case PROFESSOR:
+                ProfessorDTO professor = new ProfessorDTO(participant);
+
+                break;
+            case EXTERNAL:
+                ExternalDTO external = new ExternalDTO(participant);
+
+                break;
+            case CANCELLED:
+                return false;
+        }
         
         // chama o método de adição do participantController, passando os parâmetros
         return true;
