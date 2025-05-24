@@ -1,6 +1,6 @@
 package acad_events.acadevents.common.DTOs;
 
-import acad_events.acadevents.common.enums.AcademyDepartment;
+import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
 
 public class ProfessorDTO extends ParticipantDTO{
 

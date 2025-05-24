@@ -1,6 +1,6 @@
 package acad_events.acadevents.common.DTOs;
 
-import acad_events.acadevents.common.enums.ExternalRole;
+import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 
 public class ExternalDTO extends ParticipantDTO{
     private String organization;

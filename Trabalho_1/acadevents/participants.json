@@ -192,5 +192,14 @@
     "email": "roberto.nascimento@ifba.edu.br",
     "phone": "71 91234-7777",
     "type": "Student"
+  },
+  {
+    "enrollment": "32132654564",
+    "Id": 20,
+    "CPF": "046.506.435-38",
+    "name": "Marcus",
+    "email": "mv070900@gmail.com",
+    "phone": "71 99253 9993",
+    "type": "Student"
   }
 ]

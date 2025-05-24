@@ -6,11 +6,11 @@ import acad_events.acadevents.common.DTOs.ExternalDTO;
 import acad_events.acadevents.common.DTOs.ParticipantDTO;
 import acad_events.acadevents.common.DTOs.ProfessorDTO;
 import acad_events.acadevents.common.DTOs.StudentDTO;
-import acad_events.acadevents.common.enums.AcademyDepartment;
-import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;
+import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
+import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 
