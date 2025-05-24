@@ -3,7 +3,7 @@ package acad_events.acadevents.ui.menu;
 import java.util.Scanner;
 
 import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
-import acad_events.acadevents.utils.TextSeparators;
+import acad_events.acadevents.utils.TextBoxUtils;
 
 public abstract class Menu {
     
@@ -13,11 +13,11 @@ public abstract class Menu {
     public abstract void printOptions();
 
     public void listOptions(IMenuOption[] options){
-        TextSeparators.printDisplayDivisor();
+        TextBoxUtils.printEmptyLine();
         for(IMenuOption option : options){
-            System.out.println("\t" + option.getValue() + " - " + option.getDescription());
+            TextBoxUtils.printLeftText(option.getValue() + " - " + option.getDescription());
         }
-        TextSeparators.printDisplayDivisor();
+        TextBoxUtils.printUnderLineDisplayDivisor();
     }
 
     

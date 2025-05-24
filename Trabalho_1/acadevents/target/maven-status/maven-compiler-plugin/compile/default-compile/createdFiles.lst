@@ -1,3 +1,4 @@
+acad_events\acadevents\utils\TextBoxUtils.class
 acad_events\acadevents\models\event\entities\Event.class
 acad_events\acadevents\ui\functionalities\ParticipantFunctionalities.class
 acad_events\acadevents\utils\ValidatorInputs.class
@@ -23,7 +24,6 @@ acad_events\acadevents\AcadEvents.class
 acad_events\acadevents\models\participant\entities\Participant.class
 acad_events\acadevents\models\participant\entities\Student.class
 acad_events\acadevents\models\participant\entities\Professor.class
-acad_events\acadevents\utils\TextSeparators.class
 acad_events\acadevents\ui\menu\enums\Interfaces\IMenuOption.class
 acad_events\acadevents\ui\menu\subMenus\ReportMenu.class
 acad_events\acadevents\models\participant\ParticipantController.class

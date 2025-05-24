@@ -10,7 +10,7 @@ import acad_events.acadevents.ui.menu.subMenus.EventMenu;
 import acad_events.acadevents.ui.menu.subMenus.MainMenu;
 import acad_events.acadevents.ui.menu.subMenus.ParticipantMenu;
 import acad_events.acadevents.ui.menu.subMenus.ReportMenu;
-import acad_events.acadevents.utils.TextSeparators;
+import acad_events.acadevents.utils.TextBoxUtils;
 
 public class MenuController {
     private final MainMenu mainMenu = new MainMenu();
@@ -25,8 +25,7 @@ public class MenuController {
             mainMenu.printOptions();
             Object optionObj = mainMenu.readOption(scan);
             option = (MainMenuOption) optionObj;
-            System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            TextSeparators.spaceDisplay();
+            TextBoxUtils.spaceDisplay();
             switch(option){
                 case MANAGE_EVENTS:
                     eventsSubMenu(scan);
@@ -52,8 +51,7 @@ public class MenuController {
             eventMenu.printOptions();
             Object optionObj = eventMenu.readOption(scan);
             option = (EventOption) optionObj;
-            System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            TextSeparators.spaceDisplay();
+            TextBoxUtils.spaceDisplay();
             switch (option) {
                 case CREATE_EVENT:
                     // ToDo
@@ -77,8 +75,7 @@ public class MenuController {
             partMenu.printOptions();
             Object optionObj = partMenu.readOption(scan);
             option = (ParticipantOption) optionObj;
-            System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            TextSeparators.spaceDisplay();
+            TextBoxUtils.spaceDisplay();
             switch (option){
                 case REGISTER_PARTICIPANT:
                     // ToDo
@@ -108,8 +105,7 @@ public class MenuController {
             reportMenu.printOptions();
             Object optionObj = reportMenu.readOption(scan);
             option = (ReportOption) optionObj;
-            System.out.println("\n\tOption: " + option.getDescription()); //DEBUG
-            TextSeparators.spaceDisplay();
+            TextBoxUtils.spaceDisplay();
             switch (option) {
                 case REPORT_BY_TYPE:
                     // ToDo

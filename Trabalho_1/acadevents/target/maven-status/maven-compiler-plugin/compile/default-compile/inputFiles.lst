@@ -16,12 +16,12 @@ C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadev
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\models\participant\ParticipantController.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\utils\ColorStrings.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\ui\menu\subMenus\ReportMenu.java
+C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\utils\TextBoxUtils.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\AcadEvents.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\models\participant\entities\External.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\models\participant\entities\Participant.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\ui\functionalities\ParticipantFunctionalities.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\utils\ValidatorInputs.java
-C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\utils\TextSeparators.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\models\participant\entities\enums\AcademyDepartment.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\ui\menu\enums\ParticipantOption.java
 C:\Estudo\IFBA\ADS\inf008\Trabalho_1\acadevents\src\main\java\acad_events\acadevents\models\event\entities\enums\EventType.java
