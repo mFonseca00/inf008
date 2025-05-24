@@ -3,6 +3,7 @@ package acad_events.acadevents.ui.menu;
 import java.util.Scanner;
 
 import acad_events.acadevents.common.utils.TextBoxUtils;
+import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
 import acad_events.acadevents.ui.menu.enums.EventOption;
 import acad_events.acadevents.ui.menu.enums.MainMenuOption;
 import acad_events.acadevents.ui.menu.enums.ParticipantOption;
@@ -17,6 +18,7 @@ public class MenuController {
     private final EventMenu eventMenu = new EventMenu();
     private final ParticipantMenu partMenu = new ParticipantMenu();
     private final ReportMenu reportMenu = new ReportMenu();
+    private final ParticipantFunctionalities partFunctions = new ParticipantFunctionalities();
 
     public void run(){
         Scanner scan =new Scanner(System.in);
@@ -78,7 +80,7 @@ public class MenuController {
             TextBoxUtils.spaceDisplay();
             switch (option){
                 case REGISTER_PARTICIPANT:
-                    // ToDo
+                    partFunctions.registerNew(scan);
                     break;
                 case DELETE_PARTICIPANT:
                     // ToDo

@@ -2,15 +2,15 @@ package acad_events.acadevents.ui.functionalities.forms;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.DTOs.ExternalDTO;
+import acad_events.acadevents.common.DTOs.ParticipantDTO;
+import acad_events.acadevents.common.DTOs.ProfessorDTO;
+import acad_events.acadevents.common.DTOs.StudentDTO;
 import acad_events.acadevents.common.enums.AcademyDepartment;
 import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;
-import acad_events.acadevents.ui.functionalities.DTOs.ExternalDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.ParticipantDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.ProfessorDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.StudentDTO;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 
@@ -56,11 +56,14 @@ public class ParticipantForm {
         while (true) {
             String phone = TextBoxUtils.inputLine(scan, "Enter participant's phone (format: 00 0000-0000 or 000 00000-0000) or 'cancel': ");
             if ("cancel".equalsIgnoreCase(phone)) return InputResult.CANCELLED;
-            if (ValidatorInputs.isValidPhone(phone)) {
-                dto.setPhone(phone);
-                return InputResult.SUCCESS;
-            }
-            TextBoxUtils.printTitle("Enter the phone in the correct format");
+            // if (ValidatorInputs.isValidPhone(phone)) {
+            //     dto.setPhone(phone);
+            //     return InputResult.SUCCESS;
+            // }
+            // TextBoxUtils.printTitle("Enter the phone in the correct format");
+            // --- Validação ignorada temporariamente ---
+            dto.setPhone(phone);
+            return InputResult.SUCCESS;
         }
     }
 
@@ -125,7 +128,7 @@ public class ParticipantForm {
         return option;
     }
 
-    public static InputResult readDepartment(Scanner scan, ProfessorDTO dto){
+    public static InputResult selectDepartment(Scanner scan, ProfessorDTO dto){
         while (true) {
             TextBoxUtils.printTitle("Select professor's department");
             MenuUtils.listEnumOptions(AcademyDepartment.class);
@@ -144,7 +147,7 @@ public class ParticipantForm {
         }
     }
 
-    public static InputResult readRole(Scanner scan, ExternalDTO dto){
+    public static InputResult selectRole(Scanner scan, ExternalDTO dto){
         while (true) {
             TextBoxUtils.printTitle("Select external's role");
             MenuUtils.listEnumOptions(ExternalRole.class);

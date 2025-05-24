@@ -31,6 +31,7 @@ public class ValidatorInputs {
 
     public static boolean isValidPhone(String phone){
         if (phone == null) return false;
-        return phone.matches("\\d{2,3}\\ \\d{4,5}-\\d{4}");
+        // Acepts (71) 11111-1111, 71 11111-1111, 71 111111111, etc.
+        return phone.matches("\\(?\\d{2,3}\\)?[\\s-]?\\d{4,5}-?\\d{4}");
     }
 }

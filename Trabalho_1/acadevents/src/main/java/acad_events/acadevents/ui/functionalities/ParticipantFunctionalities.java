@@ -2,15 +2,19 @@ package acad_events.acadevents.ui.functionalities;
 
 import java.util.Scanner;
 
-import acad_events.acadevents.ui.functionalities.DTOs.ExternalDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.ParticipantDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.ProfessorDTO;
-import acad_events.acadevents.ui.functionalities.DTOs.StudentDTO;
+import acad_events.acadevents.common.DTOs.ExternalDTO;
+import acad_events.acadevents.common.DTOs.ParticipantDTO;
+import acad_events.acadevents.common.DTOs.ProfessorDTO;
+import acad_events.acadevents.common.DTOs.StudentDTO;
+import acad_events.acadevents.common.utils.TextBoxUtils;
+import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 import acad_events.acadevents.ui.functionalities.forms.ParticipantForm;
 
 public class ParticipantFunctionalities {
+
+    ParticipantController controller = new ParticipantController();
 
     public boolean registerNew(Scanner scan){
 
@@ -31,21 +35,28 @@ public class ParticipantFunctionalities {
         switch(type){
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
-                
+                if(ParticipantForm.readEnrollment(scan, student) == InputResult.CANCELLED) return false;
+                // add no repositório
+                controller.register(student);
                 break;
             case PROFESSOR:
                 ProfessorDTO professor = new ProfessorDTO(participant);
-
+                if(ParticipantForm.readEmployeeId(scan, professor) == InputResult.CANCELLED) return false;
+                if(ParticipantForm.selectDepartment(scan, professor) == InputResult.CANCELLED) return false;
+                // add no repositório
+                controller.register(professor);
                 break;
             case EXTERNAL:
                 ExternalDTO external = new ExternalDTO(participant);
-
+                if(ParticipantForm.readOrg(scan, external) == InputResult.CANCELLED) return false;
+                if(ParticipantForm.selectRole(scan, external) == InputResult.CANCELLED) return false;
+                // add no repositório
+                controller.register(external);
                 break;
             case CANCELLED:
                 return false;
         }
-        
-        // chama o método de adição do participantController, passando os parâmetros
+        TextBoxUtils.printTitle("Participant registred sucessfully !!!");
         return true;
     }
 

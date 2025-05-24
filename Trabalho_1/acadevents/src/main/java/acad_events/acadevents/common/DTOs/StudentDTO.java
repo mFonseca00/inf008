@@ -1,4 +1,4 @@
-package acad_events.acadevents.ui.functionalities.DTOs;
+package acad_events.acadevents.common.DTOs;
 
 public class StudentDTO extends ParticipantDTO{
     private String enrollment;

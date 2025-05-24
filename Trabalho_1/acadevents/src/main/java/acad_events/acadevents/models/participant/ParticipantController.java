@@ -1,9 +1,10 @@
 package acad_events.acadevents.models.participant;
 
 import java.util.Collection;
+import acad_events.acadevents.common.DTOs.ExternalDTO;
+import acad_events.acadevents.common.DTOs.ProfessorDTO;
+import acad_events.acadevents.common.DTOs.StudentDTO;
 
-import acad_events.acadevents.common.enums.AcademyDepartment;
-import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.models.participant.entities.External;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.models.participant.entities.Professor;
@@ -13,48 +14,53 @@ public class ParticipantController {
 
     ParticipantRepository repository = new ParticipantRepository();
 
-    //Register
+    // Register
 
     // Student
-    public boolean register(String name, String CPF, String Email, String phone, String enrollment){
-        if(repository.getParticipantByCPF(CPF)==null){
-            Student student = new Student(CPF, name, Email, phone, enrollment);
+    public boolean register(StudentDTO dto) {
+        if (repository.getParticipantByCPF(dto.getCpf()) == null) {
+            Student student = new Student(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getPhone(),
+                    dto.getEnrollment());
             repository.addParticipant(student);
             return true;
         }
         return false;
     }
+
     // Professor
-    public boolean register(String name, String CPF, String Email, String phone, String employeeId, AcademyDepartment department){
-        if(repository.getParticipantByCPF(CPF)==null){
-            Professor professor = new Professor(CPF, name, Email, phone, employeeId, department);
+    public boolean register(ProfessorDTO dto) {
+        if (repository.getParticipantByCPF(dto.getCpf()) == null) {
+            Professor professor = new Professor(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getPhone(),
+                    dto.getEmployeeId(), dto.getDepartment());
             repository.addParticipant(professor);
             return true;
         }
         return false;
     }
+
     // External
-    public boolean register(String name, String CPF, String Email, String phone, String enrollment, String organization, ExternalRole role){
-        if(repository.getParticipantByCPF(CPF)==null){
-            External external = new External(CPF, name, Email, phone, organization, role);
+    public boolean register(ExternalDTO dto) {
+        if (repository.getParticipantByCPF(dto.getCpf()) == null) {
+            External external = new External(dto.getCpf(), dto.getName(), dto.getEmail(), dto.getPhone(),
+                    dto.getOrganization(), dto.getRole());
             repository.addParticipant(external);
             return true;
         }
         return false;
     }
 
-    //Delete
-    public boolean delete(String CPF){
+    // Delete
+    public boolean delete(String CPF) {
         boolean response = repository.removeParticipantByCPF(CPF);
         return response;
     }
 
-    //List
-    public Collection<Participant> list(){
+    // List
+    public Collection<Participant> list() {
         return repository.getAllParticipants();
     }
 
-    //Enroll in event (inscrever participante em evento)
+    // Enroll in event (inscrever participante em evento)
 
-    //Generate Certificate (buscar checar se o id fornecido corresponde com algum id da lista e gerar certificado)
+    // Generate Certificate (buscar checar se o id fornecido corresponde com algum id da lista e gerar certificado)
 }
