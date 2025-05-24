@@ -2,9 +2,20 @@ package acad_events.acadevents.ui.functionalities;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.ui.functionalities.DTOs.ParticipantDTO;
+import acad_events.acadevents.ui.functionalities.enums.InputResult;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForm;
+
 public class ParticipantFunctionalities {
-    public void registerNew(Scanner scan){
+
+    public boolean registerNew(Scanner scan){
+
+        ParticipantDTO participant = new ParticipantDTO();
         // solicita os dados comuns (CPF, nome, email, telefone)
+        if(ParticipantForm.readCpf(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.readName(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.readEmail(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.readPhone(scan, participant) == InputResult.CANCELLED) return false;
 
         // seleciona o tipo de participante (student, professor, external) opção para retornar para menu anterior também
             // switch case
@@ -13,6 +24,7 @@ public class ParticipantFunctionalities {
                 // se external, solicita organização e pede para selecionar role no evento (utilizar switch case + enum)
         
         // chama o método de adição do participantController, passando os parâmetros
+        return true;
     }
 
     public void remove(Scanner scan){

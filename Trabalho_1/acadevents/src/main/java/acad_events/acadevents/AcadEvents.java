@@ -1,9 +1,9 @@
 package acad_events.acadevents;
 
+import acad_events.acadevents.common.enums.AcademyDepartment;
+import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.models.participant.entities.Participant;
-import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
-import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 import acad_events.acadevents.ui.menu.MenuController;
 
 public class AcadEvents 

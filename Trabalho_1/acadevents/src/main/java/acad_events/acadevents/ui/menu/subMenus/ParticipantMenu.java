@@ -2,9 +2,9 @@ package acad_events.acadevents.ui.menu.subMenus;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.menu.Menu;
 import acad_events.acadevents.ui.menu.enums.ParticipantOption;
-import acad_events.acadevents.utils.TextBoxUtils;
 
 public class ParticipantMenu extends Menu{
 

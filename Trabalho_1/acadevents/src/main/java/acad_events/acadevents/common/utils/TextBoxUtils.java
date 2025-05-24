@@ -1,4 +1,4 @@
-package acad_events.acadevents.utils;
+package acad_events.acadevents.common.utils;
 
 import java.util.Scanner;
 

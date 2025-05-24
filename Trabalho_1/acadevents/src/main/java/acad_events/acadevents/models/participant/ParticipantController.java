@@ -2,12 +2,12 @@ package acad_events.acadevents.models.participant;
 
 import java.util.Collection;
 
+import acad_events.acadevents.common.enums.AcademyDepartment;
+import acad_events.acadevents.common.enums.ExternalRole;
 import acad_events.acadevents.models.participant.entities.External;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.models.participant.entities.Professor;
 import acad_events.acadevents.models.participant.entities.Student;
-import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
-import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 
 public class ParticipantController {
 

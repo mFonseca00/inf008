@@ -2,8 +2,8 @@ package acad_events.acadevents.ui.menu;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
-import acad_events.acadevents.utils.TextBoxUtils;
 
 public abstract class Menu {
     

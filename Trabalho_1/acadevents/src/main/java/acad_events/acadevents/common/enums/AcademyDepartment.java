@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.participant.entities.enums;
+package acad_events.acadevents.common.enums;
 
 public enum AcademyDepartment {
     NONE (1, "No department"),

@@ -2,6 +2,7 @@ package acad_events.acadevents.ui.menu;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.menu.enums.EventOption;
 import acad_events.acadevents.ui.menu.enums.MainMenuOption;
 import acad_events.acadevents.ui.menu.enums.ParticipantOption;
@@ -10,7 +11,6 @@ import acad_events.acadevents.ui.menu.subMenus.EventMenu;
 import acad_events.acadevents.ui.menu.subMenus.MainMenu;
 import acad_events.acadevents.ui.menu.subMenus.ParticipantMenu;
 import acad_events.acadevents.ui.menu.subMenus.ReportMenu;
-import acad_events.acadevents.utils.TextBoxUtils;
 
 public class MenuController {
     private final MainMenu mainMenu = new MainMenu();

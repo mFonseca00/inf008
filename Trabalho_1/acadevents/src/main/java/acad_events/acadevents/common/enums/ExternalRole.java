@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.participant.entities.enums;
+package acad_events.acadevents.common.enums;
 
 public enum ExternalRole {
     SPEAKER(1, "Speaker"),
