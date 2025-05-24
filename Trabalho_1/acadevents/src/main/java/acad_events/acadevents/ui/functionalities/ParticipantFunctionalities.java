@@ -88,7 +88,7 @@ public class ParticipantFunctionalities {
         }
         TextBoxUtils.printTitle("Registered participants:");
         for (ParticipantDTO p : participants) {
-            TextBoxUtils.printLeftText("CPF: " + p.getCpf() + " | Name: " + p.getName() + " | Email: " + p.getEmail());
+            TextBoxUtils.printTableRow("CPF: " + p.getCpf(), "Name: " + p.getName(), "Email: " + p.getEmail());
         }
         TextBoxUtils.printUnderLineDisplayDivisor();
     }

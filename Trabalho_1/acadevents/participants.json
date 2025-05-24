@@ -1,1 +1,196 @@
-[]
+[
+  {
+    "enrollment": "20241160001F",
+    "Id": 0,
+    "CPF": "390.533.447-05",
+    "name": "Jorge Silva",
+    "email": "jorge@ifba.edu.br",
+    "phone": "71 99253-9993",
+    "type": "Student"
+  },
+  {
+    "enrollment": "20241160002F",
+    "Id": 1,
+    "CPF": "168.995.350-09",
+    "name": "Joana Souza",
+    "email": "joana@ifba.edu.br",
+    "phone": "71 99253-9994",
+    "type": "Student"
+  },
+  {
+    "enrollment": "20241160003F",
+    "Id": 2,
+    "CPF": "746.971.314-01",
+    "name": "Ana Paula",
+    "email": "ana.paula@ifba.edu.br",
+    "phone": "71 91234-5678",
+    "type": "Student"
+  },
+  {
+    "enrollment": "20241160004F",
+    "Id": 3,
+    "CPF": "111.444.777-35",
+    "name": "Lucas Mendes",
+    "email": "lucas.mendes@ifba.edu.br",
+    "phone": "71 91234-1111",
+    "type": "Student"
+  },
+  {
+    "enrollment": "20241160005F",
+    "Id": 4,
+    "CPF": "123.456.789-09",
+    "name": "Juliana Castro",
+    "email": "juliana.castro@ifba.edu.br",
+    "phone": "71 91234-4444",
+    "type": "Student"
+  },
+  {
+    "employeeId": "EMP001",
+    "department": "COMPUTER_SCIENCE",
+    "Id": 5,
+    "CPF": "286.255.878-60",
+    "name": "Carlos Pereira",
+    "email": "carlos@ifba.edu.br",
+    "phone": "71 98888-1111",
+    "type": "Professor"
+  },
+  {
+    "employeeId": "EMP002",
+    "department": "MATHEMATICS",
+    "Id": 6,
+    "CPF": "295.379.144-00",
+    "name": "Roberto Silva",
+    "email": "roberto.silva@ifba.edu.br",
+    "phone": "71 99876-5432",
+    "type": "Professor"
+  },
+  {
+    "employeeId": "EMP003",
+    "department": "PHYSICS",
+    "Id": 7,
+    "CPF": "222.333.444-05",
+    "name": "Patricia Souza",
+    "email": "patricia.souza@ifba.edu.br",
+    "phone": "71 98888-2222",
+    "type": "Professor"
+  },
+  {
+    "employeeId": "EMP004",
+    "department": "CHEMISTRY",
+    "Id": 8,
+    "CPF": "555.666.777-02",
+    "name": "Eduardo Pires",
+    "email": "eduardo.pires@ifba.edu.br",
+    "phone": "71 98888-3333",
+    "type": "Professor"
+  },
+  {
+    "employeeId": "EMP005",
+    "department": "INFORMATION_SYSTEMS",
+    "Id": 9,
+    "CPF": "888.999.000-00",
+    "name": "Renata Dias",
+    "email": "renata.dias@ifba.edu.br",
+    "phone": "71 98888-4444",
+    "type": "Professor"
+  },
+  {
+    "organization": "Empresa X",
+    "role": "SPEAKER",
+    "Id": 10,
+    "CPF": "987.654.321-00",
+    "name": "Marcos Lima",
+    "email": "marcos@empresa.com",
+    "phone": "71 97777-3333",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa Y",
+    "role": "GUEST",
+    "Id": 11,
+    "CPF": "626.345.160-00",
+    "name": "Fernanda Costa",
+    "email": "fernanda@empresa.com",
+    "phone": "71 93456-7890",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa Z",
+    "role": "ORGANIZER",
+    "Id": 12,
+    "CPF": "333.222.111-96",
+    "name": "Bruno Lima",
+    "email": "bruno@empresa.com",
+    "phone": "71 97777-4444",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa W",
+    "role": "EXHIBITOR",
+    "Id": 13,
+    "CPF": "666.777.888-30",
+    "name": "Gabriela Rocha",
+    "email": "gabriela@empresa.com",
+    "phone": "71 97777-5555",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa V",
+    "role": "VOLUNTEER",
+    "Id": 14,
+    "CPF": "999.000.111-00",
+    "name": "Paulo Henrique",
+    "email": "paulo@empresa.com",
+    "phone": "71 97777-6666",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa U",
+    "role": "CONSULTANT",
+    "Id": 15,
+    "CPF": "654.987.321-00",
+    "name": "Amanda Farias",
+    "email": "amanda@empresa.com",
+    "phone": "71 97777-7777",
+    "type": "External"
+  },
+  {
+    "organization": "Empresa T",
+    "role": "OBSERVER",
+    "Id": 16,
+    "CPF": "741.852.963-00",
+    "name": "Ricardo Martins",
+    "email": "ricardo.martins@empresa.com",
+    "phone": "71 91234-5555",
+    "type": "External"
+  },
+  {
+    "employeeId": "EMP006",
+    "department": "SOFTWARE_ENGINEERING",
+    "Id": 17,
+    "CPF": "321.654.987-00",
+    "name": "Felipe Gomes",
+    "email": "felipe.gomes@ifba.edu.br",
+    "phone": "71 98888-5555",
+    "type": "Professor"
+  },
+  {
+    "employeeId": "EMP007",
+    "department": "ELECTRICAL_ENGINEERING",
+    "Id": 18,
+    "CPF": "123.789.456-21",
+    "name": "Sonia Braga",
+    "email": "sonia.braga@ifba.edu.br",
+    "phone": "71 98888-6666",
+    "type": "Professor"
+  },
+  {
+    "enrollment": "20241160007F",
+    "Id": 19,
+    "CPF": "295.379.144-00",
+    "name": "Roberto Nascimento",
+    "email": "roberto.nascimento@ifba.edu.br",
+    "phone": "71 91234-7777",
+    "type": "Student"
+  }
+]

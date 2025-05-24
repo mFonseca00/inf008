@@ -60,12 +60,15 @@ public class MenuController {
             switch (option) {
                 case CREATE_EVENT:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case DELETE_EVENT:
                     // ToDO
+                    TextBoxUtils.pause(scan);
                     break;
                 case LIST_EVENTS:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case RETURN:
                     System.out.println("\nReturning...");
@@ -84,18 +87,23 @@ public class MenuController {
             switch (option){
                 case REGISTER_PARTICIPANT:
                     partFunctions.registerNew(scan);
+                    TextBoxUtils.pause(scan);
                     break;
                 case DELETE_PARTICIPANT:
                     partFunctions.remove(scan);
+                    TextBoxUtils.pause(scan);
                     break;
                 case LIST_PARTICIPANTS:
                     partFunctions.listAll();
+                    TextBoxUtils.pause(scan);
                     break;
                 case ENROLL_IN_EVENT:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case GENERATE_CERTIFICATE:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case RETURN:
                     System.out.println("\nReturning...");
@@ -114,14 +122,16 @@ public class MenuController {
             switch (option) {
                 case REPORT_BY_TYPE:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case REPORT_BY_DATE:
                     // ToDo
+                    TextBoxUtils.pause(scan);
                     break;
                 case RETURN:
                     System.out.println("\nReturning...");
                     break;           
-                }
+            }
         } while (option != ReportOption.RETURN);
     }
 }
