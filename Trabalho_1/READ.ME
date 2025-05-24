@@ -1,0 +1,162 @@
+# AcadEvents
+
+Sistema de Gerenciamento de Participantes e Eventos Acadêmicos
+
+---
+
+## Sumário
+
+- Sobre o Projeto  
+- Como Executar  
+- Fluxo de Telas e Funcionalidades  
+- Persistência de Dados  
+- Validações  
+- Estrutura do Projeto  
+- Tecnologias Utilizadas  
+- Autores  
+
+---
+
+## Sobre o Projeto
+
+O **AcadEvents** é um sistema em Java para cadastro, listagem, remoção e gerenciamento de participantes (alunos, professores e externos) e eventos acadêmicos.  
+O sistema é totalmente em linha de comando (console) e utiliza arquivos JSON para persistência dos dados.
+
+---
+
+## Como Executar
+
+### Pré-requisitos
+
+- Java 17 ou superior  
+- Maven
+
+### Passos
+
+1. **Clone o repositório e acesse a pasta do projeto:**  
+   git clone <url-do-repositorio>  
+   cd Trabalho_1/acadevents  
+
+2. **Compile o projeto:**  
+   mvn clean package  
+
+3. **Execute o sistema usando Maven:**  
+   mvn exec:java  
+
+4. **Ou execute diretamente pelo arquivo .class:**  
+   Vá até a pasta onde está o arquivo compilado (por exemplo, `target/classes`) e execute:  
+   java acad_events.acadevents.AcadEvents  
+
+   Se necessário, inclua o caminho do classpath:  
+   java -cp target/classes acad_events.acadevents.AcadEvents 
+
+---
+
+## Fluxo de Telas e Funcionalidades
+
+### Menu Principal
+
+Ao iniciar, você verá o menu principal com as opções:
+
+1. **Manage Events**: Gerenciar eventos (criar, deletar, listar).  
+2. **Manage Participants**: Gerenciar participantes (cadastrar, remover, listar, inscrever em evento, gerar certificado).  
+3. **Generate Reports**: Gerar relatórios (por tipo, por data).  
+4. **Exit**: Sair do sistema.  
+
+Selecione a opção desejada digitando o número correspondente.
+
+---
+
+### Menu de Participantes
+
+Ao escolher "Manage Participants", você verá:
+
+1. **Register new participant**: Cadastrar novo participante.  
+2. **Delete participant**: Remover participante pelo CPF.  
+3. **List participants**: Listar todos os participantes cadastrados.  
+4. **Enroll participant in event**: Inscrever participante em evento (em desenvolvimento).  
+5. **Generate a event certificate**: Gerar certificado de participação (em desenvolvimento).  
+6. **Return to Main Menu**: Voltar ao menu principal.  
+
+#### Cadastro de Participante
+
+- Informe o CPF (formato: `000.000.000-00`), nome, e-mail, telefone (ex: `71 91234-5678`).  
+- Escolha o tipo: Student, Professor ou External.  
+- Para Student: informe matrícula.  
+- Para Professor: informe ID do funcionário e departamento.  
+- Para External: informe organização (opcional) e papel (role).  
+
+#### Remoção
+
+- Informe o CPF do participante a ser removido.
+
+#### Listagem
+
+- Exibe todos os participantes cadastrados, mostrando CPF, nome e e-mail.
+
+---
+
+### Menu de Eventos
+
+**(Em desenvolvimento)**  
+Permite criar, deletar e listar eventos acadêmicos.
+
+---
+
+### Menu de Relatórios
+
+**(Em desenvolvimento)**  
+Permite gerar relatórios por tipo de evento ou por data.
+
+---
+
+## Persistência de Dados
+
+- Todos os dados de participantes são salvos no arquivo `participants.json` na raiz do projeto.  
+- Ao iniciar, o sistema carrega os dados desse arquivo (ou cria um novo se não existir).  
+- Ao sair, os dados são salvos automaticamente.  
+- O sistema garante que IDs de participantes não sejam sobrescritos, mesmo após reiniciar.
+
+---
+
+## Validações
+
+- **CPF:** Validação completa de formato e dígito verificador.  
+- **E-mail:** Validação de formato.  
+- **Telefone:** Aceita formatos como `71 91234-5678`, `071 91234-5678`, etc.  
+- **Campos obrigatórios:** Nome, e-mail, telefone, matrícula (para aluno), ID e departamento (para professor), papel (para externo).
+
+---
+
+## Estrutura do Projeto
+
+acadevents/  
+├── participants.json  
+├── pom.xml  
+└── src/  
+  └── main/  
+    └── java/  
+      └── acad_events/  
+        └── acadevents/  
+          ├── AcadEvents.java  
+          ├── models/  
+          ├── ui/  
+          └── common/  
+
+---
+
+## Tecnologias Utilizadas
+
+- Java 17  
+- Maven  
+- Gson (para manipulação de JSON)  
+- JUnit (para testes)  
+
+---
+
+## Autor
+
+- Projeto desenvolvido para a disciplina INF008 - IFBA  
+- Marcus Vinicius Silva da Fonseca 
+
+---
