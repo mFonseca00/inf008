@@ -2,6 +2,7 @@ package acad_events.acadevents.ui.menu.subMenus;
 
 import java.util.Scanner;
 
+import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.menu.Menu;
 import acad_events.acadevents.ui.menu.enums.EventOption;
@@ -11,7 +12,7 @@ public class EventMenu extends Menu{
     @Override
     public void printOptions() {
         TextBoxUtils.printTitle("Event Menu");
-        super.listOptions(EventOption.values());
+        MenuUtils.listEnumOptions(EventOption.class);
     }
 
     @Override

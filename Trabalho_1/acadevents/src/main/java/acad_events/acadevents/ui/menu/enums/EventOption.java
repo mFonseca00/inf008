@@ -1,8 +1,8 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
 
-public enum EventOption implements IMenuOption{
+public enum EventOption implements I_EnumOptionList{
     CREATE_EVENT(1, "Create Event"),
     DELETE_EVENT(2, "Delete Event"),
     LIST_EVENTS(3, "List Events"),

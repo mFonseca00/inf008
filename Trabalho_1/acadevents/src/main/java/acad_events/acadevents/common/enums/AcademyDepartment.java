@@ -1,6 +1,8 @@
 package acad_events.acadevents.common.enums;
 
-public enum AcademyDepartment {
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+
+public enum AcademyDepartment implements I_EnumOptionList{
     NONE (1, "No department"),
     COMPUTER_SCIENCE (2, "Department of Computer Science"),
     ELECTRICAL_ENGINEERING (3, "Department of Electrical Engineering"),

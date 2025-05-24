@@ -1,6 +1,8 @@
 package acad_events.acadevents.ui.functionalities.enums;
 
-public enum ParticipantTypeOption {
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+
+public enum ParticipantTypeOption implements I_EnumOptionList{
     STUDENT(1, "Student"),
     PROFESSOR(2, "Professor"),
     EXTERNAL(3, "External Participant"),

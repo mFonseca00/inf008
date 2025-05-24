@@ -1,8 +1,8 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
 
-public enum ParticipantOption implements IMenuOption{
+public enum ParticipantOption implements I_EnumOptionList{
     REGISTER_PARTICIPANT(1, "Register new participant"),
     DELETE_PARTICIPANT(2, "Delete participant"),
     LIST_PARTICIPANTS(3, "List participants"),

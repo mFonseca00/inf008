@@ -1,8 +1,8 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
 
-public enum MainMenuOption implements IMenuOption{
+public enum MainMenuOption implements I_EnumOptionList{
     MANAGE_EVENTS(1, "Manage Events"),
     MANAGE_PARTICIPANTS(2, "Manage Participants"),
     GENERATE_REPORTS(3, "Generate Reports"),

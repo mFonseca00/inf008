@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import acad_events.acadevents.common.enums.AcademyDepartment;
 import acad_events.acadevents.common.enums.ExternalRole;
+import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;
 import acad_events.acadevents.ui.functionalities.DTOs.ExternalDTO;
@@ -104,10 +105,7 @@ public class ParticipantForm {
         ParticipantTypeOption option = null;
         while (option == null) {
             TextBoxUtils.printTitle("Select participant type");
-            for (ParticipantTypeOption type : ParticipantTypeOption.values()) {
-                TextBoxUtils.printLeftText(type.getValue() + " - " + type.getDescription());
-            }
-            TextBoxUtils.printUnderLineDisplayDivisor();
+            MenuUtils.listEnumOptions(ParticipantTypeOption.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Please select an option (1-4): ");
             if (inputStr.matches("\\d+")) {
                 int input = Integer.parseInt(inputStr);
@@ -130,10 +128,7 @@ public class ParticipantForm {
     public static InputResult readDepartment(Scanner scan, ProfessorDTO dto){
         while (true) {
             TextBoxUtils.printTitle("Select professor's department");
-            for (AcademyDepartment dep : AcademyDepartment.values()) {
-                TextBoxUtils.printLeftText(dep.getValue() + " - " + dep.getDescription());
-            }
-            TextBoxUtils.printUnderLineDisplayDivisor();
+            MenuUtils.listEnumOptions(AcademyDepartment.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select department (number) or 'cancel': ");
             if ("cancel".equalsIgnoreCase(inputStr)) return InputResult.CANCELLED;
             if (inputStr.matches("\\d+")) {
@@ -152,10 +147,7 @@ public class ParticipantForm {
     public static InputResult readRole(Scanner scan, ExternalDTO dto){
         while (true) {
             TextBoxUtils.printTitle("Select external's role");
-            for (ExternalRole role : ExternalRole.values()) {
-                TextBoxUtils.printLeftText(role.getValue() + " - " + role.getDescription());
-            }
-            TextBoxUtils.printUnderLineDisplayDivisor();
+            MenuUtils.listEnumOptions(ExternalRole.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select role (number) or 'cancel': ");
             if ("cancel".equalsIgnoreCase(inputStr)) return InputResult.CANCELLED;
             if (inputStr.matches("\\d+")) {

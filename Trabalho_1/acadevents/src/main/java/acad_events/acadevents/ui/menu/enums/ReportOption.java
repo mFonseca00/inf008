@@ -1,8 +1,8 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.ui.menu.enums.Interfaces.IMenuOption;
+import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
 
-public enum ReportOption implements IMenuOption{
+public enum ReportOption implements I_EnumOptionList{
     REPORT_BY_TYPE(1, "Report events by type"),
     REPORT_BY_DATE(2, "Report events by date"),
     RETURN(3, "Return to Main Menu");
