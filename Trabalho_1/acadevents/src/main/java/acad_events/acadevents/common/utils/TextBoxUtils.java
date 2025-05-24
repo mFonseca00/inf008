@@ -38,16 +38,8 @@ public class TextBoxUtils {
 
     public static String inputLine(Scanner scan, String inputLabel){
         int leftPadding = 2;
-        int maxInputLength = width - 2 - leftPadding - inputLabel.length();
-        if (maxInputLength < 1) maxInputLength = 1;
-
         System.out.print("  >>>" + " ".repeat(leftPadding) + inputLabel);
-
         String value = scan.nextLine();
-        if (value.length() > maxInputLength) {
-            value = value.substring(0, maxInputLength);
-        }
-
         return value;
     }
 

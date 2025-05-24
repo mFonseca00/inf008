@@ -1,78 +1,54 @@
 package acad_events.acadevents;
 
-import acad_events.acadevents.common.enums.AcademyDepartment;
-import acad_events.acadevents.common.enums.ExternalRole;
-import acad_events.acadevents.common.DTOs.StudentDTO;
-import acad_events.acadevents.common.DTOs.ProfessorDTO;
-import acad_events.acadevents.common.DTOs.ExternalDTO;
-import acad_events.acadevents.common.DTOs.ParticipantDTO;
+
+
 import acad_events.acadevents.models.participant.ParticipantController;
-import acad_events.acadevents.models.participant.entities.Participant;
+import acad_events.acadevents.models.participant.ParticipantRepository;
+import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
 import acad_events.acadevents.ui.menu.MenuController;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class AcadEvents 
 {
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
-        // TESTE
         ParticipantController participantController = new ParticipantController();
+        ParticipantRepository repository = participantController.getRepository();
 
-        // Cadastrando participantes usando DTOs
+        String filename = "participants.json";
+        File file = new File(filename);
 
-        // Student
-        StudentDTO student1 = new StudentDTO(new ParticipantDTO());
-        student1.setName("Jorge");
-        student1.setCpf("123.145.852-55");
-        student1.setEmail("jorge@gmail.com");
-        student1.setPhone("(71) 99253-9993");
-        student1.setEnrollment("20241160005F");
-        participantController.register(student1);
-
-        StudentDTO student2 = new StudentDTO(new ParticipantDTO());
-        student2.setName("Joana");
-        student2.setCpf("123.145.852-56");
-        student2.setEmail("joana@gmail.com");
-        student2.setPhone("(71) 99253-9994");
-        student2.setEnrollment("20241160006F");
-        participantController.register(student2);
-
-        // Professor
-        ProfessorDTO professor = new ProfessorDTO(new ParticipantDTO());
-        professor.setName("Carlos");
-        professor.setCpf("321.654.987-00");
-        professor.setEmail("carlos@ifba.edu.br");
-        professor.setPhone("(71) 98888-1111");
-        professor.setEmployeeId("EMP001");
-        professor.setDepartment(AcademyDepartment.COMPUTER_SCIENCE);
-        participantController.register(professor);
-
-        // External
-        ExternalDTO external = new ExternalDTO(new ParticipantDTO());
-        external.setName("Marcos");
-        external.setCpf("555.666.777-88");
-        external.setEmail("marcos@empresa.com");
-        external.setPhone("(71) 97777-3333");
-        external.setOrganization("Empresa X");
-        external.setRole(ExternalRole.SPEAKER);
-        participantController.register(external);
-
-        // Exibindo todos os participantes cadastrados
-        System.out.println("\nLista de participantes cadastrados:");
-        for(Participant p : participantController.list()){
-            System.err.println(p.getId() + " " + p.getName() + " " + p.getEmail());
+        // Garante que o arquivo existe e, se não, cria um arquivo JSON vazio
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("[]");
+            } catch (IOException e) {
+                System.out.println("Error creating empty participants.json file.");
+            }
         }
 
-        // Deletando
-        participantController.delete("123.145.852-56");
-
-        System.out.println("\nLista de participantes cadastrados:");
-        for(Participant p : participantController.list()){
-            System.err.println(p.getId() + " " + p.getName() + " " + p.getEmail());
+        // Carregando arquivo de dados
+        try {
+            repository.loadFromJson(filename);
+        } catch (IOException e) {
+            System.out.println("No previous data found or error loading data.");
         }
 
-        //Menu
-        MenuController menu = new MenuController();
+        // Instancia funcionalidades com o controller compartilhado
+        ParticipantFunctionalities partFunctions = new ParticipantFunctionalities(participantController);
+
+        // MenuController recebe a instância de funcionalidades
+        MenuController menu = new MenuController(partFunctions);
         menu.run();
-    }
 
+        // Salvando dados ao sair
+        try {
+            repository.saveToJson(filename);
+        } catch (IOException e) {
+            System.out.println("Error saving data.");
+        }
+    }
 }

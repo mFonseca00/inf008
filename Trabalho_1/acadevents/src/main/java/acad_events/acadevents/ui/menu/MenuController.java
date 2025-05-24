@@ -18,10 +18,14 @@ public class MenuController {
     private final EventMenu eventMenu = new EventMenu();
     private final ParticipantMenu partMenu = new ParticipantMenu();
     private final ReportMenu reportMenu = new ReportMenu();
-    private final ParticipantFunctionalities partFunctions = new ParticipantFunctionalities();
+    private final ParticipantFunctionalities partFunctions;
+
+    public MenuController(ParticipantFunctionalities partFunctions) {
+        this.partFunctions = partFunctions;
+    }
 
     public void run(){
-        Scanner scan =new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         MainMenuOption option = null;
         do{
             mainMenu.printOptions();
@@ -42,7 +46,6 @@ public class MenuController {
                     System.out.println("\tExiting...");
                     break;
             }
-
         } while(option != MainMenuOption.EXIT);
         scan.close();
     }
@@ -83,10 +86,10 @@ public class MenuController {
                     partFunctions.registerNew(scan);
                     break;
                 case DELETE_PARTICIPANT:
-                    // ToDo
+                    partFunctions.remove(scan);
                     break;
                 case LIST_PARTICIPANTS:
-                    // ToDo
+                    partFunctions.listAll();
                     break;
                 case ENROLL_IN_EVENT:
                     // ToDo

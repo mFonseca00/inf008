@@ -1,9 +1,12 @@
 package acad_events.acadevents.models.participant;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import acad_events.acadevents.common.DTOs.ExternalDTO;
 import acad_events.acadevents.common.DTOs.ProfessorDTO;
 import acad_events.acadevents.common.DTOs.StudentDTO;
+import acad_events.acadevents.common.DTOs.ParticipantDTO;
 
 import acad_events.acadevents.models.participant.entities.External;
 import acad_events.acadevents.models.participant.entities.Participant;
@@ -13,6 +16,10 @@ import acad_events.acadevents.models.participant.entities.Student;
 public class ParticipantController {
 
     ParticipantRepository repository = new ParticipantRepository();
+
+    public ParticipantRepository getRepository() {
+        return repository;
+    }
 
     // Register
 
@@ -58,6 +65,20 @@ public class ParticipantController {
     // List
     public Collection<Participant> list() {
         return repository.getAllParticipants();
+    }
+
+    public Collection<ParticipantDTO> listDTOs() {
+        Collection<Participant> participants = repository.getAllParticipants();
+        List<ParticipantDTO> dtos = new ArrayList<>();
+        for (Participant p : participants) {
+            ParticipantDTO dto = new ParticipantDTO();
+            dto.setCpf(p.getCPF());
+            dto.setName(p.getName());
+            dto.setEmail(p.getEmail());
+            dto.setPhone(p.getPhone());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     // Enroll in event (inscrever participante em evento)

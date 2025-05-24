@@ -1,5 +1,6 @@
 package acad_events.acadevents.ui.functionalities;
 
+import java.util.Collection;
 import java.util.Scanner;
 
 import acad_events.acadevents.common.DTOs.ExternalDTO;
@@ -14,7 +15,11 @@ import acad_events.acadevents.ui.functionalities.forms.ParticipantForm;
 
 public class ParticipantFunctionalities {
 
-    ParticipantController controller = new ParticipantController();
+    private final ParticipantController controller;
+
+    public ParticipantFunctionalities(ParticipantController controller) {
+        this.controller = controller;
+    }
 
     public boolean registerNew(Scanner scan){
 
@@ -60,16 +65,32 @@ public class ParticipantFunctionalities {
         return true;
     }
 
-    public void remove(Scanner scan){
+    public boolean remove(Scanner scan){
         // solicita o cpf a ser "cancelado"
-
+        String cpf = ParticipantForm.readCpfOnly(scan);
+        if(cpf == null) return false;
         // chama o método de remoção do participantController
+        boolean removed = controller.delete(cpf);
+        if (removed) {
+            TextBoxUtils.printTitle("Participant removed from the system!");
+        } else {
+            TextBoxUtils.printTitle("Participant not found.");
+        }
+        return removed;
     }
 
     public void listAll(){
         // chama o método de listagem do participantController para puxar a collection
-
-        // apresenta o nome, e email de cada participante
+        Collection<ParticipantDTO> participants = controller.listDTOs();
+        if (participants.isEmpty()) {
+            TextBoxUtils.printTitle("No participants registered.");
+            return;
+        }
+        TextBoxUtils.printTitle("Registered participants:");
+        for (ParticipantDTO p : participants) {
+            TextBoxUtils.printLeftText("CPF: " + p.getCpf() + " | Name: " + p.getName() + " | Email: " + p.getEmail());
+        }
+        TextBoxUtils.printUnderLineDisplayDivisor();
     }
 
     public void insertOnEvent(Scanner scan){

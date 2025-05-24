@@ -16,6 +16,17 @@ import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 
 public class ParticipantForm {
 
+    public static String readCpfOnly(Scanner scan) {
+        while (true) {
+            String cpf = TextBoxUtils.inputLine(scan, "Enter participant's CPF (format: 000.000.000-00) or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(cpf)) return null;
+            if (ValidatorInputs.isValidCPF(cpf)) {
+                return cpf;
+            }
+            TextBoxUtils.printTitle("Invalid CPF.");
+        }
+    }
+
     public static InputResult readCpf(Scanner scan, ParticipantDTO dto){
         while (true) {
             String cpf = TextBoxUtils.inputLine(scan, "Enter participant's CPF (format: 000.000.000-00) or 'cancel': ");
@@ -56,12 +67,11 @@ public class ParticipantForm {
         while (true) {
             String phone = TextBoxUtils.inputLine(scan, "Enter participant's phone (format: 00 0000-0000 or 000 00000-0000) or 'cancel': ");
             if ("cancel".equalsIgnoreCase(phone)) return InputResult.CANCELLED;
-            // if (ValidatorInputs.isValidPhone(phone)) {
-            //     dto.setPhone(phone);
-            //     return InputResult.SUCCESS;
-            // }
-            // TextBoxUtils.printTitle("Enter the phone in the correct format");
-            // --- Validação ignorada temporariamente ---
+            if (ValidatorInputs.isValidPhone(phone)) {
+                dto.setPhone(phone);
+                return InputResult.SUCCESS;
+            }
+            TextBoxUtils.printTitle("Enter the phone in the correct format");
             dto.setPhone(phone);
             return InputResult.SUCCESS;
         }

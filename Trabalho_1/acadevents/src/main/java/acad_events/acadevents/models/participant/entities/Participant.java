@@ -41,4 +41,7 @@ public abstract class Participant {
         return phone;
     }
 
+    public static void setNextID(long next) {
+        nextID = next;
+    }
 }

@@ -3,9 +3,26 @@ package acad_events.acadevents.models.participant;
 import java.util.HashMap;
 import java.util.Map;
 
-import acad_events.acadevents.models.participant.entities.Participant;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import acad_events.acadevents.models.participant.entities.External;
+import acad_events.acadevents.models.participant.entities.Participant;
+import acad_events.acadevents.models.participant.entities.Professor;
+import acad_events.acadevents.models.participant.entities.Student;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ParticipantRepository {
     private Map<Long, Participant> participantsByID = new HashMap<>(); // Para buscas e manuseio no sistema
@@ -47,4 +64,58 @@ public class ParticipantRepository {
         }
         return false;
     }
+
+    public void saveToJson(String filename) throws IOException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        List<JsonObject> jsonList = new ArrayList<>();
+        for (Participant p : getAllParticipants()) {
+            JsonObject obj = (JsonObject) gson.toJsonTree(p);
+            if (p instanceof acad_events.acadevents.models.participant.entities.Student) {
+                obj.addProperty("type", "Student");
+            } else if (p instanceof acad_events.acadevents.models.participant.entities.Professor) {
+                obj.addProperty("type", "Professor");
+            } else if (p instanceof acad_events.acadevents.models.participant.entities.External) {
+                obj.addProperty("type", "External");
+            }
+            jsonList.add(obj);
+        }
+        try (Writer writer = new FileWriter(filename)) {
+            gson.toJson(jsonList, writer);
+        }
+    }
+
+    public void loadFromJson(String filename) throws IOException {
+        Gson gson = new Gson();
+        try (Reader reader = new FileReader(filename)) {
+            JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();
+            participantsByID.clear();
+            participantsByCPF.clear();
+            long maxId = 0;
+            for (JsonElement elem : array) {
+                JsonObject obj = elem.getAsJsonObject();
+                String type = obj.get("type").getAsString();
+                Participant p = null;
+                switch (type) {
+                    case "Student":
+                        p = gson.fromJson(obj, Student.class);
+                        break;
+                    case "Professor":
+                        p = gson.fromJson(obj, Professor.class);
+                        break;
+                    case "External":
+                        p = gson.fromJson(obj, External.class);
+                        break;
+                }
+                if (p != null) {
+                    addParticipant(p);
+                    if (p.getId() > maxId) {
+                        maxId = p.getId();
+                    }
+                }
+            }
+            acad_events.acadevents.models.participant.entities.Participant.setNextID(maxId + 1);
+        }
+    }
+
+
 }
