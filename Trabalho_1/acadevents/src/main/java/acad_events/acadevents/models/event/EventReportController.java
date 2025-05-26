@@ -1,5 +1,9 @@
 package acad_events.acadevents.models.event;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,5 +47,12 @@ public class EventReportController {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    public void exportReportByTypeToJson(List<EventDTO> dtos, String type, String filename) throws IOException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(filename)) {
+            gson.toJson(dtos, writer);
+        }
     }
 }
