@@ -129,4 +129,75 @@ public class EventController {
         return eventDTOs;
     }
 
+    public boolean create(CourseDTO dto){
+        if(repository.getEventByTitle(dto.getTitle()) == null && repository.getEventByDate(dto.getDate()) == null){
+            Course course = new Course(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getLocation(),
+                dto.getCapacity(),
+                dto.getDescription(),
+                dto.getModality(),
+                dto.getCoordinator(),
+                dto.getTotalHours(),
+                dto.getKnowledgeArea()
+            );
+            repository.addEvent(course);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean create(LectureDTO dto){
+        if(repository.getEventByTitle(dto.getTitle()) == null && repository.getEventByDate(dto.getDate()) == null){
+            Lecture lecture = new Lecture(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getLocation(),
+                dto.getCapacity(),
+                dto.getDescription(),
+                dto.getModality(),
+                dto.getSpeaker()
+            );
+            repository.addEvent(lecture);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean create(WorkshopDTO dto){
+        if(repository.getEventByTitle(dto.getTitle()) == null && repository.getEventByDate(dto.getDate()) == null){
+            Workshop workshop = new Workshop(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getLocation(),
+                dto.getCapacity(),
+                dto.getDescription(),
+                dto.getModality(),
+                dto.getInstructor(),
+                dto.getDurationHours()
+            );
+            repository.addEvent(workshop);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean create(FairDTO dto){
+        if(repository.getEventByTitle(dto.getTitle()) == null && repository.getEventByDate(dto.getDate()) == null){
+            Fair fair = new Fair(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getLocation(),
+                dto.getCapacity(),
+                dto.getDescription(),
+                dto.getModality(),
+                dto.getOrganizer(),
+                dto.getNumberOfStands()
+            );
+            repository.addEvent(fair);
+            return true;
+        }
+        return false;
+    }
 }
