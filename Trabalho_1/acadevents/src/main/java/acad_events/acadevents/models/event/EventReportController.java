@@ -2,6 +2,7 @@ package acad_events.acadevents.models.event;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,8 +51,13 @@ public class EventReportController {
     }
 
     public void exportReportByTypeToJson(List<EventDTO> dtos, String type, String filename) throws IOException {
+        File reportsDir = new File("reports");
+        if (!reportsDir.exists()) {
+            reportsDir.mkdir();
+        }
+        String filePath = "reports" + File.separator + filename;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(filename)) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(dtos, writer);
         }
     }

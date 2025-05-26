@@ -7,6 +7,7 @@ import acad_events.acadevents.models.participant.ParticipantRepository;
 import acad_events.acadevents.models.participant.entities.Participant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -39,8 +40,13 @@ public class IntegrationController {
     }
 
     public void exportCertificateToJson(String certificateText, String filename) throws IOException {
+        File certificatesDir = new File("certificates");
+        if (!certificatesDir.exists()) {
+            certificatesDir.mkdir();
+        }
+        String filePath = "certificates" + File.separator + filename;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(filename)) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(certificateText, writer);
         }
     }
