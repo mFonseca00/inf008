@@ -33,8 +33,8 @@ public class ParticipantRepository {
         participantsByCPF.put(participant.getCPF(), participant);
     }
 
-    public Participant getParticipantById(Long Id){
-        return participantsByID.get(Id);
+    public Participant getParticipantById(Long id){
+        return participantsByID.get(id);
     }
 
     public Participant getParticipantByCPF(String cpf){
@@ -45,10 +45,10 @@ public class ParticipantRepository {
         return participantsByID.values();
     }
 
-    public boolean removeParticipantById(Long Id){
-    Participant participant = participantsByID.get(Id);
+    public boolean removeParticipantById(Long id){
+    Participant participant = participantsByID.get(id);
     if(participant != null){
-        participantsByID.remove(Id);
+        participantsByID.remove(id);
         participantsByCPF.remove(participant.getCPF());
         return true;
     }
@@ -70,11 +70,11 @@ public class ParticipantRepository {
         List<JsonObject> jsonList = new ArrayList<>();
         for (Participant p : getAllParticipants()) {
             JsonObject obj = (JsonObject) gson.toJsonTree(p);
-            if (p instanceof acad_events.acadevents.models.participant.entities.Student) {
+            if (p instanceof Student) {
                 obj.addProperty("type", "Student");
-            } else if (p instanceof acad_events.acadevents.models.participant.entities.Professor) {
+            } else if (p instanceof Professor) {
                 obj.addProperty("type", "Professor");
-            } else if (p instanceof acad_events.acadevents.models.participant.entities.External) {
+            } else if (p instanceof External) {
                 obj.addProperty("type", "External");
             }
             jsonList.add(obj);
@@ -113,9 +113,7 @@ public class ParticipantRepository {
                     }
                 }
             }
-            acad_events.acadevents.models.participant.entities.Participant.setNextID(maxId + 1);
+            Participant.setNextID(maxId + 1);
         }
     }
-
-
 }

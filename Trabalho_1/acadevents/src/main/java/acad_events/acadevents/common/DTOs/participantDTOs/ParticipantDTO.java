@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.DTOs;
+package acad_events.acadevents.common.DTOs.participantDTOs;
 
 public class ParticipantDTO {
     private String cpf;

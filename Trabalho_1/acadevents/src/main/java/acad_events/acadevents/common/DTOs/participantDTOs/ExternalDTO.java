@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.DTOs;
+package acad_events.acadevents.common.DTOs.participantDTOs;
 
 import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 

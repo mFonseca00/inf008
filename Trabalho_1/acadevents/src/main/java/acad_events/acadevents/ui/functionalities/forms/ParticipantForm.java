@@ -2,10 +2,10 @@ package acad_events.acadevents.ui.functionalities.forms;
 
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.ExternalDTO;
-import acad_events.acadevents.common.DTOs.ParticipantDTO;
-import acad_events.acadevents.common.DTOs.ProfessorDTO;
-import acad_events.acadevents.common.DTOs.StudentDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ProfessorDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.StudentDTO;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;

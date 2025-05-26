@@ -3,10 +3,10 @@ package acad_events.acadevents.ui.functionalities;
 import java.util.Collection;
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.ExternalDTO;
-import acad_events.acadevents.common.DTOs.ParticipantDTO;
-import acad_events.acadevents.common.DTOs.ProfessorDTO;
-import acad_events.acadevents.common.DTOs.StudentDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.ProfessorDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.StudentDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
@@ -33,10 +33,6 @@ public class ParticipantFunctionalities {
         // seleciona o tipo de participante (student, professor, external) opção para retornar para menu anterior também
         ParticipantTypeOption type = ParticipantForm.selectType(scan);
 
-        // switch case
-            // se student, solicita enrollment (matrícula)
-            // se professor, solicita emplyeeID e pede para selecionar o departamento (utilizar switch case + enum)
-            // se external, solicita organização e pede para selecionar role no evento (utilizar switch case + enum)
         switch(type){
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
@@ -81,7 +77,7 @@ public class ParticipantFunctionalities {
 
     public void listAll(){
         // chama o método de listagem do participantController para puxar a collection
-        Collection<ParticipantDTO> participants = controller.listDTOs();
+        Collection<ParticipantDTO> participants = controller.list();
         if (participants.isEmpty()) {
             TextBoxUtils.printTitle("No participants registered.");
             return;
