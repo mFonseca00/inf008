@@ -14,6 +14,10 @@ public class LectureDTO extends EventDTO{
         this.setParticipants(base.getParticipants());
     }
 
+    public LectureDTO() {
+        //TODO Auto-generated constructor stub
+    }
+
     public String getSpeaker() {
         return speaker;
     }

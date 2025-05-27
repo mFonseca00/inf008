@@ -16,6 +16,10 @@ public class CourseDTO extends EventDTO{
         this.setParticipants(base.getParticipants());
     }
 
+    public CourseDTO() {
+        //TODO Auto-generated constructor stub
+    }
+
     public String getCoordinator() {
         return coordinator;
     }

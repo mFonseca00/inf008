@@ -126,7 +126,7 @@ public class EventForm extends BaseForm {
         while (true) {
             TextBoxUtils.printTitle("Select an option to remove an event");
             MenuUtils.listEnumOptions(EventWayToRemoveOption.class);
-            String inputStr = TextBoxUtils.inputLine(scan, "Select option or 'cancel': ");
+            String inputStr = TextBoxUtils.inputLine(scan, "Select an option: ");
             if ("cancel".equalsIgnoreCase(inputStr)) return EventWayToRemoveOption.CANCELLED;
             if (inputStr.matches("\\d+")) {
                 int input = Integer.parseInt(inputStr);
@@ -144,7 +144,7 @@ public class EventForm extends BaseForm {
         while (true) {
             TextBoxUtils.printTitle("Select an attribute to remove an event");
             MenuUtils.listEnumOptions(EventAttribute.class);
-            String inputStr = TextBoxUtils.inputLine(scan, "Select attribute or 'cancel': ");
+            String inputStr = TextBoxUtils.inputLine(scan, "Select an option: ");
             if ("cancel".equalsIgnoreCase(inputStr)) return EventAttribute.CANCELLED;
             if (inputStr.matches("\\d+")) {
                 int input = Integer.parseInt(inputStr);
@@ -165,6 +165,7 @@ public class EventForm extends BaseForm {
                 EventDTO event = events.get(i);
                 TextBoxUtils.printLeftText(i + 1 + " - " + event.getTitle() + " Date: " + event.getDate() + " Location: " + event.getLocation());
             }
+            TextBoxUtils.printUnderLineDisplayDivisor();
             String inputStr = TextBoxUtils.inputLine(scan, "Select event number or 'cancel': ");
             if ("cancel".equalsIgnoreCase(inputStr)) return null;
             if (inputStr.matches("\\d+")) {

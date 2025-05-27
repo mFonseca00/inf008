@@ -4,7 +4,7 @@ import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
 
 public enum EventWayToRemoveOption implements I_EnumOptionList{
     ATTRIBUTE_LIST(1, "Remove by an attribute list"),
-    ALL_LIST(2, "Remove from all events List"),
+    ALL_LIST(2, "Remove from all events list"),
     ID(3, "Remove from an ID"),
     CANCELLED(4, "Cancel remotion");
 

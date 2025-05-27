@@ -29,27 +29,8 @@ public class EventController {
 
     public EventDTO getEventById(Long id){
         Event event = repository.getEventById(id);
-        EventDTO dto = new EventDTO();
-        if(event != null){
-            dto.setId(id);
-            dto.setTitle(event.getTitle());
-            dto.setCapacity(event.getCapacity());
-            dto.setDate(event.getDate());
-            dto.setDescription(event.getDescription());
-            dto.setLocation(event.getLocation());
-            dto.setModality(event.getModality());
-            List<ParticipantDTO> participantDTOs = new ArrayList<>();
-            for (Participant p : event.getParticipants()) {
-                ParticipantDTO pdto = new ParticipantDTO();
-                pdto.setCpf(p.getCPF());
-                pdto.setName(p.getName());
-                pdto.setEmail(p.getEmail());
-                pdto.setPhone(p.getPhone());
-                participantDTOs.add(pdto);
-            }
-            dto.setParticipants(participantDTOs);
-        }
-        return dto;
+        if(event == null) return null;
+        return toDTO(event);
     }
 
     public boolean create(CourseDTO dto){
@@ -125,33 +106,14 @@ public class EventController {
     }
 
     public boolean delete(Long eventId){
-        boolean response = repository.removeEventById(eventId);
-        return response;
+        return repository.removeEventById(eventId);
     }
 
     public Collection<EventDTO> listAll() {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
         for (Event e : events) {
-            EventDTO eDto = new EventDTO();
-            eDto.setTitle(e.getTitle());
-            eDto.setDate(e.getDate());
-            eDto.setLocation(e.getLocation());
-            eDto.setCapacity(e.getCapacity());
-            eDto.setDescription(e.getDescription());
-            eDto.setModality(e.getModality());
-            List<ParticipantDTO> participantDTOs = new ArrayList<>();
-            for (Participant p : e.getParticipants()) {
-                ParticipantDTO pdto = new ParticipantDTO();
-                pdto.setCpf(p.getCPF());
-                pdto.setName(p.getName());
-                pdto.setEmail(p.getEmail());
-                pdto.setPhone(p.getPhone());
-                participantDTOs.add(pdto);
-            }
-            eDto.setParticipants(participantDTOs);
-
-            eventDTOs.add(eDto);
+            eventDTOs.add(toDTO(e));
         }
         return eventDTOs;
     }
@@ -160,52 +122,31 @@ public class EventController {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
 
+        boolean hasValue = value != null && !value.isBlank();
+        String valueLower = hasValue ? value.toLowerCase() : "";
+
         for (Event e : events) {
             boolean matches = false;
             switch (attribute) {
                 case TITLE:
-                    matches = e.getTitle().equalsIgnoreCase(value);
+                    matches = !hasValue || e.getTitle().toLowerCase().contains(valueLower);
                     break;
                 case DATE:
-                    matches = e.getDate().equalsIgnoreCase(value);
+                    matches = !hasValue || e.getDate().toLowerCase().contains(valueLower);
                     break;
                 case LOCATION:
-                    matches = e.getLocation().equalsIgnoreCase(value);
+                    matches = !hasValue || e.getLocation().toLowerCase().contains(valueLower);
                     break;
                 case MODALITY:
-                    try {
-                        matches = e.getModality().toString().equalsIgnoreCase(value) ||
-                                  e.getModality() == Modality.valueOf(value.toUpperCase());
-                    } catch (IllegalArgumentException ex) {
-                        matches = false;
-                    }
+                    matches = !hasValue ||
+                        e.getModality().toString().toLowerCase().contains(valueLower) ||
+                        (e.getModality().name().toLowerCase().contains(valueLower));
                     break;
                 case CANCELLED:
-                    // This situation should never occur: the terminal/interface logic must filter out the CANCELL option.
-                    // Returns an empty list only as a safety measure.
                     return new ArrayList<>();
-                // Add attributes here
             }
             if (matches) {
-                EventDTO eDto = new EventDTO();
-                eDto.setId(e.getId());
-                eDto.setTitle(e.getTitle());
-                eDto.setDate(e.getDate());
-                eDto.setLocation(e.getLocation());
-                eDto.setCapacity(e.getCapacity());
-                eDto.setDescription(e.getDescription());
-                eDto.setModality(e.getModality());
-                List<ParticipantDTO> participantDTOs = new ArrayList<>();
-                for (Participant p : e.getParticipants()) {
-                    ParticipantDTO pdto = new ParticipantDTO();
-                    pdto.setCpf(p.getCPF());
-                    pdto.setName(p.getName());
-                    pdto.setEmail(p.getEmail());
-                    pdto.setPhone(p.getPhone());
-                    participantDTOs.add(pdto);
-                }
-                eDto.setParticipants(participantDTOs);
-                eventDTOs.add(eDto);
+                eventDTOs.add(toDTO(e));
             }
         }
         return eventDTOs;
@@ -219,5 +160,55 @@ public class EventController {
             }
         }
         return false;
+    }
+
+    // Utilitário para converter Event para o DTO correto
+    private EventDTO toDTO(Event e) {
+        EventDTO dto;
+        if (e instanceof Course) {
+            Course c = (Course) e;
+            CourseDTO courseDTO = new CourseDTO();
+            courseDTO.setCoordinator(c.getCoordinator());
+            courseDTO.setTotalHours(c.getTotalHours());
+            courseDTO.setKnowledgeArea(c.getKnowledgeArea());
+            dto = courseDTO;
+        } else if (e instanceof Lecture) {
+            Lecture l = (Lecture) e;
+            LectureDTO lectureDTO = new LectureDTO();
+            lectureDTO.setSpeaker(l.getSpeaker());
+            dto = lectureDTO;
+        } else if (e instanceof Fair) {
+            Fair f = (Fair) e;
+            FairDTO fairDTO = new FairDTO();
+            fairDTO.setOrganizer(f.getOrganizer());
+            fairDTO.setNumberOfStands(f.getNumberOfStands());
+            dto = fairDTO;
+        } else if (e instanceof Workshop) {
+            Workshop w = (Workshop) e;
+            WorkshopDTO workshopDTO = new WorkshopDTO();
+            workshopDTO.setInstructor(w.getInstructor());
+            workshopDTO.setDurationHours(w.getDurationHours());
+            dto = workshopDTO;
+        } else {
+            dto = new EventDTO();
+        }
+        dto.setId(e.getId());
+        dto.setTitle(e.getTitle());
+        dto.setDate(e.getDate());
+        dto.setLocation(e.getLocation());
+        dto.setCapacity(e.getCapacity());
+        dto.setDescription(e.getDescription());
+        dto.setModality(e.getModality());
+        List<ParticipantDTO> participantDTOs = new ArrayList<>();
+        for (Participant p : e.getParticipants()) {
+            ParticipantDTO pdto = new ParticipantDTO();
+            pdto.setCpf(p.getCPF());
+            pdto.setName(p.getName());
+            pdto.setEmail(p.getEmail());
+            pdto.setPhone(p.getPhone());
+            participantDTOs.add(pdto);
+        }
+        dto.setParticipants(participantDTOs);
+        return dto;
     }
 }

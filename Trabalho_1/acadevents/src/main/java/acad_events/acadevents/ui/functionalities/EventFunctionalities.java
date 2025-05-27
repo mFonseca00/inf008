@@ -79,7 +79,7 @@ public class EventFunctionalities {
                 return false;
         }
         
-        return false;
+        return true;
     }
 
     // Remoção pode ser realizada por ID, a partir da lista geral ou a partir de um atributo
@@ -159,8 +159,8 @@ public class EventFunctionalities {
         }
         TextBoxUtils.printTitle("Registered events:");
         for(EventDTO e : events){
-            String type = e.getClass().getSimpleName().replace("DTO", ""); // Ex: Course, Lecture, Fair, Workshop
-            TextBoxUtils.printLeftText("> " + type + ": " + e.getTitle() + " > Modality: " + e.getModality() + " > Date: " + e.getDate() + " > Location: " + e.getLocation());
+            String type = e.getClass().getSimpleName().replace("DTO", ""); // remove DTO from name
+            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality() + " Date: " + e.getDate() + " Location: " + e.getLocation());
             TextBoxUtils.printUnderLineDisplayDivisor();
         }
     }

@@ -15,6 +15,10 @@ public class WorkshopDTO extends EventDTO{
         this.setParticipants(base.getParticipants());
     }
 
+    public WorkshopDTO() {
+        //TODO Auto-generated constructor stub
+    }
+
     public String getInstructor() {
         return instructor;
     }
