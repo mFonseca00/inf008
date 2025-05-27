@@ -1,6 +1,6 @@
 package acad_events.acadevents.ui.functionalities.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum EventTypeOption implements I_EnumOptionList{
     COURSE(1, "Course"),

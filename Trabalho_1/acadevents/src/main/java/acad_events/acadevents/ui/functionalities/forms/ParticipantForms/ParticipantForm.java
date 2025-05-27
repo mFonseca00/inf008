@@ -5,7 +5,7 @@ import java.util.Scanner;
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
-import acad_events.acadevents.common.utils.Enums.FieldValidatorType;
+import acad_events.acadevents.common.utils.enums.FieldValidatorType;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;

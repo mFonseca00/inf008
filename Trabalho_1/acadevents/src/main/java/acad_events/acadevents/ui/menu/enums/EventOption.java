@@ -1,6 +1,6 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum EventOption implements I_EnumOptionList{
     CREATE_EVENT(1, "Create Event"),

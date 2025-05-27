@@ -1,6 +1,6 @@
 package acad_events.acadevents.common.utils;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public class MenuUtils {
     public static <E extends Enum<E> & I_EnumOptionList> void listEnumOptions(Class<E> enumClass) {

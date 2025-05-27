@@ -9,17 +9,21 @@ Sistema de Gerenciamento de Participantes e Eventos Acadêmicos
 - Sobre o Projeto  
 - Como Executar  
 - Fluxo de Telas e Funcionalidades  
+  - Menu Principal  
+  - Menu de Participantes  
+  - Menu de Eventos  
+  - Menu de Relatórios  
 - Persistência de Dados  
 - Validações  
 - Estrutura do Projeto  
 - Tecnologias Utilizadas  
-- Autores  
+- Autor  
 
 ---
 
 ## Sobre o Projeto
 
-O **AcadEvents** é um sistema em Java para cadastro, listagem, remoção e gerenciamento de participantes (alunos, professores e externos) e eventos acadêmicos.  
+O **AcadEvents** é um sistema em Java para cadastro, listagem, remoção e gerenciamento de participantes (alunos, professores e externos) e eventos acadêmicos (palestras, cursos, workshops e feiras).  
 O sistema é totalmente em linha de comando (console) e utiliza arquivos JSON para persistência dos dados.
 
 ---
@@ -74,48 +78,132 @@ Ao escolher "Manage Participants", você verá:
 1. **Register new participant**: Cadastrar novo participante.  
 2. **Delete participant**: Remover participante pelo CPF.  
 3. **List participants**: Listar todos os participantes cadastrados.  
-4. **Enroll participant in event**: Inscrever participante em evento (em desenvolvimento).  
-5. **Generate a event certificate**: Gerar certificado de participação (em desenvolvimento).  
+4. **Enroll participant in event**: Inscrever participante em evento.  
+5. **Generate a event certificate**: Gerar certificado de participação.  
 6. **Return to Main Menu**: Voltar ao menu principal.  
 
-#### Cadastro de Participante
+#### 1. Register new participant
 
 - Informe o CPF (formato: `000.000.000-00`), nome, e-mail, telefone (ex: `71 91234-5678`).  
 - Escolha o tipo: Student, Professor ou External.  
 - Para Student: informe matrícula.  
 - Para Professor: informe ID do funcionário e departamento.  
 - Para External: informe organização (opcional) e papel (role).  
+- O participante será cadastrado se os dados forem válidos e o CPF não estiver em uso.
 
-#### Remoção
+#### 2. Delete participant
 
 - Informe o CPF do participante a ser removido.
+- O sistema confirmará a remoção ou informará se não encontrou o participante.
 
-#### Listagem
+#### 3. List participants
 
 - Exibe todos os participantes cadastrados, mostrando CPF, nome e e-mail.
+
+#### 4. Enroll participant in event
+
+- Informe o CPF do participante.
+- Escolha o evento desejado (será exibida uma lista).
+- O sistema verifica se há vagas e se o tipo do participante é permitido para o evento (ex: apenas alunos podem se inscrever em cursos).
+- Se tudo estiver correto, a inscrição é realizada.
+
+#### 5. Generate a event certificate
+
+- Informe o CPF do participante.
+- Escolha o evento em que ele está inscrito.
+- O sistema gera um certificado textual com os dados do evento e do participante.
+
+#### 6. Return to Main Menu
+
+- Retorna ao menu principal do sistema.
 
 ---
 
 ### Menu de Eventos
 
-**(Em desenvolvimento)**  
-Permite criar, deletar e listar eventos acadêmicos.
+Ao escolher "Manage Events", você verá:
+
+1. **Create Event**: Criar um novo evento acadêmico.
+2. **Delete Event**: Remover um evento existente.
+3. **List Events**: Listar todos os eventos cadastrados.
+4. **Return to Main Menu**: Voltar ao menu principal.
+
+#### 1. Create Event
+
+- O sistema solicitará os dados comuns do evento:  
+  - Título  
+  - Data (formato: dd/MM/yyyy)  
+  - Local  
+  - Capacidade (número máximo de participantes)  
+  - Descrição  
+  - Modalidade (Presencial, Online ou Híbrido)
+- Em seguida, você escolherá o tipo de evento:  
+  - **Course**: Informe coordenador, área de conhecimento e carga horária total.  
+  - **Lecture**: Informe o palestrante.  
+  - **Workshop**: Informe o instrutor e a duração em horas.  
+  - **Fair**: Informe o organizador e o número de estandes.
+- O evento será criado e salvo se não houver outro evento com o mesmo título e data.
+
+#### 2. Delete Event
+
+- Você pode escolher como deseja remover o evento:
+  - **Remove by an attribute list**:  
+    - Escolha um atributo (ex: título, data, modalidade).
+    - Informe o valor do atributo.
+    - O sistema listará os eventos encontrados para você selecionar qual deseja remover.
+  - **Remove from all events list**:  
+    - O sistema exibirá todos os eventos cadastrados.
+    - Selecione o evento desejado para remover.
+  - **Remove from an ID**:  
+    - Informe o ID do evento a ser removido.
+- O sistema confirmará a remoção ou informará se não encontrou o evento.
+
+#### 3. List Events
+
+- Exibe todos os eventos cadastrados, mostrando:
+  - Tipo do evento (Course, Lecture, Workshop, Fair)
+  - Título
+  - Modalidade
+  - Data
+  - Local
+
+#### 4. Return to Main Menu
+
+- Retorna ao menu principal do sistema.
 
 ---
 
 ### Menu de Relatórios
 
-**(Em desenvolvimento)**  
-Permite gerar relatórios por tipo de evento ou por data.
+Ao escolher "Generate Reports", você verá:
+
+1. **Report by event type**: Gera um relatório de eventos filtrando por tipo (Course, Lecture, Workshop, Fair).
+2. **Report by date**: Gera um relatório de eventos filtrando por data.
+3. **Return to Main Menu**: Volta ao menu principal.
+
+#### 1. Report by event type
+
+- Escolha o tipo de evento desejado.
+- O sistema exibirá todos os eventos cadastrados daquele tipo.
+
+#### 2. Report by date
+
+- Informe a data desejada (formato: dd/MM/yyyy).
+- O sistema exibirá todos os eventos cadastrados para aquela data.
+
+#### 3. Return to Main Menu
+
+- Retorna ao menu principal do sistema.
 
 ---
 
 ## Persistência de Dados
 
 - Todos os dados de participantes são salvos no arquivo `participants.json` na raiz do projeto.  
-- Ao iniciar, o sistema carrega os dados desse arquivo (ou cria um novo se não existir).  
+- Todos os dados de eventos são salvos no arquivo `events.json` na raiz do projeto.  
+- Ao iniciar, o sistema carrega os dados desses arquivos (ou cria novos se não existirem).  
 - Ao sair, os dados são salvos automaticamente.  
-- O sistema garante que IDs de participantes não sejam sobrescritos, mesmo após reiniciar.
+- O sistema garante que IDs de participantes e eventos não sejam sobrescritos, mesmo após reiniciar.
 
 ---
 
@@ -130,8 +218,11 @@ Permite gerar relatórios por tipo de evento ou por data.
 
 ## Estrutura do Projeto
 
+O projeto está organizado para facilitar a manutenção, entendimento e expansão do sistema. Abaixo, uma explicação das principais pastas e arquivos:
+
 acadevents/  
 ├── participants.json  
+├── events.json  
 ├── pom.xml  
 └── src/  
   └── main/  
@@ -142,6 +233,32 @@ acadevents/
           ├── models/  
           ├── ui/  
           └── common/  
+
+### Resumo das responsabilidades:
+
+- **models/**  
+  - **event/**: Toda a lógica e entidades relacionadas a eventos.
+  - **participant/**: Toda a lógica e entidades relacionadas a participantes.
+  - **integration/**: Lógica de integração entre eventos e participantes (ex: inscrição, geração de certificados).
+
+- **ui/**  
+  - **menu/**: Menus de navegação do sistema.
+  - **functionalities/**: Implementação das funcionalidades acionadas pelos menus.
+    - **forms/**: Formulários para entrada de dados de eventos e participantes.
+    - **enums/**: Enums auxiliares para navegação e seleção na interface.
+
+- **common/**  
+  - **DTOs/**: Objetos de transferência de dados (Data Transfer Objects) usados para comunicação entre camadas.
+  - **utils/**: Enum e interfaces compartilhados pelo sistema, funções utilitárias para validação, exibição, etc.
+
+- **participants.json / events.json**  
+  Arquivos de persistência dos dados em formato JSON.
+
+- **pom.xml**  
+  Gerenciador de dependências e build do Maven.
+
+- **AcadEvents.java**  
+  Ponto de entrada do sistema.
 
 ---
 

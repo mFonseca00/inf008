@@ -1,6 +1,6 @@
 package acad_events.acadevents.ui.functionalities.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum EventWayToRemoveOption implements I_EnumOptionList{
     ATTRIBUTE_LIST(1, "Remove by an attribute list"),

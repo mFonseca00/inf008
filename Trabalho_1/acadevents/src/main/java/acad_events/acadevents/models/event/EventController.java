@@ -10,7 +10,7 @@ import acad_events.acadevents.common.DTOs.eventDTOs.FairDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.WorkshopDTO;
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
-import acad_events.acadevents.common.utils.Enums.EventAttribute;
+import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.models.event.entities.Course;
 import acad_events.acadevents.models.event.entities.Event;
 import acad_events.acadevents.models.event.entities.Fair;

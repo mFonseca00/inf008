@@ -1,6 +1,6 @@
 package acad_events.acadevents.models.event.entities.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum Modality implements I_EnumOptionList{
     PRESENTIAL (1, "Presential Event"),

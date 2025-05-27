@@ -1,6 +1,6 @@
 package acad_events.acadevents.ui.menu.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum MainMenuOption implements I_EnumOptionList{
     MANAGE_EVENTS(1, "Manage Events"),

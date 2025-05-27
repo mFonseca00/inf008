@@ -2,8 +2,8 @@ package acad_events.acadevents.ui.functionalities.forms;
 
 import java.util.Scanner;
 import acad_events.acadevents.common.utils.TextBoxUtils;
-import acad_events.acadevents.common.utils.Enums.FieldValidatorType;
 import acad_events.acadevents.common.utils.ValidatorInputs;
+import acad_events.acadevents.common.utils.enums.FieldValidatorType;
 
 public abstract class BaseForm {
     protected static String readField(Scanner scan, String prompt, String errorMsg, boolean required, FieldValidatorType validatorType) {

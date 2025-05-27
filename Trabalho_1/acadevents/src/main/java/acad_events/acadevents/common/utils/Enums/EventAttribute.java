@@ -1,6 +1,6 @@
-package acad_events.acadevents.common.utils.Enums;
+package acad_events.acadevents.common.utils.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum EventAttribute implements I_EnumOptionList {
     TITLE(1, "Title of the event"),

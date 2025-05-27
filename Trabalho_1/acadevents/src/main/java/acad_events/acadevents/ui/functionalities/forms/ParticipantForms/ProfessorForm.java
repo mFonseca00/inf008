@@ -5,7 +5,7 @@ import acad_events.acadevents.common.DTOs.participantDTOs.ProfessorDTO;
 import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
-import acad_events.acadevents.common.utils.Enums.FieldValidatorType;
+import acad_events.acadevents.common.utils.enums.FieldValidatorType;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 
 public class ProfessorForm extends ParticipantForm {

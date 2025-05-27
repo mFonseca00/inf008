@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.utils.Enums;
+package acad_events.acadevents.common.utils.enums;
 
 public enum FieldValidatorType {
     CPF,

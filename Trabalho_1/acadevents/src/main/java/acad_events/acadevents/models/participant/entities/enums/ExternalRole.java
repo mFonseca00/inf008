@@ -1,6 +1,6 @@
 package acad_events.acadevents.models.participant.entities.enums;
 
-import acad_events.acadevents.common.utils.Interfaces.I_EnumOptionList;
+import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum ExternalRole implements I_EnumOptionList{
     SPEAKER(1, "Speaker"),

@@ -10,7 +10,7 @@ import acad_events.acadevents.common.DTOs.eventDTOs.FairDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.WorkshopDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
-import acad_events.acadevents.common.utils.Enums.EventAttribute;
+import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.models.event.EventController;
 import acad_events.acadevents.ui.functionalities.enums.EventTypeOption;
 import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
