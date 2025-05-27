@@ -5,6 +5,17 @@ public class CourseDTO extends EventDTO{
     private int totalHours;
     private String knowledgeArea;
 
+    public CourseDTO(EventDTO base) {
+        this.setId(base.getId());
+        this.setTitle(base.getTitle());
+        this.setDate(base.getDate());
+        this.setLocation(base.getLocation());
+        this.setCapacity(base.getCapacity());
+        this.setDescription(base.getDescription());
+        this.setModality(base.getModality());
+        this.setParticipants(base.getParticipants());
+    }
+
     public String getCoordinator() {
         return coordinator;
     }

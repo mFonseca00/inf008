@@ -21,6 +21,10 @@ public class ParticipantController {
         return repository;
     }
 
+    public boolean existsByCPF(String cpf) {
+        return repository.getParticipantByCPF(cpf) != null;
+    }
+
     public boolean register(StudentDTO dto) {
         if (repository.getParticipantByCPF(dto.getCpf()) == null) {
             Student student = new Student(

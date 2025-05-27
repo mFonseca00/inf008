@@ -1,5 +1,9 @@
 package acad_events.acadevents.common.utils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class ValidatorInputs {
     public static boolean isValidCPF(String cpf){
         if(cpf == null) return false;
@@ -24,14 +28,32 @@ public class ValidatorInputs {
     }
 
     public static boolean isValidEmail(String email){
-        if(email==null)
         if (email == null) return false;
         return email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$");
     }
 
     public static boolean isValidPhone(String phone){
         if (phone == null) return false;
-        // Acepts (71) 11111-1111, 71 11111-1111, 71 111111111, etc.
-        return phone.matches("\\(?\\d{2,3}\\)?[\\s-]?\\d{4,5}-?\\d{4}");
+        // Acepts
+        return phone.matches("^(\\d{2} \\d{4}-\\d{4})$") || // 71 1111-1111
+               phone.matches("^(\\d{2} \\d{5}-\\d{4})$") || // 71 11111-1111
+               phone.matches("^(\\d{3} \\d{4}-\\d{4})$") || // 071 1111-1111
+               phone.matches("^(\\d{3} \\d{5}-\\d{4})$");   // 071 11111-1111
+    }
+
+    public static boolean isPositiveInteger(String value){
+        if (value == null) return false;
+        return value.matches("^[1-9]\\d*$");
+    }
+
+    public static boolean isValidDate(String date) {
+        if (date == null) return false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }

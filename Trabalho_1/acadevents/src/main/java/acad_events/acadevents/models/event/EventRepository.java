@@ -37,7 +37,7 @@ public class EventRepository {
         return eventsById.get(id);
     }
 
-    public List<Event> getEventByTitle(String title){
+    public List<Event> getEventsByTitle(String title){
         List<Event> events = new ArrayList<>();
         for (Event event : eventsById.values()){
             if (event.getTitle().equalsIgnoreCase(title)){
@@ -47,7 +47,7 @@ public class EventRepository {
         return events;
     }
 
-    public List<Event> getEventByDate(String date){
+    public List<Event> getEventsByDate(String date){
         List<Event> events = new ArrayList<>();
         for (Event event : eventsById.values()){
             if (event.getDate().equalsIgnoreCase(date)){
@@ -57,7 +57,7 @@ public class EventRepository {
         return events;
     }
 
-    public List<Event> getEventByModality(Modality modality){
+    public List<Event> getEventsByModality(Modality modality){
         List<Event> events = new ArrayList<>();
         for (Event event : eventsById.values()){
             if (event.getModality() == modality){

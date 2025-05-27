@@ -4,6 +4,17 @@ public class FairDTO extends EventDTO{
     private String organizer;
     private int numberOfStands;
 
+    public FairDTO(EventDTO base) {
+        this.setId(base.getId());
+        this.setTitle(base.getTitle());
+        this.setDate(base.getDate());
+        this.setLocation(base.getLocation());
+        this.setCapacity(base.getCapacity());
+        this.setDescription(base.getDescription());
+        this.setModality(base.getModality());
+        this.setParticipants(base.getParticipants());
+    }
+
     public String getOrganizer() {
         return organizer;
     }

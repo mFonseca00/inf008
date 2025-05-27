@@ -35,7 +35,7 @@ public class EventReportController {
     }
 
     public List<EventDTO> listByDate(String date) {
-        List<Event> events = eventRepo.getEventByDate(date);
+        List<Event> events = eventRepo.getEventsByDate(date);
         List<EventDTO> dtos = new ArrayList<>();
         for (Event e : events) {
             EventDTO dto = new EventDTO();

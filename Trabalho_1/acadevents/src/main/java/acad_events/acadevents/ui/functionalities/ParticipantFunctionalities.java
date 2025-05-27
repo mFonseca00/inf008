@@ -11,7 +11,10 @@ import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForm;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ExternalForm;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ParticipantForm;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ProfessorForm;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.StudentForm;
 
 public class ParticipantFunctionalities {
 
@@ -24,34 +27,37 @@ public class ParticipantFunctionalities {
     public boolean registerNew(Scanner scan){
 
         ParticipantDTO participant = new ParticipantDTO();
-        // solicita os dados comuns (CPF, nome, email, telefone)
-        if(ParticipantForm.readCpf(scan, participant) == InputResult.CANCELLED) return false;
-        if(ParticipantForm.readName(scan, participant) == InputResult.CANCELLED) return false;
-        if(ParticipantForm.readEmail(scan, participant) == InputResult.CANCELLED) return false;
-        if(ParticipantForm.readPhone(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.registerCpf(scan, participant) == InputResult.CANCELLED) return false;
 
-        // seleciona o tipo de participante (student, professor, external) opção para retornar para menu anterior também
+        // Verifica se já existe participante com o mesmo CPF
+        if (controller.existsByCPF(participant.getCpf())) {
+            TextBoxUtils.printTitle("A participant with this CPF already exists!");
+            return false;
+        }
+
+        if(ParticipantForm.registerName(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.registerEmail(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.registerPhone(scan, participant) == InputResult.CANCELLED) return false;
+
+        // seleciona o tipo de participante (student, professor, external)
         ParticipantTypeOption type = ParticipantForm.selectType(scan);
 
         switch(type){
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
-                if(ParticipantForm.readEnrollment(scan, student) == InputResult.CANCELLED) return false;
-                // add no repositório
+                if(StudentForm.registerEnrollment(scan, student) == InputResult.CANCELLED) return false;
                 controller.register(student);
                 break;
             case PROFESSOR:
                 ProfessorDTO professor = new ProfessorDTO(participant);
-                if(ParticipantForm.readEmployeeId(scan, professor) == InputResult.CANCELLED) return false;
-                if(ParticipantForm.selectDepartment(scan, professor) == InputResult.CANCELLED) return false;
-                // add no repositório
+                if(ProfessorForm.registerEmployeeId(scan, professor) == InputResult.CANCELLED) return false;
+                if(ProfessorForm.selectDepartment(scan, professor) == InputResult.CANCELLED) return false;
                 controller.register(professor);
                 break;
             case EXTERNAL:
                 ExternalDTO external = new ExternalDTO(participant);
-                if(ParticipantForm.readOrg(scan, external) == InputResult.CANCELLED) return false;
-                if(ParticipantForm.selectRole(scan, external) == InputResult.CANCELLED) return false;
-                // add no repositório
+                if(ExternalForm.registerOrg(scan, external) == InputResult.CANCELLED) return false;
+                if(ExternalForm.selectRole(scan, external) == InputResult.CANCELLED) return false;
                 controller.register(external);
                 break;
             case CANCELLED:
@@ -63,7 +69,7 @@ public class ParticipantFunctionalities {
 
     public boolean remove(Scanner scan){
         // solicita o cpf a ser "cancelado"
-        String cpf = ParticipantForm.readCpfOnly(scan);
+        String cpf = ParticipantForm.readCpf(scan);
         if(cpf == null) return false;
         // chama o método de remoção do participantController
         boolean removed = controller.delete(cpf);
@@ -89,19 +95,6 @@ public class ParticipantFunctionalities {
         TextBoxUtils.printUnderLineDisplayDivisor();
     }
 
-    public void insertOnEvent(Scanner scan){
-        // solicita o cpf do participante
-
-        //chama o método do eventController para inserir o participante em um evento específico
-    }
-
-    public void generateCertificate(Scanner scan){
-        // solicita o cpf do participante
-        // solicita o código do curso
-
-        // chama o método do eventController para verificar se o participante está inscrito naquele curso
-        // chama o método do participantController gerar o certificado em arquivo de texto
-    }
 }
 
 

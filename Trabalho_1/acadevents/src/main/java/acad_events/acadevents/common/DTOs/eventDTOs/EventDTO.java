@@ -7,6 +7,7 @@ import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
 import acad_events.acadevents.models.event.entities.enums.Modality;
 
 public class EventDTO {
+    private Long id;
     private String title;
     private String date;
     private String location;
@@ -14,6 +15,14 @@ public class EventDTO {
     private String description;
     private Modality modality;
     protected List<ParticipantDTO> participants = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Modality getModality() {
         return modality;

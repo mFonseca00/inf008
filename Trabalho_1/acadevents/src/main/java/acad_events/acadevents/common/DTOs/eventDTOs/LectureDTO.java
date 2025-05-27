@@ -3,6 +3,17 @@ package acad_events.acadevents.common.DTOs.eventDTOs;
 public class LectureDTO extends EventDTO{
     private String speaker;
 
+    public LectureDTO(EventDTO base) {
+        this.setId(base.getId());
+        this.setTitle(base.getTitle());
+        this.setDate(base.getDate());
+        this.setLocation(base.getLocation());
+        this.setCapacity(base.getCapacity());
+        this.setDescription(base.getDescription());
+        this.setModality(base.getModality());
+        this.setParticipants(base.getParticipants());
+    }
+
     public String getSpeaker() {
         return speaker;
     }
