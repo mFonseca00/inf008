@@ -16,7 +16,6 @@ import acad_events.acadevents.models.event.entities.Event;
 import acad_events.acadevents.models.event.entities.Fair;
 import acad_events.acadevents.models.event.entities.Lecture;
 import acad_events.acadevents.models.event.entities.Workshop;
-import acad_events.acadevents.models.event.entities.enums.Modality;
 import acad_events.acadevents.models.participant.entities.Participant;
 
 public class EventController {
