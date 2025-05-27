@@ -1,5 +1,6 @@
 package acad_events.acadevents.ui.functionalities.forms.EventForms;
 
+import java.util.List;
 import java.util.Scanner;
 
 import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
@@ -8,11 +9,20 @@ import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.Enums.EventAttribute;
 import acad_events.acadevents.common.utils.Enums.FieldValidatorType;
 import acad_events.acadevents.ui.functionalities.enums.EventTypeOption;
+import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 import acad_events.acadevents.models.event.entities.enums.Modality;
 
 public class EventForm extends BaseForm {
+
+    public static String readId(Scanner scan) {
+        return readField(
+            scan,
+            "Enter the ID of the event or 'cancel': ",
+            "ID must be a positive integer number.",
+            true, FieldValidatorType.POSITIVE_INT);
+    }
 
     public static InputResult registerTitle(Scanner scan, EventDTO dto){
         String title = readField(
@@ -29,8 +39,8 @@ public class EventForm extends BaseForm {
     public static InputResult registerDate(Scanner scan, EventDTO dto){
         String date = readField(
             scan,
-            "Enter date or 'cancel': ",
-            "Date must be filled.",
+            "Enter date (dd/MM/yyyy) or 'cancel': ",
+            "Date must be filled and in the format dd/MM/yyyy.",
             true, FieldValidatorType.DATE
         );
         if (date == null) return InputResult.CANCELLED;
@@ -112,9 +122,27 @@ public class EventForm extends BaseForm {
         }
     }
 
+    public static EventWayToRemoveOption selectWayToRemove(Scanner scan){
+        while (true) {
+            TextBoxUtils.printTitle("Select an option to remove an event");
+            MenuUtils.listEnumOptions(EventWayToRemoveOption.class);
+            String inputStr = TextBoxUtils.inputLine(scan, "Select option or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return EventWayToRemoveOption.CANCELLED;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (EventWayToRemoveOption option : EventWayToRemoveOption.values()) {
+                    if (option.getValue() == input) {
+                        return option;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid option. Please select a valid number.");
+        }
+    }
+
     public static EventAttribute selectAttribute(Scanner scan){
         while (true) {
-            TextBoxUtils.printTitle("Select an event attribute to list");
+            TextBoxUtils.printTitle("Select an attribute to remove an event");
             MenuUtils.listEnumOptions(EventAttribute.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select attribute or 'cancel': ");
             if ("cancel".equalsIgnoreCase(inputStr)) return EventAttribute.CANCELLED;
@@ -127,6 +155,25 @@ public class EventForm extends BaseForm {
                 }
             }
             TextBoxUtils.printTitle("Invalid attribute. Please select a valid number.");
+        }
+    }
+
+    public static EventDTO selectEvent(Scanner scan, List<EventDTO> events){
+        while (true) {
+            TextBoxUtils.printTitle("Select an event");
+            for (int i = 0; i < events.size(); i++) {
+                EventDTO event = events.get(i);
+                TextBoxUtils.printLeftText(i + 1 + " - " + event.getTitle() + " Date: " + event.getDate() + " Location: " + event.getLocation());
+            }
+            String inputStr = TextBoxUtils.inputLine(scan, "Select event number or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return null;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                if (input >= 1 && input <= events.size()) {
+                    return events.get(input - 1);
+                }
+            }
+            TextBoxUtils.printTitle("Invalid option. Please select a valid number.");
         }
     }
 }
