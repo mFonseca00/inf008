@@ -13,6 +13,7 @@ Sistema de Gerenciamento de Participantes e Eventos Acadêmicos
   - Menu de Participantes  
   - Menu de Eventos  
   - Menu de Relatórios  
+- Funcionalidades de Geração de Relatórios de Eventos  
 - Persistência de Dados  
 - Validações  
 - Estrutura do Projeto  
@@ -194,6 +195,77 @@ Ao escolher "Generate Reports", você verá:
 #### 3. Return to Main Menu
 
 - Retorna ao menu principal do sistema.
+
+---
+
+## Funcionalidades de Geração de Relatórios de Eventos
+
+O sistema AcadEvents permite gerar relatórios de eventos acadêmicos de duas formas principais: **por tipo de evento** (Course, Lecture, Workshop, Fair) ou **por data**. Ambas as funcionalidades são acessíveis pelo menu "Generate Reports" e foram implementadas de forma unificada, utilizando um único método para facilitar a manutenção e a expansão futura.
+
+### Passo a passo do funcionamento
+
+1. **Acesso ao Menu de Relatórios**
+   - No menu principal, selecione "Generate Reports".
+   - Escolha entre:
+     - **Report by event type**: Relatório filtrando por tipo de evento.
+     - **Report by date**: Relatório filtrando por data.
+
+2. **Seleção do Filtro**
+   - Para relatório por tipo, escolha o tipo de evento desejado (Course, Lecture, Workshop, Fair).
+   - Para relatório por data, informe a data no formato `dd/MM/yyyy`.
+
+3. **Geração e Exibição**
+   - O sistema busca os eventos conforme o filtro selecionado, utilizando o método único `generateReport`.
+   - Os eventos encontrados são exibidos na tela, mostrando informações como tipo, título, modalidade, data e local.
+
+4. **Exportação do Relatório**
+   - Após visualizar o relatório, o sistema pergunta se você deseja exportar o relatório para um arquivo `.json`.
+   - Se confirmado, o relatório é salvo automaticamente em uma pasta específica, com um nome que reflete o filtro utilizado e a data/hora da exportação.
+
+### Implementação com método único
+
+A geração dos relatórios é feita por meio do método `generateReport(Scanner scan, EventReportOption reportOption)` da classe `EventFunctionalities`. Esse método recebe como parâmetro o tipo de relatório desejado (por tipo ou por data) e executa o fluxo de seleção, busca, exibição e exportação dos eventos.  
+A busca dos eventos é feita por métodos do `EventController` que filtram por tipo (`listByType`) ou por data (`listByAttribute`), mas toda a lógica de interação e exportação está centralizada em um único método, tornando o código mais limpo e fácil de manter.
+
+### Geração e organização dos arquivos .json dos relatórios
+
+Quando o usuário opta por exportar um relatório, o sistema salva o arquivo `.json` em uma estrutura de pastas organizada da seguinte forma:
+```
+<raiz-do-projeto>
+├── relatorios/
+│   ├── por_tipo/
+│   │   ├── relatorio_tipo_<tipo>_<data>.json
+│   │   └── ...
+│   └── por_data/
+│       ├── relatorio_data_<data>.json
+│       └── ...
+└── ...
+```
+- A pasta `relatorios/` contém subpastas `por_tipo/` e `por_data/` para organizar os relatórios gerados por tipo e por data, respectivamente.
+- Os arquivos de relatório são nomeados indicando o tipo de evento ou a data filtrada, facilitando a identificação pelo usuário.
+
+#### Detalhes sobre a nomeação dos arquivos de relatório
+
+- **Nome da pasta:**  
+  O nome da pasta reflete o tipo de relatório gerado, por exemplo, `Events_reports_by_type` ou `Events_reports_by_date`.
+- **Nome do arquivo:**  
+  O nome do arquivo é composto pelo valor do filtro (ex: `Course` ou a data escolhida), seguido de um carimbo de data e hora no formato `yyyyMMdd_HHmmss`, garantindo que cada relatório exportado seja único e versionado automaticamente.
+- **Sanitização:**  
+  Caracteres especiais e espaços são removidos do nome do arquivo para evitar problemas de compatibilidade com o sistema operacional.
+
+#### Exemplo de nome de arquivo gerado
+
+- Relatório por tipo:  
+  `Course_20250527_234757.json`  
+  (Relatório de eventos do tipo "Course", exportado em 27/05/2025 às 23:47:57)
+
+- Relatório por data:  
+  `01_12_2025_20250527_235039.json`  
+  (Relatório de eventos do dia 01/12/2025, exportado em 27/05/2025 às 23:50:39)
+
+### Versionamento automático
+
+O uso do carimbo de data e hora no nome do arquivo garante que cada relatório exportado seja único, evitando sobrescritas e permitindo o histórico de versões dos relatórios gerados. Isso é especialmente útil para auditoria, acompanhamento de alterações e organização dos arquivos exportados.
 
 ---
 
