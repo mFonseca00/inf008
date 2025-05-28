@@ -7,8 +7,8 @@ import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
+import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
-import acad_events.acadevents.ui.functionalities.enums.EventTypeOption;
 import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
@@ -22,6 +22,14 @@ public class EventForm extends BaseForm {
             "Enter the ID of the event or 'cancel': ",
             "ID must be a positive integer number.",
             true, FieldValidatorType.POSITIVE_INT);
+    }
+
+    public static String readDate(Scanner scan) {
+        return readField(
+            scan,
+            "Enter date (dd/MM/yyyy) or 'cancel': ",
+            "Date must be filled and in the format dd/MM/yyyy.",
+            true, FieldValidatorType.DATE);
     }
 
     public static InputResult registerTitle(Scanner scan, EventDTO dto){
@@ -104,15 +112,15 @@ public class EventForm extends BaseForm {
         }
     }
 
-    public static EventTypeOption selectType(Scanner scan){
+    public static EventType selectType(Scanner scan){
         while (true) {
             TextBoxUtils.printTitle("Select event type");
-            MenuUtils.listEnumOptions(EventTypeOption.class);
+            MenuUtils.listEnumOptions(EventType.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select event type or 'cancel': ");
-            if ("cancel".equalsIgnoreCase(inputStr)) return EventTypeOption.CANCELLED;
+            if ("cancel".equalsIgnoreCase(inputStr)) return EventType.CANCELLED;
             if (inputStr.matches("\\d+")) {
                 int input = Integer.parseInt(inputStr);
-                for (EventTypeOption type : EventTypeOption.values()) {
+                for (EventType type : EventType.values()) {
                     if (type.getValue() == input) {
                         return type;
                     }

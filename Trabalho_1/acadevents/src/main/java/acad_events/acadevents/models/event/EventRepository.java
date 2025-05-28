@@ -23,7 +23,6 @@ import acad_events.acadevents.models.event.entities.Event;
 import acad_events.acadevents.models.event.entities.Fair;
 import acad_events.acadevents.models.event.entities.Lecture;
 import acad_events.acadevents.models.event.entities.Workshop;
-import acad_events.acadevents.models.event.entities.enums.Modality;
 import acad_events.acadevents.models.participant.entities.Participant;
 
 public class EventRepository {
@@ -37,37 +36,7 @@ public class EventRepository {
         return eventsById.get(id);
     }
 
-    public List<Event> getEventsByTitle(String title){
-        List<Event> events = new ArrayList<>();
-        for (Event event : eventsById.values()){
-            if (event.getTitle().equalsIgnoreCase(title)){
-                events.add(event);
-            }
-        }
-        return events;
-    }
-
-    public List<Event> getEventsByDate(String date){
-        List<Event> events = new ArrayList<>();
-        for (Event event : eventsById.values()){
-            if (event.getDate().equalsIgnoreCase(date)){
-                events.add(event);
-            }
-        }
-        return events;
-    }
-
-    public List<Event> getEventsByModality(Modality modality){
-        List<Event> events = new ArrayList<>();
-        for (Event event : eventsById.values()){
-            if (event.getModality() == modality){
-                events.add(event);
-            }
-        }
-        return events;
-    }
-
-    public List<Event> getEventsByTipe(String type){
+    public List<Event> getEventsByType(String type){
         List<Event> events = new ArrayList<>();
         for (Event event : eventsById.values()){
             if(event.getClass().getSimpleName().equalsIgnoreCase(type)){

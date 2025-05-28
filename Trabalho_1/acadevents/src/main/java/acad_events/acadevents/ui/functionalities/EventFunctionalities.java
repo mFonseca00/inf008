@@ -11,10 +11,13 @@ import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.WorkshopDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
+import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.event.EventController;
-import acad_events.acadevents.ui.functionalities.enums.EventTypeOption;
+import acad_events.acadevents.ui.functionalities.enums.EventReportOption;
 import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
+import acad_events.acadevents.ui.functionalities.enums.YesOrNoOption;
+import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 import acad_events.acadevents.ui.functionalities.forms.EventForms.CourseForm;
 import acad_events.acadevents.ui.functionalities.forms.EventForms.EventForm;
 import acad_events.acadevents.ui.functionalities.forms.EventForms.FairForm;
@@ -48,7 +51,7 @@ public class EventFunctionalities {
         if(EventForm.registerDescription(scan, event) == InputResult.CANCELLED) return false;
         if(EventForm.selectModality(scan, event) == InputResult.CANCELLED) return false;
 
-        EventTypeOption type = EventForm.selectType(scan);
+        EventType type = EventForm.selectType(scan);
 
         switch(type){
             case COURSE:
@@ -116,7 +119,7 @@ public class EventFunctionalities {
                     valueSearch = TextBoxUtils.inputLine(scan, "Enter the value for " + attribute.getDescription() + " or 'cancel': ");
                     if ("cancel".equalsIgnoreCase(valueSearch)) return false;
                 }
-                List<EventDTO> filtered = eventController.listByAtribute(attribute, valueSearch);
+                List<EventDTO> filtered = eventController.listByAttribute(attribute, valueSearch);
                 if (filtered.isEmpty()) {
                     TextBoxUtils.printTitle("No events found for the given attribute.");
                     return false;
@@ -165,10 +168,55 @@ public class EventFunctionalities {
         }
     }
 
-    // Gerar relatório (por tipo e por data) - deve receber um enum que indique a opção
-    public void generateReport(){ // Após concluir, verificar se não deveria estar em uma nova classe
-        // Solicita os dados necessários (data(definir se por seleção ou inserção) ou tipo(por seleção))
-        // Apresenta o relatório(Não precisa trazer todos os dados) e pergunta se quer exportar ele completo
-    }
+    public void generateReport(Scanner scan, EventReportOption reportOption) {
+        List<EventDTO> events;
+        String reportedValue;
+        switch (reportOption) {
+            case DATE:
+                String date = EventForm.readDate(scan);
+                reportedValue = date;
+                if (date == null || date.isBlank()) return;
+                events = eventController.listByAttribute(EventAttribute.DATE, date);
+                if (events.isEmpty()) {
+                    TextBoxUtils.printTitle("No events found for this date.");
+                    return;
+                }
+                break;
+            case TYPE:
+                EventType typeOption = EventForm.selectType(scan);
+                reportedValue = typeOption.getDescription();
+                if (typeOption == EventType.CANCELLED) return;
+                events = eventController.listByType(typeOption);
+                if (events.isEmpty()) {
+                    TextBoxUtils.printTitle("No events found for this type.");
+                    return;
+                }
+                break;
+            default:
+                events = null;
+                reportedValue = null;
+                TextBoxUtils.printTitle("Report option not implemented.");
+                return;
+        }
+        TextBoxUtils.printTitle(reportOption.getDescription() + " " + reportedValue);
+        for (EventDTO e : events) {
+            String type = e.getClass().getSimpleName().replace("DTO", "");
+            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality() + " Date: " + e.getDate() + " Location: " + e.getLocation());
+            TextBoxUtils.printUnderLineDisplayDivisor();
+        }
 
+        YesOrNoOption exportOption = BaseForm.selectYesOrNo(scan, "Do you want to export this report?");
+        switch (exportOption) {
+            case YES:
+                try {
+                    eventController.exportReportToJson(events, reportOption.getDescription(), reportedValue + ".json");
+                    TextBoxUtils.printTitle("Report exported to... 'reports/" + reportOption.getDescription() + "/" + reportedValue + ".json'");
+                } catch (Exception e) {
+                    TextBoxUtils.printTitle("Error exporting report: " + e.getMessage());
+                }
+                break;
+            case NO:
+                return;
+        }
+    }
 }

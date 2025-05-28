@@ -1,8 +1,16 @@
 package acad_events.acadevents.models.event;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import acad_events.acadevents.common.DTOs.eventDTOs.CourseDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
@@ -11,6 +19,7 @@ import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
 import acad_events.acadevents.common.DTOs.eventDTOs.WorkshopDTO;
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
+import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.event.entities.Course;
 import acad_events.acadevents.models.event.entities.Event;
 import acad_events.acadevents.models.event.entities.Fair;
@@ -117,7 +126,16 @@ public class EventController {
         return eventDTOs;
     }
 
-    public List<EventDTO> listByAtribute(EventAttribute attribute, String value) {
+    public List<EventDTO> listByType(EventType type){
+        Collection<Event> events = repository.getEventsByType(type.toString());
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event e : events) {
+            eventDTOs.add(toDTO(e));
+        }
+        return eventDTOs;
+    }
+
+    public List<EventDTO> listByAttribute(EventAttribute attribute, String value) {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
 
@@ -161,7 +179,6 @@ public class EventController {
         return false;
     }
 
-    // Utilitário para converter Event para o DTO correto
     private EventDTO toDTO(Event e) {
         EventDTO dto;
         if (e instanceof Course) {
@@ -209,5 +226,23 @@ public class EventController {
         }
         dto.setParticipants(participantDTOs);
         return dto;
+    }
+
+    public void exportReportToJson(List<EventDTO> dtos, String reportOption, String filename) throws IOException {
+        String safeReportOption = reportOption.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
+        File reportSubDir = new File("reports" + File.separator + safeReportOption);
+        if (!reportSubDir.exists()) {
+            reportSubDir.mkdirs();
+        }
+
+        String safeFilename = filename.replaceAll("[\\\\/:*?\"<>|\\s]", "_").replaceAll("(?i)\\.json$", "");
+
+        String dateStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String filePath = reportSubDir.getPath() + File.separator + safeFilename + "_" + dateStr + ".json";
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(filePath)) {
+            gson.toJson(dtos, writer);
+        }
     }
 }

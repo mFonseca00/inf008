@@ -1,11 +1,14 @@
 package acad_events.acadevents.ui.functionalities.forms;
 
 import java.util.Scanner;
+
+import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.ValidatorInputs;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
+import acad_events.acadevents.ui.functionalities.enums.YesOrNoOption;
 
-public abstract class BaseForm {
+public class BaseForm {
     protected static String readField(Scanner scan, String prompt, String errorMsg, boolean required, FieldValidatorType validatorType) {
         while (true) {
             String input = TextBoxUtils.inputLine(scan, prompt);
@@ -36,6 +39,23 @@ public abstract class BaseForm {
             }
             if (valid) return input;
             TextBoxUtils.printTitle(errorMsg);
+        }
+    }
+
+    public static YesOrNoOption selectYesOrNo(Scanner scan, String label){
+        while (true) {
+            TextBoxUtils.printTitle(label);
+            MenuUtils.listEnumOptions(YesOrNoOption.class);
+            String inputStr = TextBoxUtils.inputLine(scan, "Select yes or no: ");
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (YesOrNoOption response : YesOrNoOption.values()) {
+                    if (response.getValue() == input) {
+                        return response;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid response. Please select a valid number.");
         }
     }
 }

@@ -5,6 +5,7 @@ import java.util.Scanner;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.functionalities.EventFunctionalities;
 import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
+import acad_events.acadevents.ui.functionalities.enums.EventReportOption;
 import acad_events.acadevents.ui.menu.enums.EventOption;
 import acad_events.acadevents.ui.menu.enums.MainMenuOption;
 import acad_events.acadevents.ui.menu.enums.ParticipantOption;
@@ -124,11 +125,11 @@ public class MenuController {
             TextBoxUtils.spaceDisplay();
             switch (option) {
                 case REPORT_BY_TYPE:
-                    // ToDo
+                    eventFunctions.generateReport(scan,EventReportOption.TYPE);
                     TextBoxUtils.pause(scan);
                     break;
                 case REPORT_BY_DATE:
-                    // ToDo
+                    eventFunctions.generateReport(scan,EventReportOption.DATE);
                     TextBoxUtils.pause(scan);
                     break;
                 case RETURN:
