@@ -38,7 +38,7 @@ public class BaseForm {
                     valid = true;
             }
             if (valid) return input;
-            TextBoxUtils.printTitle(errorMsg);
+            TextBoxUtils.printError(errorMsg);
         }
     }
 
@@ -55,23 +55,26 @@ public class BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid response. Please select a valid number.");
+            TextBoxUtils.printError("Invalid response. Please select a valid number.");
         }
     }
 
     public static int readQuantity(Scanner scan, String prompt) {
         TextBoxUtils.printLeftText(prompt);
         TextBoxUtils.printUnderLineDisplayDivisor();
-        return readInt(scan);
+        Integer quantity = readInt(scan);
+        if (quantity == null) {
+            return -1;
+        }
+        return quantity;
     }
 
-    public static int readInt(Scanner scan) {
+    public static Integer readInt(Scanner scan) {
         while (true) {
-            String input = TextBoxUtils.inputLine(scan, "Enter the quantity: ");
-            if (input.matches("\\d+")) {
-                return Integer.parseInt(input);
-            }
-            TextBoxUtils.printTitle("Invalid input. Please enter a valid integer.");
+            String input = TextBoxUtils.inputLine(scan, "Enter the quantity or type 'cancel' to cancel: ");
+            if ("cancel".equalsIgnoreCase(input)) return null;
+            if (input.matches("\\d+")) return Integer.parseInt(input);
+            TextBoxUtils.printError("Invalid input. Please enter a valid integer or type 'cancel' to cancel.");
         }
     }
 }

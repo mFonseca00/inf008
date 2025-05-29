@@ -24,10 +24,10 @@ public class ParticipantMenu extends Menu{
                 int input = Integer.parseInt(inputStr);
                 option = ParticipantOption.fromInt(input);
                 if(option == null){
-                    TextBoxUtils.inputLine(scan, "Invalid option. Please insert a number (1-7): ");
+                    TextBoxUtils.printError("Invalid option. Please insert a number (1-7): ");
                 }
             } else{
-                TextBoxUtils.inputLine(scan, "invalid input. Please insert a number (1-7): ");
+                TextBoxUtils.printError("invalid input. Please insert a number (1-7): ");
             }
         } 
         return option;

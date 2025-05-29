@@ -31,7 +31,7 @@ public class EventFunctionalities extends BaseFunctionalities {
 
         // Verifica duplicidade
         if(eventController.existsEventByTitleAndDate(event.getTitle(), event.getDate())) {
-            TextBoxUtils.printTitle("An event with this title and date already exists!");
+            TextBoxUtils.printError("An event with this title and date already exists!");
             return false;
         }
 
@@ -70,7 +70,7 @@ public class EventFunctionalities extends BaseFunctionalities {
             case CANCELLED:
                 return false;
         }
-        TextBoxUtils.printTitle("Event created successfully!");
+        TextBoxUtils.printSuccess("Event created successfully!");
         return true;
     }
 
@@ -80,10 +80,10 @@ public class EventFunctionalities extends BaseFunctionalities {
         if (dtoToRemove == null) return false;
         boolean removed = eventController.delete(dtoToRemove.getId());
         if (removed) {
-            TextBoxUtils.printTitle("Event removed successfully.");
+            TextBoxUtils.printSuccess("Event removed successfully.");
             return true;
         } else {
-            TextBoxUtils.printTitle("Failed to remove event.");
+            TextBoxUtils.printError("Failed to remove event.");
             return false;
         }
     }
@@ -92,7 +92,7 @@ public class EventFunctionalities extends BaseFunctionalities {
     public void listAll(){
         Collection<EventDTO> events = eventController.listAll();
         if(events.isEmpty()){
-            TextBoxUtils.printTitle("No event found.");
+            TextBoxUtils.printError("No event found.");
             return;
         }
         TextBoxUtils.printTitle("Registered events:");
@@ -114,7 +114,7 @@ public class EventFunctionalities extends BaseFunctionalities {
                 if (date == null || date.isBlank()) return;
                 events = eventController.listByAttribute(EventAttribute.DATE, date);
                 if (events.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found for this date.");
+                    TextBoxUtils.printError("No events found for this date.");
                     return;
                 }
                 break;
@@ -124,14 +124,14 @@ public class EventFunctionalities extends BaseFunctionalities {
                 if (typeOption == EventType.CANCELLED) return;
                 events = eventController.listByType(typeOption);
                 if (events.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found for this type.");
+                    TextBoxUtils.printError("No events found for this type.");
                     return;
                 }
                 break;
             default:
                 events = null;
                 reportedValue = null;
-                TextBoxUtils.printTitle("Report option not implemented.");
+                TextBoxUtils.printError("Report option not implemented.");
                 return;
         }
         TextBoxUtils.printTitle(reportOption.getDescription() + " " + reportedValue);
@@ -146,9 +146,9 @@ public class EventFunctionalities extends BaseFunctionalities {
             case YES:
                 try {
                     eventController.exportReportToJson(events, reportOption.getDescription(), reportedValue + ".json");
-                    TextBoxUtils.printTitle("Report exported to... 'reports/" + reportOption.getDescription() + "/" + reportedValue + ".json'");
+                    TextBoxUtils.printSuccess("Report exported to... 'reports/" + reportOption.getDescription() + "/" + reportedValue + ".json'");
                 } catch (Exception e) {
-                    TextBoxUtils.printTitle("Error exporting report: " + e.getMessage());
+                    TextBoxUtils.printError("Error exporting report: " + e.getMessage());
                 }
                 break;
             case NO:
@@ -159,9 +159,17 @@ public class EventFunctionalities extends BaseFunctionalities {
     public void generateRandomEvent(Scanner scan) {
         TextBoxUtils.printTitle("Generating test data...");
         int quantity = BaseForm.readQuantity(scan, "How many events do you want to generate?");
-        for (int i = 0; i < quantity; i++) {
-            TestDataGenerator.generateRandomEvent(eventController);
+        if (quantity == -1) {
+            TextBoxUtils.printWarn("Event generation cancelled.");
+            return;
         }
-        TextBoxUtils.printTitle(quantity + " events generated successfully!");
+        if (quantity > 0) {
+            for (int i = 0; i < quantity; i++) {
+                TestDataGenerator.generateRandomEvent(eventController);
+            }
+            TextBoxUtils.printSuccess(quantity + " events generated successfully!");
+        } else {
+            TextBoxUtils.printWarn("No events were generated.");
+        }
     }
 }

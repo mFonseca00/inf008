@@ -33,7 +33,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         String cpf = ParticipantForm.readCpf(scan);
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printTitle("Participant not found.");
+            TextBoxUtils.printError("Participant not found.");
             return false;
         }
         EventDTO selectedEvent = selectEventByWay(scan, "enroll");
@@ -45,7 +45,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
 
         // Regra para cursos
         if (selectedEvent instanceof CourseDTO && !(participant instanceof StudentDTO)) {
-            TextBoxUtils.printTitle("Only students can enroll in courses.");
+            TextBoxUtils.printError("Only students can enroll in courses.");
             return false;
         }
 
@@ -59,25 +59,25 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         switch (selectedEvent.getModality()) {
             case PRESENTIAL:
                 if (presentialCount >= capacity) {
-                    TextBoxUtils.printTitle("Capacity limit reached. Cannot enroll participant.");
+                    TextBoxUtils.printError("Capacity limit reached. Cannot enroll participant.");
                     return false;
                 }
                 if (alreadyEnrolled) {
-                    TextBoxUtils.printTitle("Participant is already enrolled in this event.");
+                    TextBoxUtils.printError("Participant is already enrolled in this event.");
                     return false;
                 }
                 added = integrationController.enrollPresentialParticipantInEvent(participant, selectedEvent.getId());
                 break;
             case ONLINE:
                 if (alreadyEnrolled) {
-                    TextBoxUtils.printTitle("Participant is already enrolled in this event.");
+                    TextBoxUtils.printError("Participant is already enrolled in this event.");
                     return false;
                 }
                 added = integrationController.enrollOnlineParticipantInEvent(participant, selectedEvent.getId());
                 break;
             case HYBRID:
                 if (alreadyEnrolled) {
-                    TextBoxUtils.printTitle("Participant is already enrolled in this event.");
+                    TextBoxUtils.printError("Participant is already enrolled in this event.");
                     return false;
                 }
                 Modality modality = EventForm.selectPresentialOrOnlineModality(scan);
@@ -96,10 +96,10 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
             selectedEvent.setPresentialParticipants(updatedEvent.getPresentialParticipants());
             selectedEvent.setOnlineParticipants(updatedEvent.getOnlineParticipants());
 
-            TextBoxUtils.printTitle("Participant enrolled successfully!");
+            TextBoxUtils.printSuccess("Participant enrolled successfully!");
             return true;
         } else {
-            TextBoxUtils.printTitle("Failed to enroll participant.");
+            TextBoxUtils.printError("Failed to enroll participant.");
             return false;
         }
     }
@@ -108,7 +108,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         String cpf = ParticipantForm.readCpf(scan);
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printTitle("Participant not found.");
+            TextBoxUtils.printError("Participant not found.");
             return false;
         }
         EventDTO selectedEvent = selectEventByWay(scan, "remove participant");
@@ -120,7 +120,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                 boolean isEnrolledPresential = selectedEvent.getPresentialParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
                 if (!isEnrolledPresential) {
-                    TextBoxUtils.printTitle("Participant is not enrolled in this event.");
+                    TextBoxUtils.printError("Participant is not enrolled in this event.");
                     return false;
                 }
                 removed = integrationController.removePresentialParticipantFromEvent(participant, selectedEvent.getId());
@@ -129,7 +129,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                 boolean isEnrolledOnline = selectedEvent.getOnlineParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
                 if (!isEnrolledOnline) {
-                    TextBoxUtils.printTitle("Participant is not enrolled in this event.");
+                    TextBoxUtils.printError("Participant is not enrolled in this event.");
                     return false;
                 }
                 removed = integrationController.removeOnlineParticipantFromEvent(participant, selectedEvent.getId());
@@ -140,7 +140,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                 boolean wasEnrolledOnline = selectedEvent.getOnlineParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
                 if (!wasEnrolledPresential && !wasEnrolledOnline) {
-                    TextBoxUtils.printTitle("Participant is not enrolled in this event.");
+                    TextBoxUtils.printError("Participant is not enrolled in this event.");
                     return false;
                 }
                 boolean removedPresential = false, removedOnline = false;
@@ -160,10 +160,10 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
             selectedEvent.setPresentialParticipants(updatedEvent.getPresentialParticipants());
             selectedEvent.setOnlineParticipants(updatedEvent.getOnlineParticipants());
 
-            TextBoxUtils.printTitle("Participant removed from event successfully!");
+            TextBoxUtils.printSuccess("Participant removed from event successfully!");
             return true;
         } else {
-            TextBoxUtils.printTitle("Failed to remove participant from event.");
+            TextBoxUtils.printError("Failed to remove participant from event.");
             return false;
         }
     }
@@ -172,7 +172,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         String cpf = ParticipantForm.readCpf(scan);
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printTitle("Participant not found.");
+            TextBoxUtils.printError("Participant not found.");
             return false;
         }
 
@@ -188,7 +188,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
             .toList();
 
         if (enrolledEvents.isEmpty()) {
-            TextBoxUtils.printTitle("Participant is not enrolled in any events.");
+            TextBoxUtils.printError("Participant is not enrolled in any events.");
             return false;
         }
 
@@ -211,9 +211,9 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                     selectedEvent.getTitle(),
                     selectedEvent.getDate().toString()
                 );
-                TextBoxUtils.printTitle("Certificate exported successfully!");
+                TextBoxUtils.printSuccess("Certificate exported successfully!");
             } catch (IOException e) {
-                TextBoxUtils.printTitle("Error exporting certificate: " + e.getMessage());
+                TextBoxUtils.printError("Error exporting certificate: " + e.getMessage());
                 return false;
             }
         }

@@ -38,7 +38,7 @@ public class ProfessorForm extends ParticipantForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid department. Please select a valid number.");
+            TextBoxUtils.printError("Invalid department. Please select a valid number.");
         }
     }
 }

@@ -87,7 +87,7 @@ public class ParticipantForm extends BaseForm{
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid type. Please select a valid number.");
+            TextBoxUtils.printError("Invalid type. Please select a valid number.");
         }
     }
 }

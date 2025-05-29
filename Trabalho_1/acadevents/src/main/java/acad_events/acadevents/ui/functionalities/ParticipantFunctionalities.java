@@ -25,7 +25,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
 
         // Verifica se já existe participante com o mesmo CPF
         if (participantController.existsByCPF(participant.getCpf())) {
-            TextBoxUtils.printTitle("A participant with this CPF already exists!");
+            TextBoxUtils.printError("A participant with this CPF already exists!");
             return false;
         }
 
@@ -57,7 +57,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
             case CANCELLED:
                 return false;
         }
-        TextBoxUtils.printTitle("Participant registered successfully!");
+        TextBoxUtils.printSuccess("Participant registered successfully!");
         return true;
     }
 
@@ -66,9 +66,9 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         if (cpf == null) return false;
         boolean removed = participantController.delete(cpf);
         if (removed) {
-            TextBoxUtils.printTitle("Participant removed from the system!");
+            TextBoxUtils.printSuccess("Participant removed from the system!");
         } else {
-            TextBoxUtils.printTitle("Participant not found.");
+            TextBoxUtils.printError("Participant not found.");
         }
         return removed;
     }
@@ -76,7 +76,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
     public void listAll() {
         Collection<ParticipantDTO> participants = participantController.list();
         if (participants.isEmpty()) {
-            TextBoxUtils.printTitle("No participants registered.");
+            TextBoxUtils.printError("No participants registered.");
             return;
         }
         TextBoxUtils.printTitle("Registered participants:");
@@ -89,10 +89,18 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
     public void generateRandomParticipant(Scanner scan) {
         TextBoxUtils.printTitle("Generating test data...");
         int quantity = BaseForm.readQuantity(scan, "How many participants do you want to generate?");
-        for (int i = 0; i < quantity; i++) {
-            TestDataGenerator.generateRandomParticipant(participantController);
+        if (quantity == -1) {
+            TextBoxUtils.printWarn("Participant generation cancelled.");
+            return;
         }
-        TextBoxUtils.printTitle(quantity + " participants generated successfully!");
+        if (quantity > 0) {
+            for (int i = 0; i < quantity; i++) {
+                TestDataGenerator.generateRandomParticipant(participantController);
+            }
+            TextBoxUtils.printSuccess(quantity + " participants generated successfully!");
+        } else {
+            TextBoxUtils.printWarn("No participants were generated.");
+        }
     }
 }
 

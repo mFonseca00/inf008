@@ -93,9 +93,9 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
-    public static InputResult registerModality(Scanner scan, EventDTO dto){
+    public static InputResult registerModality(Scanner scan, EventDTO dto) {
         while (true) {
-            TextBoxUtils.printTitle("Select event modality");
+            TextBoxUtils.printTitle("Select an event modality");
             MenuUtils.listEnumOptions(Modality.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select modality or 'cancel': ");
             if ("cancel".equalsIgnoreCase(inputStr)) return InputResult.CANCELLED;
@@ -108,11 +108,11 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid modality. Please select a valid number.");
+            TextBoxUtils.printError("Invalid modality. Please select a valid number.");
         }
     }
 
-    public static Modality selectModality(Scanner scan){
+    public static Modality selectModality(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select event modality");
             MenuUtils.listEnumOptions(Modality.class);
@@ -126,7 +126,7 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid modality. Please select a valid number.");
+            TextBoxUtils.printError("Invalid modality. Please select a valid number.");
         }
     }
 
@@ -149,11 +149,11 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid modality. Please select a valid number.");
+            TextBoxUtils.printError("Invalid modality. Please select a valid number.");
         }
     }
 
-    public static EventType selectType(Scanner scan){
+    public static EventType selectType(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select event type");
             MenuUtils.listEnumOptions(EventType.class);
@@ -167,11 +167,11 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid event type. Please select a valid number.");
+            TextBoxUtils.printError("Invalid event type. Please select a valid number.");
         }
     }
 
-    public static EventWayToSelectEventsOption selectWayToSelectEvent(Scanner scan, String operation){
+    public static EventWayToSelectEventsOption selectWayToSelectEvent(Scanner scan, String operation) {
         while (true) {
             TextBoxUtils.printTitle("Select an option to " + operation);
             MenuUtils.listEnumOptions(EventWayToSelectEventsOption.class);
@@ -185,11 +185,11 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid option. Please select a valid number.");
+            TextBoxUtils.printError("Invalid option. Please select a valid number.");
         }
     }
 
-    public static EventAttribute selectAttribute(Scanner scan){
+    public static EventAttribute selectAttribute(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select an attribute to remove an event");
             MenuUtils.listEnumOptions(EventAttribute.class);
@@ -203,11 +203,11 @@ public class EventForm extends BaseForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid attribute. Please select a valid number.");
+            TextBoxUtils.printError("Invalid attribute. Please select a valid number.");
         }
     }
 
-    public static EventDTO selectEvent(Scanner scan, List<EventDTO> events){
+    public static EventDTO selectEvent(Scanner scan, List<EventDTO> events) {
         while (true) {
             TextBoxUtils.printTitle("Select an event");
             for (int i = 0; i < events.size(); i++) {
@@ -223,7 +223,7 @@ public class EventForm extends BaseForm {
                     return events.get(input - 1);
                 }
             }
-            TextBoxUtils.printTitle("Invalid option. Please select a valid number.");
+            TextBoxUtils.printError("Invalid option. Please select a valid number.");
         }
     }
 }

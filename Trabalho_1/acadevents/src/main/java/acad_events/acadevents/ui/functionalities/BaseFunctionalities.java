@@ -49,7 +49,7 @@ public abstract class BaseFunctionalities {
                 }
                 filteredEvents = eventController.listByAttribute(attribute, valueSearch);
                 if (filteredEvents.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found for the given attribute.");
+                    TextBoxUtils.printError("No events found for the given attribute.");
                     return null;
                 }
                 selectedEvent = EventForm.selectEvent(scan, filteredEvents);
@@ -62,7 +62,7 @@ public abstract class BaseFunctionalities {
                 filteredEvents = (List<EventDTO>) eventController.listAll();
                 selectedEvent = filteredEvents.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
                 if (selectedEvent == null) {
-                    TextBoxUtils.printTitle("No event found with the given ID.");
+                    TextBoxUtils.printError("No event found with the given ID.");
                     return null;
                 }
                 break;

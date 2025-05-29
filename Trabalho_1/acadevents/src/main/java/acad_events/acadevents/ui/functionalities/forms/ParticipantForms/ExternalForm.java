@@ -42,7 +42,7 @@ public class ExternalForm extends ParticipantForm {
                     }
                 }
             }
-            TextBoxUtils.printTitle("Invalid role. Please select a valid number.");
+            TextBoxUtils.printError("Invalid role. Please select a valid number.");
         }
     }
 }

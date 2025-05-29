@@ -23,10 +23,10 @@ public class ReportMenu extends Menu{
                 int input = Integer.parseInt(inputStr);
                 option = ReportOption.fromInt(input);
                 if(option == null){
-                    TextBoxUtils.inputLine(scan, "Invalid option. Please insert a number (1-3): ");
+                    TextBoxUtils.printError("Invalid option. Please insert a number (1-3): ");
                 }
             } else{
-                TextBoxUtils.inputLine(scan, "invalid input. Please insert a number (1-3): ");
+                TextBoxUtils.printError("invalid input. Please insert a number (1-3): ");
             }
         } 
         return option;

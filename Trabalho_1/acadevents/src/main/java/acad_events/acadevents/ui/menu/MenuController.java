@@ -35,10 +35,10 @@ public class MenuController {
         Scanner scan = new Scanner(System.in);
         MainMenuOption option = null;
         do{
+            TextBoxUtils.clearDisplay();
             mainMenu.printOptions();
             Object optionObj = mainMenu.readOption(scan);
             option = (MainMenuOption) optionObj;
-            TextBoxUtils.spaceDisplay();
             switch(option){
                 case MANAGE_EVENTS:
                     eventsSubMenu(scan);
@@ -63,10 +63,10 @@ public class MenuController {
     private void eventsSubMenu(Scanner scan){
         EventOption option = null;
         do{
+            TextBoxUtils.clearDisplay();
             eventMenu.printOptions();
             Object optionObj = eventMenu.readOption(scan);
             option = (EventOption) optionObj;
-            TextBoxUtils.spaceDisplay();
             switch (option) {
                 case CREATE_EVENT:
                     eventFunctions.create(scan);
@@ -90,10 +90,10 @@ public class MenuController {
     private void participantsSubMenu(Scanner scan){
         ParticipantOption option = null;
         do{
+            TextBoxUtils.clearDisplay();
             partMenu.printOptions();
             Object optionObj = partMenu.readOption(scan);
             option = (ParticipantOption) optionObj;
-            TextBoxUtils.spaceDisplay();
             switch (option){
                 case REGISTER_PARTICIPANT:
                     partFunctions.registerNew(scan);
@@ -129,10 +129,10 @@ public class MenuController {
     private void reportsSubMenu(Scanner scan){
         ReportOption option = null;
         do {
+            TextBoxUtils.clearDisplay();
             reportMenu.printOptions();
             Object optionObj = reportMenu.readOption(scan);
             option = (ReportOption) optionObj;
-            TextBoxUtils.spaceDisplay();
             switch (option) {
                 case REPORT_BY_TYPE:
                     eventFunctions.generateReport(scan,EventReportOption.TYPE);
@@ -150,9 +150,10 @@ public class MenuController {
     }
 
     private void generateTestData(Scanner scan) {
+        TextBoxUtils.clearDisplay();
         partFunctions.generateRandomParticipant(scan);
         eventFunctions.generateRandomEvent(scan);
-        TextBoxUtils.printTitle("Test data sucessfully created!");
+        TextBoxUtils.printSuccess("Generation finished.");
         TextBoxUtils.pause(new Scanner(System.in));
     }
 }

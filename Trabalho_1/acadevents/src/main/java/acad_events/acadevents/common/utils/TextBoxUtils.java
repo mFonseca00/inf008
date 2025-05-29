@@ -7,36 +7,69 @@ import java.util.Scanner;
 public class TextBoxUtils {
     private static String displayDivisor;
     private static int width = 100;
+    private static String displayLimitator = "|";
 
-    public static void spaceDisplay(){
-        int space = 10;
-        for(int i=0; i<space; i++) System.out.println();
+    public static void clearDisplay() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                new ProcessBuilder("powershell", "-Command", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
+        }
     }
 
-    public static void printTitle(String title){
-        System.out.println(" " + "_".repeat(width - 2));
+    public static void spaceDisplay() {
+        int space = 2;
+        for (int i = 0; i < space; i++) System.out.println();
+    }
+
+    private static void printFormattedMessage(String message, String style) {
+        System.out.println(" " + "_".repeat(width - (displayLimitator.length() * 2)));
         printEmptyLine();
-        System.out.println(centerText(title));
+        System.out.println(displayLimitator + style + centerTextContent(message) + StyleStrings.RESET + displayLimitator);
         printUnderLineDisplayDivisor();
     }
 
-    public static void printDisplayDivisor(){
-        displayDivisor = "|" + "-".repeat(width - 2) + "|";
+    public static void printTitle(String title) {
+        printFormattedMessage(title, StyleStrings.BOLD);
+    }
+
+    public static void printWarn(String message) {
+        printFormattedMessage(message, StyleStrings.YELLOW);
+    }
+
+    public static void printError(String error) {
+        printFormattedMessage("Error: " + error, StyleStrings.RED);
+    }
+
+    public static void printSuccess(String success) {
+        printFormattedMessage(success, StyleStrings.GREEN);
+    }
+
+    public static void printDisplayDivisor() {
+        displayDivisor = displayLimitator + "-".repeat(width - (displayLimitator.length()*2)) + displayLimitator;
         System.out.println(displayDivisor);
     }
 
-    public static void printUnderLineDisplayDivisor(){
-        displayDivisor = "|" + "_".repeat(width - 2) + "|";
+    public static void printUnderLineDisplayDivisor() {
+        displayDivisor = displayLimitator + "_".repeat(width - (displayLimitator.length()*2)) + displayLimitator;
         System.out.println(displayDivisor);
     }
 
-    public static void printEmptyLine(){
+    public static void printEmptyLine() {
         System.out.println(emptyLine());
     }
 
-    public static void printLeftText(String text){
-        for (String line : wrapText(text, width - 2 - 2)) {
-            System.out.println(leftText(line));
+    public static void printLeftText(String text) {
+        for (String line : wrapText(text, width - (displayLimitator.length() * 2) - 2)) {
+            System.out.println(displayLimitator + leftTextContent(line) + displayLimitator);
         }
     }
 
@@ -47,13 +80,13 @@ public class TextBoxUtils {
         for (int i = 0; i < labelLines.size(); i++) {
             String line = labelLines.get(i);
             if (i == 0 && labelLines.size() == 1) {
-                System.out.print("  >>>" + " ".repeat(leftPadding) + line);
+                System.out.print(StyleStrings.GREEN + "  >>>" + " ".repeat(leftPadding) + line + StyleStrings.RESET);
             } else if (i == 0) {
-                System.out.println("  >>>" + " ".repeat(leftPadding) + line);
+                System.out.println(StyleStrings.GREEN + "  >>>" + " ".repeat(leftPadding) + line + StyleStrings.RESET);
             } else if (i == labelLines.size() - 1) {
-                System.out.print(" ".repeat(6 + leftPadding) + line);
+                System.out.print(StyleStrings.GREEN + " ".repeat(6 + leftPadding) + line + StyleStrings.RESET);
             } else {
-                System.out.println(" ".repeat(6 + leftPadding) + line);
+                System.out.println(StyleStrings.GREEN + " ".repeat(6 + leftPadding) + line + StyleStrings.RESET);
             }
         }
         String value = scan.nextLine();
@@ -61,10 +94,10 @@ public class TextBoxUtils {
     }
 
     public static void printTableRow(String col1, String col2, String col3) {
-        int totalWidth = width - 4;
+        int totalWidth = width - (displayLimitator.length()*4);
         int colPadding = 2;
-        int colWidth = (totalWidth - 2 * colPadding) / 3;
-        int remainder = (totalWidth - 2 * colPadding) % 3;
+        int colWidth = (totalWidth - (displayLimitator.length()*2) * colPadding) / 3;
+        int remainder = (totalWidth - (displayLimitator.length()*2) * colPadding) % 3;
 
         int colWidth1 = colWidth;
         int colWidth2 = colWidth;
@@ -77,9 +110,9 @@ public class TextBoxUtils {
         int maxLines = Math.max(lines1.size(), Math.max(lines2.size(), lines3.size()));
 
         // Linha de divisão superior
-        System.out.println("|" + "_".repeat(colWidth1) + "_".repeat(colPadding) + "|" +
-                           "_".repeat(colWidth2) + "_".repeat(colPadding) + "|" +
-                           "_".repeat(colWidth3) + "|");
+        System.out.println(displayLimitator + "_".repeat(colWidth1) + "_".repeat(colPadding) + displayLimitator +
+                           "_".repeat(colWidth2) + "_".repeat(colPadding) + displayLimitator +
+                           "_".repeat(colWidth3) + displayLimitator);
 
         for (int i = 0; i < maxLines; i++) {
             String part1 = i < lines1.size() ? lines1.get(i) : "";
@@ -90,41 +123,43 @@ public class TextBoxUtils {
             part2 = padRight(part2, colWidth2);
             part3 = padRight(part3, colWidth3);
 
-            System.out.println("|" + part1 + " ".repeat(colPadding) + "|" + part2 + " ".repeat(colPadding) + "|" + part3 + "|");
+            System.out.println(displayLimitator + 
+                                part1 + " ".repeat(colPadding) + displayLimitator +
+                                part2 + " ".repeat(colPadding) + displayLimitator +
+                                part3 + displayLimitator);
         }
 
         // Linha de divisão inferior
-        System.out.println("|" + "_".repeat(colWidth1) + "_".repeat(colPadding) + "|" +
-                           "_".repeat(colWidth2) + "_".repeat(colPadding) + "|" +
-                           "_".repeat(colWidth3) + "|");
+        System.out.println(displayLimitator + "_".repeat(colWidth1) + "_".repeat(colPadding) + displayLimitator +
+                           "_".repeat(colWidth2) + "_".repeat(colPadding) + displayLimitator +
+                           "_".repeat(colWidth3) + displayLimitator);
     }
 
-    // Função auxiliar para preencher à direita
     private static String padRight(String text, int length) {
         if (text.length() >= length) return text;
         return text + " ".repeat(length - text.length());
     }
 
     private static String emptyLine() {
-        return "|" + " ".repeat(width - 2) + "|";
+        return displayLimitator + " ".repeat(width - (displayLimitator.length()*2)) + displayLimitator;
     }
 
-    private static String centerText(String text) {
-        if (text.length() >= width - 2) {
-            return "|" + text.substring(0, width - 2) + "|";
+    private static String centerTextContent(String text) {
+        if (text.length() >= width - (displayLimitator.length()*2)) {
+            return text.substring(0, width - (displayLimitator.length()*2));
         }
-        int padding = (width - 2 - text.length()) / 2;
+        int padding = (width - (displayLimitator.length()*2) - text.length()) / 2;
         String pad = " ".repeat(padding);
-        String padRight = " ".repeat(width - 2 - text.length() - padding);
-        return "|" + pad + text + padRight + "|";
+        String padRight = " ".repeat(width - (displayLimitator.length()*2) - text.length() - padding);
+        return pad + text + padRight;
     }
 
-    private static String leftText(String text){
+    private static String leftTextContent(String text) {
         int leftPadding = 2;
-        int rightPadding = width - 2 - text.length() - leftPadding;
+        int rightPadding = width - (displayLimitator.length()*2) - text.length() - leftPadding;
         String padLeft = " ".repeat(leftPadding);
         String padRight = " ".repeat(rightPadding);
-        return "|" + padLeft + text + padRight + "|";
+        return padLeft + text + padRight;
     }
 
     private static List<String> wrapText(String text, int maxWidth) {
@@ -132,7 +167,6 @@ public class TextBoxUtils {
         text = text.trim();
         while (text.length() > maxWidth) {
             int breakAt = maxWidth;
-            // Procura o último espaço antes do limite
             int lastSpace = text.lastIndexOf(' ', maxWidth);
             if (lastSpace > 0) {
                 breakAt = lastSpace;
