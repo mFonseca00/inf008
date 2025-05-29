@@ -24,7 +24,11 @@ public class TestDataGenerator {
 
     public static void generateRandomParticipant(ParticipantController participantController) {
         int type = random.nextInt(3); // 0: Student, 1: Professor, 2: External
-        String cpf = generateRandomCPF();
+        String cpf;
+        do {
+            cpf = generateRandomCPF();
+        } while (participantController.existsByCPF(cpf));
+
         String name = PARTICIPANT_NAMES[random.nextInt(PARTICIPANT_NAMES.length)];
         String email = generateRandomEmail(name);
         String phone = generateRandomPhone();
@@ -148,11 +152,10 @@ public class TestDataGenerator {
     }
 
     private static String generateRandomEmail(String name) {
-        String email = name.toLowerCase().replace(" ", ".") + "@email.com";
-         if (!ValidatorInputs.isValidEmail(email)) {
-            return generateRandomEmail(name);
-        }
+        String email;
+        email = name.toLowerCase().replace(" ", "_") + "@email.com";
         return email;
+           
     }
 
     private static String generateRandomPhone() {
@@ -197,14 +200,16 @@ public class TestDataGenerator {
     }
 
     private static String generateRandomDate() {
-        int day = 1 + random.nextInt(28);
-        int month = 1 + random.nextInt(12);
-        int year = 2020 + random.nextInt(6); // 2020 to 2025
-        String date = String.format("%02d/%02d/%d", day, month, year);
-        if (!ValidatorInputs.isValidDate(date)) {
-            return generateRandomDate();
+        String date;
+        while (true) {
+            int day = 1 + random.nextInt(28);
+            int month = 1 + random.nextInt(12);
+            int year = 2020 + random.nextInt(6); // 2020 to 2025
+            date = String.format("%02d/%02d/%d", day, month, year);
+            if (ValidatorInputs.isValidDate(date)) {
+                return date;
+            }
         }
-        return date;
     }
 
     private static Modality getRandomModality() {
