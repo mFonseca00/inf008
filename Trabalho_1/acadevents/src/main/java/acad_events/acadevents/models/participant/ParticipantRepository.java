@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class ParticipantRepository {
-    private Map<Long, Participant> participantsByID = new HashMap<>(); // Para buscas e manuseio no sistema
-    private Map<String, Participant> participantsByCPF = new HashMap<>(); // Para buscas solicitadas pelo usuário (mais facil compreenssão)
+    private Map<Long, Participant> participantsByID = new HashMap<>();
+    private Map<String, Participant> participantsByCPF = new HashMap<>();
 
     public void addParticipant(Participant participant){
         participantsByID.put(participant.getId(), participant);

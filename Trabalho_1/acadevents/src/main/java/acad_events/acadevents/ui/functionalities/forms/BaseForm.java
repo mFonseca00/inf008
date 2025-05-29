@@ -58,4 +58,20 @@ public class BaseForm {
             TextBoxUtils.printTitle("Invalid response. Please select a valid number.");
         }
     }
+
+    public static int readQuantity(Scanner scan, String prompt) {
+        TextBoxUtils.printLeftText(prompt);
+        TextBoxUtils.printUnderLineDisplayDivisor();
+        return readInt(scan);
+    }
+
+    public static int readInt(Scanner scan) {
+        while (true) {
+            String input = TextBoxUtils.inputLine(scan, "Enter the quantity: ");
+            if (input.matches("\\d+")) {
+                return Integer.parseInt(input);
+            }
+            TextBoxUtils.printTitle("Invalid input. Please enter a valid integer.");
+        }
+    }
 }

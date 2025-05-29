@@ -49,6 +49,9 @@ public class MenuController {
                 case GENERATE_REPORTS:
                     reportsSubMenu(scan);
                     break;
+                case GENERATE_TEST_DATA:
+                    generateTestData(scan);
+                    break;
                 case EXIT:
                     System.out.println("\tExiting...");
                     break;
@@ -144,5 +147,12 @@ public class MenuController {
                     break;           
             }
         } while (option != ReportOption.RETURN);
+    }
+
+    private void generateTestData(Scanner scan) {
+        partFunctions.generateRandomParticipant(scan);
+        eventFunctions.generateRandomEvent(scan);
+        TextBoxUtils.printTitle("Test data sucessfully created!");
+        TextBoxUtils.pause(new Scanner(System.in));
     }
 }

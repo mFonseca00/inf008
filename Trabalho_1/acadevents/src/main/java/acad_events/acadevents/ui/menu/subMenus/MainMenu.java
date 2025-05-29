@@ -19,15 +19,15 @@ public class MainMenu extends Menu {
     public Object readOption(Scanner scan){
         MainMenuOption option = null;
         while (option == null){
-            String inputStr = TextBoxUtils.inputLine(scan, "Please select an option (1-4): ");
+            String inputStr = TextBoxUtils.inputLine(scan, "Please select an option (1-5): ");
             if(inputStr.matches("\\d+")){
                 int input = Integer.parseInt(inputStr);
                 option = MainMenuOption.fromInt(input);
                 if(option == null){
-                    TextBoxUtils.inputLine(scan, "Invalid option. Please insert a number (1-4): ");
+                    TextBoxUtils.inputLine(scan, "Invalid option. Please insert a number (1-5): ");
                 }
             } else{
-                TextBoxUtils.inputLine(scan, "invalid input. Please insert a number (1-4): ");
+                TextBoxUtils.inputLine(scan, "invalid input. Please insert a number (1-5): ");
             }
         } 
         return option;

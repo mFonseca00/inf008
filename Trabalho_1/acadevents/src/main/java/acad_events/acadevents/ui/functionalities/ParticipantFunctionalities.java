@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 import acad_events.acadevents.common.DTOs.participantDTOs.*;
 import acad_events.acadevents.common.utils.TextBoxUtils;
+import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.models.event.EventController;
 import acad_events.acadevents.ui.functionalities.enums.*;
+import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.*;
 
 public class ParticipantFunctionalities extends BaseFunctionalities {
@@ -55,7 +57,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
             case CANCELLED:
                 return false;
         }
-        TextBoxUtils.printTitle("Participant registred sucessfully !!!");
+        TextBoxUtils.printTitle("Participant registered successfully!");
         return true;
     }
 
@@ -82,6 +84,15 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
             TextBoxUtils.printTableRow("CPF: " + p.getCpf(), "Name: " + p.getName(), "Email: " + p.getEmail());
         }
         TextBoxUtils.printUnderLineDisplayDivisor();
+    }
+
+    public void generateRandomParticipant(Scanner scan) {
+        TextBoxUtils.printTitle("Generating test data...");
+        int quantity = BaseForm.readQuantity(scan, "How many participants do you want to generate?");
+        for (int i = 0; i < quantity; i++) {
+            TestDataGenerator.generateRandomParticipant(participantController);
+        }
+        TextBoxUtils.printTitle(quantity + " participants generated successfully!");
     }
 }
 

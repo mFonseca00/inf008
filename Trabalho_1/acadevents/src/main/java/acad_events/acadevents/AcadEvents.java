@@ -1,94 +1,100 @@
 package acad_events.acadevents;
 
-
-
-import acad_events.acadevents.models.participant.ParticipantController;
-import acad_events.acadevents.models.participant.ParticipantRepository;
 import acad_events.acadevents.models.event.EventController;
 import acad_events.acadevents.models.event.EventRepository;
 import acad_events.acadevents.models.integration.IntegrationController;
-import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
+import acad_events.acadevents.models.participant.ParticipantController;
+import acad_events.acadevents.models.participant.ParticipantRepository;
 import acad_events.acadevents.ui.functionalities.EventFunctionalities;
 import acad_events.acadevents.ui.functionalities.IntegrationFunctionalities;
+import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
 import acad_events.acadevents.ui.menu.MenuController;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class AcadEvents 
-{
-    public static void main(String[] args)
-    {
-        // PARTICIPANTS
-        ParticipantController participantController = new ParticipantController();
-        ParticipantRepository participantRepository = participantController.getRepository();
+public class AcadEvents {
+    private static final String PARTICIPANTS_FILENAME = "participants.json";
+    private static final String EVENTS_FILENAME = "events.json";
 
-        String participantsFilename = "participants.json";
-        File participantsFile = new File(participantsFilename);
+    public static void main(String[] args) {
+        // Initialize participants
+        ParticipantController participantController = initializeParticipants();
 
-        // Garante que o arquivo existe e, se não, cria um arquivo JSON vazio
-        if (!participantsFile.exists()) {
-            try (FileWriter writer = new FileWriter(participantsFile)) {
-                writer.write("[]");
-            } catch (IOException e) {
-                System.out.println("Error creating empty participants.json file.");
-            }
-        }
+        // Initialize events
+        EventController eventController = initializeEvents();
 
-        // Carregando arquivo de dados dos participantes
-        try {
-            participantRepository.loadFromJson(participantsFilename);
-        } catch (IOException e) {
-            System.out.println("No previous participant data found or error loading data.");
-        }
+        // Initialize integration
+        IntegrationController integrationController = initializeIntegration(participantController, eventController);
 
-        // EVENTS
-        EventController eventController = new EventController();
-        EventRepository eventRepository = eventController.getRepository();
-
-        String eventsFilename = "events.json";
-        File eventsFile = new File(eventsFilename);
-
-        // Garante que o arquivo existe e, se não, cria um arquivo JSON vazio
-        if (!eventsFile.exists()) {
-            try (FileWriter writer = new FileWriter(eventsFile)) {
-                writer.write("[]");
-            } catch (IOException e) {
-                System.out.println("Error creating empty events.json file.");
-            }
-        }
-
-        // Carregando arquivo de dados dos eventos
-        try {
-            eventRepository.loadFromJson(eventsFilename);
-        } catch (IOException e) {
-            System.out.println("No previous event data found or error loading data.");
-        }
-
-        // INTEGRATION
-        IntegrationController integrationController = new IntegrationController(participantRepository, eventRepository);
-
-
-        // Instancia funcionalidades com os controllers compartilhados
+        // Instantiate functionalities
         ParticipantFunctionalities partFunctions = new ParticipantFunctionalities(eventController, participantController);
         EventFunctionalities eventFunctions = new EventFunctionalities(eventController, participantController);
         IntegrationFunctionalities integrFunctions = new IntegrationFunctionalities(participantController, eventController, integrationController);
 
-        // MenuController recebe as instâncias de funcionalidades
+        // Initialize and run the menu
         MenuController menu = new MenuController(partFunctions, eventFunctions, integrFunctions);
         menu.run();
 
-        // Salvando dados ao sair
-        try {
-            participantRepository.saveToJson(participantsFilename);
-        } catch (IOException e) {
-            System.out.println("Error saving participant data.");
+        // Save data on exit
+        saveData(participantController.getRepository(), eventController.getRepository());
+    }
+
+    private static ParticipantController initializeParticipants() {
+        ParticipantController participantController = new ParticipantController();
+        ParticipantRepository participantRepository = participantController.getRepository();
+        loadDataFromJson(participantRepository, PARTICIPANTS_FILENAME, "participant");
+        return participantController;
+    }
+
+    private static EventController initializeEvents() {
+        EventController eventController = new EventController();
+        EventRepository eventRepository = eventController.getRepository();
+        loadDataFromJson(eventRepository, EVENTS_FILENAME, "event");
+        return eventController;
+    }
+
+    private static IntegrationController initializeIntegration(ParticipantController participantController, EventController eventController) {
+        ParticipantRepository participantRepository = participantController.getRepository();
+        EventRepository eventRepository = eventController.getRepository();
+        return new IntegrationController(participantRepository, eventRepository);
+    }
+
+    private static void loadDataFromJson(Object repository, String filename, String dataType) {
+        File file = new File(filename);
+        if (!file.exists()) {
+            createEmptyJsonFile(file);
         }
         try {
-            eventRepository.saveToJson(eventsFilename);
+            if (repository instanceof ParticipantRepository) {
+                ((ParticipantRepository) repository).loadFromJson(filename);
+            } else if (repository instanceof EventRepository) {
+                ((EventRepository) repository).loadFromJson(filename);
+            }
         } catch (IOException e) {
-            System.out.println("Error saving event data.");
+            System.out.println("No previous " + dataType + " data found or error loading data: " + e.getMessage());
+        }
+    }
+
+    private static void createEmptyJsonFile(File file) {
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("[]");
+        } catch (IOException e) {
+            System.out.println("Error creating empty JSON file: " + e.getMessage());
+        }
+    }
+
+    private static void saveData(ParticipantRepository participantRepository, EventRepository eventRepository) {
+        try {
+            participantRepository.saveToJson(PARTICIPANTS_FILENAME);
+        } catch (IOException e) {
+            System.out.println("Error saving participant data: " + e.getMessage());
+        }
+        try {
+            eventRepository.saveToJson(EVENTS_FILENAME);
+        } catch (IOException e) {
+            System.out.println("Error saving event data: " + e.getMessage());
         }
     }
 }

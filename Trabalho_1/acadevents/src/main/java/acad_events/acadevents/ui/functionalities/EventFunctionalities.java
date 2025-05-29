@@ -8,6 +8,7 @@ import acad_events.acadevents.common.DTOs.eventDTOs.*;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
+import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.models.event.EventController;
 import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.ui.functionalities.enums.*;
@@ -69,7 +70,7 @@ public class EventFunctionalities extends BaseFunctionalities {
             case CANCELLED:
                 return false;
         }
-        
+        TextBoxUtils.printTitle("Event created successfully!");
         return true;
     }
 
@@ -153,5 +154,14 @@ public class EventFunctionalities extends BaseFunctionalities {
             case NO:
                 return;
         }
+    }
+
+    public void generateRandomEvent(Scanner scan) {
+        TextBoxUtils.printTitle("Generating test data...");
+        int quantity = BaseForm.readQuantity(scan, "How many events do you want to generate?");
+        for (int i = 0; i < quantity; i++) {
+            TestDataGenerator.generateRandomEvent(eventController);
+        }
+        TextBoxUtils.printTitle(quantity + " events generated successfully!");
     }
 }

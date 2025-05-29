@@ -5,6 +5,7 @@ import java.util.Scanner;
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
+import acad_events.acadevents.common.utils.ValidatorInputs;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
@@ -13,11 +14,11 @@ import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 public class ParticipantForm extends BaseForm{
 
     public static String readCpf(Scanner scan) {
-        return readField(
+        return ValidatorInputs.formatCPF(readField(
             scan,
             "Enter CPF (format: xxx.xxx.xxx-xx) or 'cancel': ",
             "Invalid CPF.",
-            true, FieldValidatorType.CPF);
+            true, FieldValidatorType.CPF));
     }
 
     public static InputResult registerCpf(Scanner scan, ParticipantDTO dto){
@@ -29,7 +30,7 @@ public class ParticipantForm extends BaseForm{
             FieldValidatorType.CPF
         );
         if (cpf == null) return InputResult.CANCELLED;
-        dto.setCpf(cpf);
+        dto.setCpf(ValidatorInputs.formatCPF(cpf));
         return InputResult.SUCCESS;
     }
 
@@ -68,7 +69,7 @@ public class ParticipantForm extends BaseForm{
             FieldValidatorType.PHONE
         );
         if (phone == null) return InputResult.CANCELLED;
-        dto.setPhone(phone);
+        dto.setPhone(ValidatorInputs.formatPhone(phone));
         return InputResult.SUCCESS;
     }
 

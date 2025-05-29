@@ -8,7 +8,7 @@ public class ValidatorInputs {
     public static boolean isValidCPF(String cpf){
         if(cpf == null) return false;
 
-        if(!cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")) return false;
+        if(!cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}") && !cpf.matches("\\d{11}")) return false;
 
         String digits = cpf.replaceAll("[^\\d]", "");
 
@@ -34,11 +34,18 @@ public class ValidatorInputs {
 
     public static boolean isValidPhone(String phone){
         if (phone == null) return false;
-        // Acepts
-        return phone.matches("^(\\d{2} \\d{4}-\\d{4})$") || // 71 1111-1111
-               phone.matches("^(\\d{2} \\d{5}-\\d{4})$") || // 71 11111-1111
-               phone.matches("^(\\d{3} \\d{4}-\\d{4})$") || // 071 1111-1111
-               phone.matches("^(\\d{3} \\d{5}-\\d{4})$");   // 071 11111-1111
+
+        // Permite apenas números, números com espaço ou números com espaço e traço
+        if (!phone.matches("^\\d{2} \\d{4}-\\d{4}$") &&   // 71 1111-1111
+            !phone.matches("^\\d{2} \\d{5}-\\d{4}$") &&   // 71 11111-1111
+            !phone.matches("^\\d{3} \\d{4}-\\d{4}$") &&   // 071 1111-1111
+            !phone.matches("^\\d{3} \\d{5}-\\d{4}$") &&   // 071 11111-1111
+            !phone.matches("^\\d{10,11}$") &&             // Apenas números (10 ou 11 dígitos)
+            !phone.matches("^\\d{2} \\d{8,9}$") &&        // Com espaço (10 ou 11 dígitos)
+            !phone.matches("^\\d{3} \\d{7,8}$"))          // Com espaço (10 ou 11 dígitos)
+            return false;
+
+        return true;
     }
 
     public static boolean isPositiveInteger(String value){
@@ -55,5 +62,28 @@ public class ValidatorInputs {
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    public static String formatCPF(String cpf) {
+        cpf = cpf.replaceAll("[^\\d]", "");
+        if (cpf.length() != 11) {
+            return null;
+        }
+        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." +
+               cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
+    }
+
+    public static String formatPhone(String phone) {
+        phone = phone.replaceAll("[^\\d]", "");
+        if (phone.length() == 10) {
+            return phone.substring(0, 2) + " " + phone.substring(2, 6) + "-" + phone.substring(6, 10);
+        } else if (phone.length() == 11) {
+            return phone.substring(0, 2) + " " + phone.substring(2, 7) + "-" + phone.substring(7, 11);
+        } else if (phone.length() == 9){
+            return "0" + phone.substring(0, 1) + " " + phone.substring(1, 5) + "-" + phone.substring(5, 9);
+        } else if (phone.length() == 8){
+            return "0" + phone.substring(0, 1) + " " + phone.substring(1, 4) + "-" + phone.substring(4, 8);
+        }
+        return null;
     }
 }
