@@ -117,6 +117,16 @@ public class EventController {
         return repository.removeEventById(eventId);
     }
 
+    public boolean existsEventByTitleAndDate(String title, String date) {
+        Collection<Event> events = repository.getAllEvents();
+        for (Event event : events) {
+            if (event.getTitle().equalsIgnoreCase(title) && event.getDate().equalsIgnoreCase(date)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Collection<EventDTO> listAll() {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
@@ -169,16 +179,6 @@ public class EventController {
         return eventDTOs;
     }
 
-    public boolean existsEventByTitleAndDate(String title, String date) {
-        Collection<Event> events = repository.getAllEvents();
-        for (Event event : events) {
-            if (event.getTitle().equalsIgnoreCase(title) && event.getDate().equalsIgnoreCase(date)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private EventDTO toDTO(Event e) {
         EventDTO dto;
         if (e instanceof Course) {
@@ -215,16 +215,29 @@ public class EventController {
         dto.setCapacity(e.getCapacity());
         dto.setDescription(e.getDescription());
         dto.setModality(e.getModality());
-        List<ParticipantDTO> participantDTOs = new ArrayList<>();
-        for (Participant p : e.getParticipants()) {
+
+        List<ParticipantDTO> presentialDTOs = new ArrayList<>();
+        for (Participant p : e.getPresentialParticipants()) {
             ParticipantDTO pdto = new ParticipantDTO();
             pdto.setCpf(p.getCPF());
             pdto.setName(p.getName());
             pdto.setEmail(p.getEmail());
             pdto.setPhone(p.getPhone());
-            participantDTOs.add(pdto);
+            presentialDTOs.add(pdto);
         }
-        dto.setParticipants(participantDTOs);
+        dto.setPresentialParticipants(presentialDTOs);
+
+        List<ParticipantDTO> onlineDTOs = new ArrayList<>();
+        for (Participant p : e.getOnlineParticipants()) {
+            ParticipantDTO pdto = new ParticipantDTO();
+            pdto.setCpf(p.getCPF());
+            pdto.setName(p.getName());
+            pdto.setEmail(p.getEmail());
+            pdto.setPhone(p.getPhone());
+            onlineDTOs.add(pdto);
+        }
+        dto.setOnlineParticipants(onlineDTOs);
+
         return dto;
     }
 

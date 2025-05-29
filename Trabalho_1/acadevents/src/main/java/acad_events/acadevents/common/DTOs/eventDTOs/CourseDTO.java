@@ -13,12 +13,11 @@ public class CourseDTO extends EventDTO{
         this.setCapacity(base.getCapacity());
         this.setDescription(base.getDescription());
         this.setModality(base.getModality());
-        this.setParticipants(base.getParticipants());
+        this.setPresentialParticipants(base.getPresentialParticipants());
+        this.setOnlineParticipants(base.getOnlineParticipants());
     }
 
-    public CourseDTO() {
-        //TODO Auto-generated constructor stub
-    }
+    public CourseDTO() {}
 
     public String getCoordinator() {
         return coordinator;

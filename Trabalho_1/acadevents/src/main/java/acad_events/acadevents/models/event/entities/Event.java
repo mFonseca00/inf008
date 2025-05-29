@@ -15,7 +15,8 @@ public class Event {
     protected int capacity;
     private String description;
     private Modality modality;
-    protected List<Participant> participants = new ArrayList<>();
+    protected List<Participant> presentialParticipants = new ArrayList<>();
+    protected List<Participant> onlineParticipants = new ArrayList<>();
 
     public Event(String title, String date, String location, int capacity, String description, Modality modality) {
         this.Id = nextID++;
@@ -27,16 +28,46 @@ public class Event {
         this.modality = modality;
     }
 
-    public boolean addParticipant(Participant p) {
-    if (participants.size() < capacity) {
-        participants.add(p);
-        return true;
-    }
+    public boolean addPresentialParticipant(Participant p) {
+        if (presentialParticipants.size() < capacity) {
+            presentialParticipants.add(p);
+            return true;
+        }
     return false;
     }
 
-    public List<Participant> getParticipants() {
-        return participants;
+    public boolean removePresentialParticipant(Participant p) {
+        if (p != null){
+            presentialParticipants.remove(p);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Participant> getPresentialParticipants() {
+        if (presentialParticipants == null) presentialParticipants = new ArrayList<>();
+        return presentialParticipants;
+    }
+
+    public boolean addOnlineParticipant(Participant p) {
+        if (onlineParticipants.size() < capacity) {
+            onlineParticipants.add(p);
+            return true;
+        }
+    return false;
+    }
+
+    public boolean removeOnlineParticipant(Participant p) {
+        if (p != null){
+            onlineParticipants.remove(p);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Participant> getOnlineParticipants() {
+        if (onlineParticipants == null) onlineParticipants = new ArrayList<>();
+        return onlineParticipants;
     }
 
     public static void setNextID(long next) {
@@ -71,6 +102,35 @@ public class Event {
         return modality;
     }
 
-    
-    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setModality(Modality modality) {
+        this.modality = modality;
+    }
+
+    public void setPresentialParticipants(List<Participant> participants) {
+        this.presentialParticipants = participants;
+    }
+
+    public void setOnlineParticipants(List<Participant> participants) {
+        this.onlineParticipants = participants;
+    }
 }

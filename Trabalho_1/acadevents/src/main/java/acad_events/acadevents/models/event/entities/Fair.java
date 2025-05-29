@@ -19,4 +19,14 @@ public class Fair extends Event {
     public int getNumberOfStands() {
         return numberOfStands;
     }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    public void setNumberOfStands(int numberOfStands) {
+        this.numberOfStands = numberOfStands;
+    }
+
+    
 }

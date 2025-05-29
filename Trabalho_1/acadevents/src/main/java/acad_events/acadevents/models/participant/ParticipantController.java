@@ -25,6 +25,21 @@ public class ParticipantController {
         return repository.getParticipantByCPF(cpf) != null;
     }
 
+    private ParticipantDTO toDTO(Participant p) {
+        if (p == null) return null;
+        ParticipantDTO dto = new ParticipantDTO();
+        dto.setCpf(p.getCPF());
+        dto.setName(p.getName());
+        dto.setEmail(p.getEmail());
+        dto.setPhone(p.getPhone());
+        return dto;
+    }
+
+    public ParticipantDTO findParticipantByCPF(String cpf){
+        Participant participant = repository.getParticipantByCPF(cpf);
+        return toDTO(participant);
+    }
+
     public boolean register(StudentDTO dto) {
         if (repository.getParticipantByCPF(dto.getCpf()) == null) {
             Student student = new Student(

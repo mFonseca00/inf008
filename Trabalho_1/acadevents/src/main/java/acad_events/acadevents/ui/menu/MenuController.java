@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.ui.functionalities.EventFunctionalities;
+import acad_events.acadevents.ui.functionalities.IntegrationFunctionalities;
 import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
 import acad_events.acadevents.ui.functionalities.enums.EventReportOption;
 import acad_events.acadevents.ui.menu.enums.EventOption;
@@ -22,10 +23,12 @@ public class MenuController {
     private final ReportMenu reportMenu = new ReportMenu();
     private final ParticipantFunctionalities partFunctions;
     private final EventFunctionalities eventFunctions;
+    private final IntegrationFunctionalities integrFunctions;
 
-    public MenuController(ParticipantFunctionalities partFunctions, EventFunctionalities eventFunctions) {
+    public MenuController(ParticipantFunctionalities partFunctions, EventFunctionalities eventFunctions, IntegrationFunctionalities integrFunctions) {
         this.partFunctions = partFunctions;
         this.eventFunctions = eventFunctions;
+        this.integrFunctions = integrFunctions;
     }
 
     public void run(){
@@ -102,11 +105,15 @@ public class MenuController {
                     TextBoxUtils.pause(scan);
                     break;
                 case ENROLL_IN_EVENT:
-                    // ToDo
+                    integrFunctions.enrollParticipantInEvent(scan);
+                    TextBoxUtils.pause(scan);
+                    break;
+                case REMOVE_FROM_EVENT:
+                    integrFunctions.removeParticipantFromEvent(scan);
                     TextBoxUtils.pause(scan);
                     break;
                 case GENERATE_CERTIFICATE:
-                    // ToDo
+                    integrFunctions.generateCertificate(scan);
                     TextBoxUtils.pause(scan);
                     break;
                 case RETURN:

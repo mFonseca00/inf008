@@ -12,12 +12,11 @@ public class FairDTO extends EventDTO{
         this.setCapacity(base.getCapacity());
         this.setDescription(base.getDescription());
         this.setModality(base.getModality());
-        this.setParticipants(base.getParticipants());
+        this.setPresentialParticipants(base.getPresentialParticipants());
+        this.setOnlineParticipants(base.getOnlineParticipants());
     }
 
-    public FairDTO() {
-        //TODO Auto-generated constructor stub
-    }
+    public FairDTO() {}
 
     public String getOrganizer() {
         return organizer;

@@ -4,32 +4,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.eventDTOs.CourseDTO;
-import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
-import acad_events.acadevents.common.DTOs.eventDTOs.FairDTO;
-import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
-import acad_events.acadevents.common.DTOs.eventDTOs.WorkshopDTO;
+import acad_events.acadevents.common.DTOs.eventDTOs.*;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.event.EventController;
-import acad_events.acadevents.ui.functionalities.enums.EventReportOption;
-import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
-import acad_events.acadevents.ui.functionalities.enums.InputResult;
-import acad_events.acadevents.ui.functionalities.enums.YesOrNoOption;
+import acad_events.acadevents.models.participant.ParticipantController;
+import acad_events.acadevents.ui.functionalities.enums.*;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.CourseForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.EventForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.FairForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.LectureForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.WorkshopForm;
+import acad_events.acadevents.ui.functionalities.forms.EventForms.*;
 
-public class EventFunctionalities {
+public class EventFunctionalities extends BaseFunctionalities {
 
-    private final EventController eventController;
-
-    public EventFunctionalities(EventController eventController) {
-        this.eventController = eventController;
+    public EventFunctionalities(EventController eventController, ParticipantController participantController) {
+        super(eventController, participantController);
     }
 
     // cadastrar/criar novo evento (todos os tipos)
@@ -49,7 +37,7 @@ public class EventFunctionalities {
         if(EventForm.registerLocation(scan, event) == InputResult.CANCELLED) return false;
         if(EventForm.registerCapacity(scan, event) == InputResult.CANCELLED) return false;
         if(EventForm.registerDescription(scan, event) == InputResult.CANCELLED) return false;
-        if(EventForm.selectModality(scan, event) == InputResult.CANCELLED) return false;
+        if(EventForm.registerModality(scan, event) == InputResult.CANCELLED) return false;
 
         EventType type = EventForm.selectType(scan);
 
@@ -87,73 +75,19 @@ public class EventFunctionalities {
 
     // Remoção pode ser realizada por ID, a partir da lista geral ou a partir de um atributo
     public  boolean remove(Scanner scan) {
-        EventWayToRemoveOption option = EventForm.selectWayToRemove(scan);
-
-        switch (option) {
-            case ALL_LIST: {
-                List<EventDTO> allEvents = (List<EventDTO>) eventController.listAll();
-                if (allEvents.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found.");
-                    return false;
-                }
-                EventDTO dtoToRemove = EventForm.selectEvent(scan, allEvents);
-                if (dtoToRemove == null) return false;
-                boolean removed = eventController.delete(dtoToRemove.getId());
-                if (removed) {
-                    TextBoxUtils.printTitle("Event removed successfully.");
-                    return true;
-                } else {
-                    TextBoxUtils.printTitle("Failed to remove event.");
-                    return false;
-                }
-            }
-            case ATTRIBUTE_LIST: {
-                String valueSearch = null;
-                EventAttribute attribute = EventForm.selectAttribute(scan);
-                if (attribute == EventAttribute.CANCELLED) return false;
-                if (attribute == EventAttribute.MODALITY) {
-                    EventDTO dto = new EventDTO();
-                    if (EventForm.selectModality(scan, dto) == InputResult.CANCELLED) return false;
-                    valueSearch = dto.getModality().toString();
-                } else {
-                    valueSearch = TextBoxUtils.inputLine(scan, "Enter the value for " + attribute.getDescription() + " or 'cancel': ");
-                    if ("cancel".equalsIgnoreCase(valueSearch)) return false;
-                }
-                List<EventDTO> filtered = eventController.listByAttribute(attribute, valueSearch);
-                if (filtered.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found for the given attribute.");
-                    return false;
-                }
-                EventDTO dtoToRemove = EventForm.selectEvent(scan, filtered);
-                if (dtoToRemove == null) return false;
-                boolean removed = eventController.delete(dtoToRemove.getId());
-                if (removed) {
-                    TextBoxUtils.printTitle("Event removed successfully.");
-                    return true;
-                } else {
-                    TextBoxUtils.printTitle("Failed to remove event.");
-                    return false;
-                }
-            }
-            case ID: {
-                String idStr = EventForm.readId(scan);
-                if (idStr == null || idStr.isBlank()) return false;
-                Long id = Long.parseLong(idStr);
-                boolean removed = eventController.delete(id);
-                if (removed) {
-                    TextBoxUtils.printTitle("Event removed successfully.");
-                    return true;
-                } else {
-                    TextBoxUtils.printTitle("No event found with the given ID.");
-                    return false;
-                }
-            }
-            case CANCELLED:
-            default:
-                return false;
+        EventDTO dtoToRemove = selectEventByWay(scan, "remove");
+        if (dtoToRemove == null) return false;
+        boolean removed = eventController.delete(dtoToRemove.getId());
+        if (removed) {
+            TextBoxUtils.printTitle("Event removed successfully.");
+            return true;
+        } else {
+            TextBoxUtils.printTitle("Failed to remove event.");
+            return false;
         }
     }
 
+    // Lista todos os eventos
     public void listAll(){
         Collection<EventDTO> events = eventController.listAll();
         if(events.isEmpty()){
@@ -163,11 +97,12 @@ public class EventFunctionalities {
         TextBoxUtils.printTitle("Registered events:");
         for(EventDTO e : events){
             String type = e.getClass().getSimpleName().replace("DTO", ""); // remove DTO from name
-            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality() + " Date: " + e.getDate() + " Location: " + e.getLocation());
+            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality().toString().toLowerCase() + " Date: " + e.getDate() + " Location: " + e.getLocation());
             TextBoxUtils.printUnderLineDisplayDivisor();
         }
     }
 
+    // Gera relatório de eventos
     public void generateReport(Scanner scan, EventReportOption reportOption) {
         List<EventDTO> events;
         String reportedValue;

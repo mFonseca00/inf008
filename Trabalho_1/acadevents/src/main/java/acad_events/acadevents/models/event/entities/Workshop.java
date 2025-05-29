@@ -19,4 +19,14 @@ public class Workshop extends Event {
     public int getDurationHours() {
         return durationHours;
     }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public void setDurationHours(int durationHours) {
+        this.durationHours = durationHours;
+    }
+
+    
 }

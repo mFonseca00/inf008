@@ -13,4 +13,9 @@ public class Lecture extends Event {
     public String getSpeaker() {
         return speaker;
     }
+
+    public void setSpeaker(String speaker) {
+        this.speaker = speaker;
+    }
+
 }

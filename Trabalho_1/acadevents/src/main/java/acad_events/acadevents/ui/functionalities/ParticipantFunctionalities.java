@@ -3,25 +3,17 @@ package acad_events.acadevents.ui.functionalities;
 import java.util.Collection;
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.ProfessorDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.StudentDTO;
+import acad_events.acadevents.common.DTOs.participantDTOs.*;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.models.participant.ParticipantController;
-import acad_events.acadevents.ui.functionalities.enums.InputResult;
-import acad_events.acadevents.ui.functionalities.enums.ParticipantTypeOption;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ExternalForm;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ParticipantForm;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ProfessorForm;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.StudentForm;
+import acad_events.acadevents.models.event.EventController;
+import acad_events.acadevents.ui.functionalities.enums.*;
+import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.*;
 
-public class ParticipantFunctionalities {
+public class ParticipantFunctionalities extends BaseFunctionalities {
 
-    private final ParticipantController controller;
-
-    public ParticipantFunctionalities(ParticipantController controller) {
-        this.controller = controller;
+    public ParticipantFunctionalities(EventController eventController, ParticipantController participantController) {
+        super(eventController, participantController);
     }
 
     public boolean registerNew(Scanner scan){
@@ -30,7 +22,7 @@ public class ParticipantFunctionalities {
         if(ParticipantForm.registerCpf(scan, participant) == InputResult.CANCELLED) return false;
 
         // Verifica se já existe participante com o mesmo CPF
-        if (controller.existsByCPF(participant.getCpf())) {
+        if (participantController.existsByCPF(participant.getCpf())) {
             TextBoxUtils.printTitle("A participant with this CPF already exists!");
             return false;
         }
@@ -46,19 +38,19 @@ public class ParticipantFunctionalities {
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
                 if(StudentForm.registerEnrollment(scan, student) == InputResult.CANCELLED) return false;
-                controller.register(student);
+                participantController.register(student);
                 break;
             case PROFESSOR:
                 ProfessorDTO professor = new ProfessorDTO(participant);
                 if(ProfessorForm.registerEmployeeId(scan, professor) == InputResult.CANCELLED) return false;
                 if(ProfessorForm.selectDepartment(scan, professor) == InputResult.CANCELLED) return false;
-                controller.register(professor);
+                participantController.register(professor);
                 break;
             case EXTERNAL:
                 ExternalDTO external = new ExternalDTO(participant);
                 if(ExternalForm.registerOrg(scan, external) == InputResult.CANCELLED) return false;
                 if(ExternalForm.selectRole(scan, external) == InputResult.CANCELLED) return false;
-                controller.register(external);
+                participantController.register(external);
                 break;
             case CANCELLED:
                 return false;
@@ -67,12 +59,10 @@ public class ParticipantFunctionalities {
         return true;
     }
 
-    public boolean remove(Scanner scan){
-        // solicita o cpf a ser "cancelado"
+    public boolean remove(Scanner scan) {
         String cpf = ParticipantForm.readCpf(scan);
-        if(cpf == null) return false;
-        // chama o método de remoção do participantController
-        boolean removed = controller.delete(cpf);
+        if (cpf == null) return false;
+        boolean removed = participantController.delete(cpf);
         if (removed) {
             TextBoxUtils.printTitle("Participant removed from the system!");
         } else {
@@ -81,9 +71,8 @@ public class ParticipantFunctionalities {
         return removed;
     }
 
-    public void listAll(){
-        // chama o método de listagem do participantController para puxar a collection
-        Collection<ParticipantDTO> participants = controller.list();
+    public void listAll() {
+        Collection<ParticipantDTO> participants = participantController.list();
         if (participants.isEmpty()) {
             TextBoxUtils.printTitle("No participants registered.");
             return;
@@ -94,7 +83,6 @@ public class ParticipantFunctionalities {
         }
         TextBoxUtils.printUnderLineDisplayDivisor();
     }
-
 }
 
 

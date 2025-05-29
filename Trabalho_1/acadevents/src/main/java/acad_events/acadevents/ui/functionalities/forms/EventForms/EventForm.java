@@ -9,7 +9,7 @@ import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
-import acad_events.acadevents.ui.functionalities.enums.EventWayToRemoveOption;
+import acad_events.acadevents.ui.functionalities.enums.EventWayToSelectEventsOption;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 import acad_events.acadevents.models.event.entities.enums.Modality;
@@ -93,7 +93,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
-    public static InputResult selectModality(Scanner scan, EventDTO dto){
+    public static InputResult registerModality(Scanner scan, EventDTO dto){
         while (true) {
             TextBoxUtils.printTitle("Select event modality");
             MenuUtils.listEnumOptions(Modality.class);
@@ -105,6 +105,47 @@ public class EventForm extends BaseForm {
                     if (modality.getValue() == input) {
                         dto.setModality(modality);
                         return InputResult.SUCCESS;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid modality. Please select a valid number.");
+        }
+    }
+
+    public static Modality selectModality(Scanner scan){
+        while (true) {
+            TextBoxUtils.printTitle("Select event modality");
+            MenuUtils.listEnumOptions(Modality.class);
+            String inputStr = TextBoxUtils.inputLine(scan, "Select modality or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return null;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (Modality modality : Modality.values()) {
+                    if (modality.getValue() == input) {
+                        return modality;
+                    }
+                }
+            }
+            TextBoxUtils.printTitle("Invalid modality. Please select a valid number.");
+        }
+    }
+
+    public static Modality selectPresentialOrOnlineModality(Scanner scan) {
+        while (true) {
+            TextBoxUtils.printTitle("Select modality for enrollment: ");
+            for (Modality modality : Modality.values()) {
+                if (modality != Modality.HYBRID) {
+                    TextBoxUtils.printLeftText(modality.getValue() + " - " + modality.getDescription());
+                }
+            }
+            TextBoxUtils.printUnderLineDisplayDivisor();
+            String inputStr = TextBoxUtils.inputLine(scan, "Select modality or 'cancel': ");
+            if ("cancel".equalsIgnoreCase(inputStr)) return null;
+            if (inputStr.matches("\\d+")) {
+                int input = Integer.parseInt(inputStr);
+                for (Modality modality : Modality.values()) {
+                    if (modality.getValue() == input && modality != Modality.HYBRID) {
+                        return modality;
                     }
                 }
             }
@@ -130,15 +171,15 @@ public class EventForm extends BaseForm {
         }
     }
 
-    public static EventWayToRemoveOption selectWayToRemove(Scanner scan){
+    public static EventWayToSelectEventsOption selectWayToSelectEvent(Scanner scan, String operation){
         while (true) {
-            TextBoxUtils.printTitle("Select an option to remove an event");
-            MenuUtils.listEnumOptions(EventWayToRemoveOption.class);
+            TextBoxUtils.printTitle("Select an option to " + operation);
+            MenuUtils.listEnumOptions(EventWayToSelectEventsOption.class);
             String inputStr = TextBoxUtils.inputLine(scan, "Select an option: ");
-            if ("cancel".equalsIgnoreCase(inputStr)) return EventWayToRemoveOption.CANCELLED;
+            if ("cancel".equalsIgnoreCase(inputStr)) return EventWayToSelectEventsOption.CANCELLED;
             if (inputStr.matches("\\d+")) {
                 int input = Integer.parseInt(inputStr);
-                for (EventWayToRemoveOption option : EventWayToRemoveOption.values()) {
+                for (EventWayToSelectEventsOption option : EventWayToSelectEventsOption.values()) {
                     if (option.getValue() == input) {
                         return option;
                     }
@@ -171,7 +212,7 @@ public class EventForm extends BaseForm {
             TextBoxUtils.printTitle("Select an event");
             for (int i = 0; i < events.size(); i++) {
                 EventDTO event = events.get(i);
-                TextBoxUtils.printLeftText(i + 1 + " - " + event.getTitle() + " Date: " + event.getDate() + " Location: " + event.getLocation());
+                TextBoxUtils.printLeftText((i + 1) + " - " + event.getClass().getSimpleName() + " " + event.getModality().toString().toLowerCase() + " " + event.getTitle() + " Date: " + event.getDate() + " Location: " + event.getLocation());
             }
             TextBoxUtils.printUnderLineDisplayDivisor();
             String inputStr = TextBoxUtils.inputLine(scan, "Select event number or 'cancel': ");

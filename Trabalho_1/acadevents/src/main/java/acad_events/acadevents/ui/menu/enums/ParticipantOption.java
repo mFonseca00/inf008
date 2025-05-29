@@ -7,8 +7,9 @@ public enum ParticipantOption implements I_EnumOptionList{
     DELETE_PARTICIPANT(2, "Delete participant"),
     LIST_PARTICIPANTS(3, "List participants"),
     ENROLL_IN_EVENT(4, "Enroll participant in event"),
-    GENERATE_CERTIFICATE(5, "Generate a event certificate"),
-    RETURN(6, "Return to Main Menu");
+    REMOVE_FROM_EVENT(5, "Remove participant from event"),
+    GENERATE_CERTIFICATE(6, "Generate a event certificate"),
+    RETURN(7, "Return to Main Menu");
 
     private final int value;
     private final String description;

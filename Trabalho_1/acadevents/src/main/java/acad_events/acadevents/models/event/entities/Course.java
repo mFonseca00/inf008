@@ -1,8 +1,6 @@
 package acad_events.acadevents.models.event.entities;
 
 import acad_events.acadevents.models.event.entities.enums.Modality;
-import acad_events.acadevents.models.participant.entities.Participant;
-import acad_events.acadevents.models.participant.entities.Student;
 
 public class Course extends Event {
     private String coordinator;
@@ -16,15 +14,6 @@ public class Course extends Event {
         this.knowledgeArea = knowledgeArea;
     }
 
-    @Override
-    public boolean addParticipant(Participant p) {
-        if (p instanceof Student && participants.size() < capacity) {
-            participants.add(p);
-            return true;
-        }
-        return false;
-    }
-
     public String getCoordinator() {
         return coordinator;
     }
@@ -36,4 +25,18 @@ public class Course extends Event {
     public String getKnowledgeArea() {
         return knowledgeArea;
     }
+
+    public void setCoordinator(String coordinator) {
+        this.coordinator = coordinator;
+    }
+
+    public void setTotalHours(int totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    public void setKnowledgeArea(String knowledgeArea) {
+        this.knowledgeArea = knowledgeArea;
+    }
+
+    
 }

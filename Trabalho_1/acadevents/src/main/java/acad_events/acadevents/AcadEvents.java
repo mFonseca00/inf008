@@ -6,8 +6,10 @@ import acad_events.acadevents.models.participant.ParticipantController;
 import acad_events.acadevents.models.participant.ParticipantRepository;
 import acad_events.acadevents.models.event.EventController;
 import acad_events.acadevents.models.event.EventRepository;
+import acad_events.acadevents.models.integration.IntegrationController;
 import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;
 import acad_events.acadevents.ui.functionalities.EventFunctionalities;
+import acad_events.acadevents.ui.functionalities.IntegrationFunctionalities;
 import acad_events.acadevents.ui.menu.MenuController;
 
 import java.io.File;
@@ -64,12 +66,17 @@ public class AcadEvents
             System.out.println("No previous event data found or error loading data.");
         }
 
+        // INTEGRATION
+        IntegrationController integrationController = new IntegrationController(participantRepository, eventRepository);
+
+
         // Instancia funcionalidades com os controllers compartilhados
-        ParticipantFunctionalities partFunctions = new ParticipantFunctionalities(participantController);
-        EventFunctionalities eventFunctions = new EventFunctionalities(eventController);
+        ParticipantFunctionalities partFunctions = new ParticipantFunctionalities(eventController, participantController);
+        EventFunctionalities eventFunctions = new EventFunctionalities(eventController, participantController);
+        IntegrationFunctionalities integrFunctions = new IntegrationFunctionalities(participantController, eventController, integrationController);
 
         // MenuController recebe as instâncias de funcionalidades
-        MenuController menu = new MenuController(partFunctions, eventFunctions);
+        MenuController menu = new MenuController(partFunctions, eventFunctions, integrFunctions);
         menu.run();
 
         // Salvando dados ao sair

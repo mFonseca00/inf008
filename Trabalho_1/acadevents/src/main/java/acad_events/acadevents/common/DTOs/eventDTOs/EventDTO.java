@@ -14,7 +14,13 @@ public class EventDTO {
     protected int capacity;
     private String description;
     private Modality modality;
-    protected List<ParticipantDTO> participants = new ArrayList<>();
+    protected List<ParticipantDTO> presentialParticipants = new ArrayList<>();
+    protected List<ParticipantDTO> onlineParticipants = new ArrayList<>();
+
+    public EventDTO() {
+        this.presentialParticipants = new ArrayList<>();
+        this.onlineParticipants = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -32,12 +38,26 @@ public class EventDTO {
         this.modality = modality;
     }
 
-    public List<ParticipantDTO> getParticipants() {
-        return participants;
+    public List<ParticipantDTO> getPresentialParticipants() {
+        if (presentialParticipants == null) {
+            presentialParticipants = new ArrayList<>();
+        }
+        return presentialParticipants;
     }
 
-    public void setParticipants(List<ParticipantDTO> participants) {
-        this.participants = participants;
+    public void setPresentialParticipants(List<ParticipantDTO> participants) {
+        this.presentialParticipants = participants;
+    }
+
+    public List<ParticipantDTO> getOnlineParticipants() {
+        if (onlineParticipants == null) {
+            onlineParticipants = new ArrayList<>();
+        }
+        return onlineParticipants;
+    }
+
+    public void setOnlineParticipants(List<ParticipantDTO> participants) {
+        this.onlineParticipants = participants;
     }
 
     public String getTitle() {
