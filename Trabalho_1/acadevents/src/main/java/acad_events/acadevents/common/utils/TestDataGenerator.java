@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class TestDataGenerator {
 
-    private static final String[] EVENT_TITLES = {"Java a fundo", "Sobre IA", "React na prática", "Tecnologias incríveis, QT na prática"};
+    private static final String[] EVENT_TITLES = {"Java a fundo", "Sobre IA", "React na prática", "Tecnologias incríveis", "QT na prática"};
     private static final String[] PARTICIPANT_NAMES = {"João Silva", "Maria Souza", "Carlos Pereira", "Ana Oliveira"};
     private static final String[] KNOWLEDGE_AREAS = {"Tecnologia", "Inovação", "Gestão", "Marketing"};
     private static final String[] ORGANIZATIONS = {"IFBA", "UFBA", "SENAI", "UNEB"};

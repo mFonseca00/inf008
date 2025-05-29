@@ -241,7 +241,7 @@ public class EventController {
         return dto;
     }
 
-    public void exportReportToJson(List<EventDTO> dtos, String reportOption, String filename) throws IOException {
+    public String exportReportToJson(List<EventDTO> dtos, String reportOption, String filename) throws IOException {
         String safeReportOption = reportOption.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
         File reportSubDir = new File("reports" + File.separator + safeReportOption);
         if (!reportSubDir.exists()) {
@@ -257,5 +257,7 @@ public class EventController {
         try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(dtos, writer);
         }
+
+        return filePath;
     }
 }

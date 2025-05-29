@@ -1,5 +1,6 @@
 package acad_events.acadevents.ui.functionalities;
 
+import java.text.Normalizer;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
@@ -98,7 +99,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         TextBoxUtils.printTitle("Registered events:");
         for(EventDTO e : events){
             String type = e.getClass().getSimpleName().replace("DTO", ""); // remove DTO from name
-            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality().toString().toLowerCase() + " Date: " + e.getDate() + " Location: " + e.getLocation());
+            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + "   Modality: " + e.getModality().toString().toLowerCase() + "   Date: " + e.getDate() + "   Location: " + e.getLocation());
             TextBoxUtils.printUnderLineDisplayDivisor();
         }
     }
@@ -137,7 +138,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         TextBoxUtils.printTitle(reportOption.getDescription() + " " + reportedValue);
         for (EventDTO e : events) {
             String type = e.getClass().getSimpleName().replace("DTO", "");
-            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + " Modality: " + e.getModality() + " Date: " + e.getDate() + " Location: " + e.getLocation());
+            TextBoxUtils.printLeftText(type + ": " + e.getTitle() + "   Modality: " + e.getModality() + "   Date: " + e.getDate() + "   Location: " + e.getLocation());
             TextBoxUtils.printUnderLineDisplayDivisor();
         }
 
@@ -145,8 +146,10 @@ public class EventFunctionalities extends BaseFunctionalities {
         switch (exportOption) {
             case YES:
                 try {
-                    eventController.exportReportToJson(events, reportOption.getDescription(), reportedValue + ".json");
-                    TextBoxUtils.printSuccess("Report exported to... 'reports/" + reportOption.getDescription() + "/" + reportedValue + ".json'");
+                    // Sanitizar o nome do arquivo
+                    String sanitizedFileName = sanitizeFileName(reportedValue) + ".json";
+                    String filePath = eventController.exportReportToJson(events, reportOption.getDescription(), sanitizedFileName);
+                    TextBoxUtils.printSuccess("Report exported to... 'reports/" + filePath + "'");
                 } catch (Exception e) {
                     TextBoxUtils.printError("Error exporting report: " + e.getMessage());
                 }
@@ -154,6 +157,16 @@ public class EventFunctionalities extends BaseFunctionalities {
             case NO:
                 return;
         }
+    }
+
+    // Método para sanitizar o nome do arquivo
+    private static String sanitizeFileName(String input) {
+        // Remover acentos e normalizar
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        String withoutAccents = normalized.replaceAll("\\p{M}", "");
+
+        // Remover caracteres inválidos para nomes de arquivos
+        return withoutAccents.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
     }
 
     public void generateRandomEvent(Scanner scan) {
