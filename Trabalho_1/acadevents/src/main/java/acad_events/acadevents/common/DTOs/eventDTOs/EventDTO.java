@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
-import acad_events.acadevents.models.event.entities.enums.Modality;
+import acad_events.acadevents.models.event.enums.Modality;
 
 public class EventDTO {
     private Long id;

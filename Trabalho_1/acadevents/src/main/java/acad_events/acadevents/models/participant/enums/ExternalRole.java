@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.participant.entities.enums;
+package acad_events.acadevents.models.participant.enums;
 
 import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 

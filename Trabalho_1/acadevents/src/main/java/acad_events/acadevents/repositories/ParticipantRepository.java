@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.participant;
+package acad_events.acadevents.repositories;
 
 import java.util.HashMap;
 import java.util.Map;

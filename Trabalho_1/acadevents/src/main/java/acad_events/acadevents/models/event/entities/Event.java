@@ -3,7 +3,7 @@ package acad_events.acadevents.models.event.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import acad_events.acadevents.models.event.entities.enums.Modality;
+import acad_events.acadevents.models.event.enums.Modality;
 import acad_events.acadevents.models.participant.entities.Participant;
 
 public class Event {

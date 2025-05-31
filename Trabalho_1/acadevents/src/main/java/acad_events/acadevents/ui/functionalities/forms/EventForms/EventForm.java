@@ -9,10 +9,10 @@ import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
+import acad_events.acadevents.models.event.enums.Modality;
 import acad_events.acadevents.ui.functionalities.enums.EventWayToSelectEventsOption;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
-import acad_events.acadevents.models.event.entities.enums.Modality;
 
 public class EventForm extends BaseForm {
 

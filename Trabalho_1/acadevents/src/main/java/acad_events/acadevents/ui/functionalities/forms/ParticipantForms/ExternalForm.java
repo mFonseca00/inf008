@@ -2,10 +2,10 @@ package acad_events.acadevents.ui.functionalities.forms.ParticipantForms;
 
 import java.util.Scanner;
 import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
-import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
+import acad_events.acadevents.models.participant.enums.ExternalRole;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 
 public class ExternalForm extends ParticipantForm {

@@ -1,6 +1,6 @@
 package acad_events.acadevents.models.participant.entities;
 
-import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
+import acad_events.acadevents.models.participant.enums.ExternalRole;
 
 public class External extends Participant{
     private String organization;

@@ -66,7 +66,8 @@ Ao iniciar, você verá o menu principal com as opções:
 1. **Manage Events**: Gerenciar eventos (criar, deletar, listar).  
 2. **Manage Participants**: Gerenciar participantes (cadastrar, remover, listar, inscrever em evento, gerar certificado).  
 3. **Generate Reports**: Gerar relatórios (por tipo, por data).  
-4. **Exit**: Sair do sistema.  
+4. **Generate Test Data**: Gerar dados de teste (eventos e participantes aleatórios).  
+5. **Exit**: Sair do sistema.  
 
 Selecione a opção desejada digitando o número correspondente.
 
@@ -198,11 +199,11 @@ Ao escolher "Generate Reports", você verá:
 
 ---
 
-## Funcionalidades de Geração de Relatórios de Eventos
+### Funcionalidades de Geração de Relatórios de Eventos
 
 O sistema AcadEvents permite gerar relatórios de eventos acadêmicos de duas formas principais: **por tipo de evento** (Course, Lecture, Workshop, Fair) ou **por data**. Ambas as funcionalidades são acessíveis pelo menu "Generate Reports" e foram implementadas de forma unificada, utilizando um único método para facilitar a manutenção e a expansão futura.
 
-### Passo a passo do funcionamento
+#### Passo a passo do funcionamento
 
 1. **Acesso ao Menu de Relatórios**
    - No menu principal, selecione "Generate Reports".
@@ -222,12 +223,12 @@ O sistema AcadEvents permite gerar relatórios de eventos acadêmicos de duas fo
    - Após visualizar o relatório, o sistema pergunta se você deseja exportar o relatório para um arquivo `.json`.
    - Se confirmado, o relatório é salvo automaticamente em uma pasta específica, com um nome que reflete o filtro utilizado e a data/hora da exportação.
 
-### Implementação com método único
+#### Implementação com método único
 
 A geração dos relatórios é feita por meio do método `generateReport(Scanner scan, EventReportOption reportOption)` da classe `EventFunctionalities`. Esse método recebe como parâmetro o tipo de relatório desejado (por tipo ou por data) e executa o fluxo de seleção, busca, exibição e exportação dos eventos.  
 A busca dos eventos é feita por métodos do `EventController` que filtram por tipo (`listByType`) ou por data (`listByAttribute`), mas toda a lógica de interação e exportação está centralizada em um único método, tornando o código mais limpo e fácil de manter.
 
-### Geração e organização dos arquivos .json dos relatórios
+#### Geração e organização dos arquivos .json dos relatórios
 
 Quando o usuário opta por exportar um relatório, o sistema salva o arquivo `.json` em uma estrutura de pastas organizada da seguinte forma:
 ```
@@ -263,9 +264,25 @@ Quando o usuário opta por exportar um relatório, o sistema salva o arquivo `.j
   `01_12_2025_20250527_235039.json`  
   (Relatório de eventos do dia 01/12/2025, exportado em 27/05/2025 às 23:50:39)
 
-### Versionamento automático
+#### Versionamento automático
 
 O uso do carimbo de data e hora no nome do arquivo garante que cada relatório exportado seja único, evitando sobrescritas e permitindo o histórico de versões dos relatórios gerados. Isso é especialmente útil para auditoria, acompanhamento de alterações e organização dos arquivos exportados.
+
+---
+
+### 4. Generate Test Data
+
+- O sistema solicitará a quantidade de eventos e participantes que você deseja gerar.  
+- Para cada tipo de dado:
+  - **Eventos**: Serão gerados eventos aleatórios com títulos, datas, modalidades e outros atributos fictícios.  
+  - **Participantes**: Serão gerados participantes aleatórios com nomes, CPFs, e-mails e outros atributos fictícios.  
+- Após a geração, o sistema exibirá uma mensagem de sucesso indicando a quantidade de dados gerados.  
+
+---
+
+### 5. Exit
+
+- Encerra o sistema e salva os dados nos arquivos JSON (`participants.json` e `events.json`).
 
 ---
 
@@ -283,8 +300,8 @@ O uso do carimbo de data e hora no nome do arquivo garante que cada relatório e
 
 - **CPF:** Validação completa de formato e dígito verificador.  
 - **E-mail:** Validação de formato.  
-- **Telefone:** Aceita formatos como `71 91234-5678`, `071 91234-5678`, etc.  
-- **Campos obrigatórios:** Nome, e-mail, telefone, matrícula (para aluno), ID e departamento (para professor), papel (para externo).
+- **Data:** Validação de formato.  
+- **Telefone:** Aceita formatos como `71 91234-5678`, `081 91234-5678`, etc.  
 
 ---
 
@@ -292,42 +309,69 @@ O uso do carimbo de data e hora no nome do arquivo garante que cada relatório e
 
 O projeto está organizado para facilitar a manutenção, entendimento e expansão do sistema. Abaixo, uma explicação das principais pastas e arquivos:
 
+```
 acadevents/  
 ├── participants.json  
 ├── events.json  
-├── pom.xml  
 └── src/  
-  └── main/  
-    └── java/  
-      └── acad_events/  
-        └── acadevents/  
-          ├── AcadEvents.java  
-          ├── models/  
-          ├── ui/  
-          └── common/  
+    └── main/  
+        └── java/  
+            └── acad_events/  
+                └── acadevents/  
+                    ├── AcadEvents.java  
+                    ├── models/  
+                    │   ├── event/  
+                    │   ├── participant/  
+                    ├── controllers/  
+                    ├── repositories/  
+                    ├── ui/  
+                    │   ├── menu/  
+                    │   │   ├── subMenus/  
+                    │   │   └── enums/  
+                    │   └── functionalities/  
+                    │       ├── forms/  
+                    │       ├── enums/  
+                    └── common/  
+                        ├── DTOs/  
+                        └── utils/  
+```
 
 ### Resumo das responsabilidades:
 
 - **models/**  
-  - **event/**: Toda a lógica e entidades relacionadas a eventos.
-  - **participant/**: Toda a lógica e entidades relacionadas a participantes.
-  - **integration/**: Lógica de integração entre eventos e participantes (ex: inscrição, geração de certificados).
+  - **event/**: Entidades relacionadas a eventos.  
+  - **participant/**: Entidades relacionadas a participantes.  
+ 
+
+- **controllers/**  
+  Contém os controladores responsáveis por gerenciar a lógica de negócios e intermediar a comunicação entre as camadas de interface e repositórios.  
+
+- **repositories/**  
+  Contém a lógica de persistência e manipulação de dados nos arquivos JSON.  
 
 - **ui/**  
-  - **menu/**: Menus de navegação do sistema.
-  - **functionalities/**: Implementação das funcionalidades acionadas pelos menus.
-    - **forms/**: Formulários para entrada de dados de eventos e participantes.
-    - **enums/**: Enums auxiliares para navegação e seleção na interface.
+  - **menu/**:  
+    - **subMenus/**: Contém os menus específicos para cada funcionalidade (ex: `EventMenu`, `ParticipantMenu`, `ReportMenu`).  
+    - **enums/**: Enums auxiliares para navegação e seleção de opções nos menus.  
+    - **MenuController.java**: Controlador principal que gerencia a navegação entre os menus.  
+  - **functionalities/**:  
+    - **forms/**: Formulários para entrada de dados de eventos e participantes.  
+    - **enums/**: Enums auxiliares para funcionalidades específicas (ex: `EventReportOption`, `InputResult`).  
+    - **BaseFunctionalities.java**: Classe base para funcionalidades compartilhadas entre diferentes tipos de operações.  
+    - **EventFunctionalities.java**: Funcionalidades relacionadas a eventos (criação, listagem, remoção, relatórios).  
+    - **ParticipantFunctionalities.java**: Funcionalidades relacionadas a participantes (cadastro, remoção, listagem, inscrição).  
+    - **IntegrationFunctionalities.java**: Funcionalidades de integração entre eventos e participantes (inscrição, geração de certificados).  
 
 - **common/**  
-  - **DTOs/**: Objetos de transferência de dados (Data Transfer Objects) usados para comunicação entre camadas.
-  - **utils/**: Enum e interfaces compartilhados pelo sistema, funções utilitárias para validação, exibição, etc.
-
-- **participants.json / events.json**  
-  Arquivos de persistência dos dados em formato JSON.
-
-- **pom.xml**  
-  Gerenciador de dependências e build do Maven.
+  - **DTOs/**: Objetos de transferência de dados (Data Transfer Objects) usados para comunicação entre camadas.  
+  - **utils/**:  
+    - **enums/**: Enums compartilhados pelo sistema.  
+    - **interfaces/**: Interfaces para padronização de comportamentos no sistema.  
+    - **ValidatorInputs.java**: Classe utilitária para validação de entradas do usuário.  
+    - **StyleStrings.java**: Strings de estilo para formatação de texto no console.  
+    - **TextBoxUtils.java**: Funções utilitárias para exibição de mensagens formatadas no console.  
+    - **MenuUtils.java**: Funções utilitárias para manipulação de menus.  
+    - **TestDataGenerator.java**: Gerador de dados de participantes e eventos com finalidade de facilitar testes.  
 
 - **AcadEvents.java**  
   Ponto de entrada do sistema.

@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.participant;
+package acad_events.acadevents.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +12,7 @@ import acad_events.acadevents.models.participant.entities.External;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.models.participant.entities.Professor;
 import acad_events.acadevents.models.participant.entities.Student;
+import acad_events.acadevents.repositories.ParticipantRepository;
 
 public class ParticipantController {
 

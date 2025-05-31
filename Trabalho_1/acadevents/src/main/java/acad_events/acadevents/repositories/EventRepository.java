@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.event;
+package acad_events.acadevents.repositories;
 
 import java.io.FileReader;
 import java.io.FileWriter;

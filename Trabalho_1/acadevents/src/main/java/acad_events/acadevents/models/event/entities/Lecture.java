@@ -1,6 +1,6 @@
 package acad_events.acadevents.models.event.entities;
 
-import acad_events.acadevents.models.event.entities.enums.Modality;
+import acad_events.acadevents.models.event.enums.Modality;
 
 public class Lecture extends Event {
     private String speaker;

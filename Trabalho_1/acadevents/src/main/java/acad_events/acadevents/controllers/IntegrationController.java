@@ -1,11 +1,12 @@
-package acad_events.acadevents.models.integration;
+package acad_events.acadevents.controllers;
 
 import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
 import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
 import acad_events.acadevents.common.utils.enums.EventType;
-import acad_events.acadevents.models.event.EventRepository;
-import acad_events.acadevents.models.participant.ParticipantRepository;
 import acad_events.acadevents.models.participant.entities.Participant;
+import acad_events.acadevents.repositories.EventRepository;
+import acad_events.acadevents.repositories.ParticipantRepository;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;

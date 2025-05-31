@@ -2,11 +2,11 @@ package acad_events.acadevents.common.utils;
 
 import acad_events.acadevents.common.DTOs.eventDTOs.*;
 import acad_events.acadevents.common.DTOs.participantDTOs.*;
-import acad_events.acadevents.models.event.EventController;
-import acad_events.acadevents.models.event.entities.enums.Modality;
-import acad_events.acadevents.models.participant.ParticipantController;
-import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
-import acad_events.acadevents.models.participant.entities.enums.ExternalRole;
+import acad_events.acadevents.controllers.EventController;
+import acad_events.acadevents.controllers.ParticipantController;
+import acad_events.acadevents.models.event.enums.Modality;
+import acad_events.acadevents.models.participant.enums.AcademyDepartment;
+import acad_events.acadevents.models.participant.enums.ExternalRole;
 
 import java.util.Random;
 

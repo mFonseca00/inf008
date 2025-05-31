@@ -1,6 +1,6 @@
 package acad_events.acadevents.models.participant.entities;
 
-import acad_events.acadevents.models.participant.entities.enums.AcademyDepartment;
+import acad_events.acadevents.models.participant.enums.AcademyDepartment;
 
 public class Professor extends Participant{
     private String employeeId;

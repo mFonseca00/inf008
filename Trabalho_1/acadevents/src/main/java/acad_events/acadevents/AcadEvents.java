@@ -1,10 +1,10 @@
 package acad_events.acadevents;
 
-import acad_events.acadevents.models.event.EventController;
-import acad_events.acadevents.models.event.EventRepository;
-import acad_events.acadevents.models.integration.IntegrationController;
-import acad_events.acadevents.models.participant.ParticipantController;
-import acad_events.acadevents.models.participant.ParticipantRepository;
+import acad_events.acadevents.controllers.EventController;
+import acad_events.acadevents.controllers.IntegrationController;
+import acad_events.acadevents.controllers.ParticipantController;
+import acad_events.acadevents.repositories.EventRepository;
+import acad_events.acadevents.repositories.ParticipantRepository;
 import acad_events.acadevents.ui.functionalities.EventFunctionalities;
 import acad_events.acadevents.ui.functionalities.IntegrationFunctionalities;
 import acad_events.acadevents.ui.functionalities.ParticipantFunctionalities;

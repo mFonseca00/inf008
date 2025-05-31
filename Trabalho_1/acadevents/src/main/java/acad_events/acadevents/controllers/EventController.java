@@ -1,4 +1,4 @@
-package acad_events.acadevents.models.event;
+package acad_events.acadevents.controllers;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,6 +26,7 @@ import acad_events.acadevents.models.event.entities.Fair;
 import acad_events.acadevents.models.event.entities.Lecture;
 import acad_events.acadevents.models.event.entities.Workshop;
 import acad_events.acadevents.models.participant.entities.Participant;
+import acad_events.acadevents.repositories.EventRepository;
 
 public class EventController {
 
