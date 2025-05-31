@@ -52,6 +52,12 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         boolean enrolledOnline = selectedEvent.getOnlineParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
         boolean alreadyEnrolled = enrolledOnline || enrolledPresential? true : false;
+
+        if (alreadyEnrolled) {
+            TextBoxUtils.printError("Participant is already enrolled in this event.");
+            return false;
+        }
+
         boolean added = false;
         switch (selectedEvent.getModality()) {
             case PRESENTIAL:
@@ -59,27 +65,19 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                     TextBoxUtils.printError("Capacity limit reached. Cannot enroll participant.");
                     return false;
                 }
-                if (alreadyEnrolled) {
-                    TextBoxUtils.printError("Participant is already enrolled in this event.");
-                    return false;
-                }
                 added = integrationController.enrollPresentialParticipantInEvent(participant, selectedEvent.getId());
                 break;
             case ONLINE:
-                if (alreadyEnrolled) {
-                    TextBoxUtils.printError("Participant is already enrolled in this event.");
-                    return false;
-                }
                 added = integrationController.enrollOnlineParticipantInEvent(participant, selectedEvent.getId());
                 break;
             case HYBRID:
-                if (alreadyEnrolled) {
-                    TextBoxUtils.printError("Participant is already enrolled in this event.");
-                    return false;
-                }
                 Modality modality = EventForm.selectPresentialOrOnlineModality(scan);
                 if (modality == null) return false;
                 if (modality == Modality.PRESENTIAL) {
+                    if (presentialCount >= capacity) {
+                        TextBoxUtils.printError("Capacity limit reached for presential event. Cannot enroll participant.");
+                        return false;
+                    }
                     added = integrationController.enrollPresentialParticipantInEvent(participant, selectedEvent.getId());
                 } else if (modality == Modality.ONLINE) {
                     added = integrationController.enrollOnlineParticipantInEvent(participant, selectedEvent.getId());
