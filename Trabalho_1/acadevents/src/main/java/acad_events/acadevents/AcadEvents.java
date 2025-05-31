@@ -19,25 +19,17 @@ public class AcadEvents {
     private static final String EVENTS_FILENAME = "events.json";
 
     public static void main(String[] args) {
-        // Initialize participants
         ParticipantController participantController = initializeParticipants();
-
-        // Initialize events
         EventController eventController = initializeEvents();
-
-        // Initialize integration
         IntegrationController integrationController = initializeIntegration(participantController, eventController);
 
-        // Instantiate functionalities
         ParticipantFunctionalities partFunctions = new ParticipantFunctionalities(eventController, participantController);
         EventFunctionalities eventFunctions = new EventFunctionalities(eventController, participantController);
         IntegrationFunctionalities integrFunctions = new IntegrationFunctionalities(participantController, eventController, integrationController);
 
-        // Initialize and run the menu
         MenuController menu = new MenuController(partFunctions, eventFunctions, integrFunctions);
         menu.run();
 
-        // Save data on exit
         saveData(participantController.getRepository(), eventController.getRepository());
     }
 

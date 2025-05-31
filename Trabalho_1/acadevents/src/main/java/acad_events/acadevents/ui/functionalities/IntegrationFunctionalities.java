@@ -39,17 +39,14 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         EventDTO selectedEvent = selectEventByWay(scan, "enroll");
         if (selectedEvent == null) return false;
 
-        // Verifica capacidade na lista correta
         int presentialCount = selectedEvent.getPresentialParticipants().size();
         int capacity = selectedEvent.getCapacity();
 
-        // Regra para cursos
         if (selectedEvent instanceof CourseDTO && !(participant instanceof StudentDTO)) {
             TextBoxUtils.printError("Only students can enroll in courses.");
             return false;
         }
 
-        // Decide a modalidade e chama o método correto do IntegrationController
         boolean enrolledPresential = selectedEvent.getPresentialParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
         boolean enrolledOnline = selectedEvent.getOnlineParticipants().stream()
@@ -91,7 +88,6 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
 
         if (added) {
-            // Atualiza o DTO para refletir o estado real após a inscrição
             EventDTO updatedEvent = eventController.getEventById(selectedEvent.getId());
             selectedEvent.setPresentialParticipants(updatedEvent.getPresentialParticipants());
             selectedEvent.setOnlineParticipants(updatedEvent.getOnlineParticipants());
@@ -155,7 +151,6 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
 
         if (removed) {
-            // Atualiza o DTO para refletir o estado real após a remoção
             EventDTO updatedEvent = eventController.getEventById(selectedEvent.getId());
             selectedEvent.setPresentialParticipants(updatedEvent.getPresentialParticipants());
             selectedEvent.setOnlineParticipants(updatedEvent.getOnlineParticipants());
@@ -176,10 +171,8 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
             return false;
         }
 
-        // Obtém todos os eventos
         Collection<EventDTO> allEvents = eventController.listAll();
 
-        // Filtra os eventos em que o participante está inscrito
         List<EventDTO> enrolledEvents = allEvents.stream()
             .filter(event -> event.getPresentialParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf())) ||

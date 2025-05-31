@@ -22,15 +22,12 @@ public class EventFunctionalities extends BaseFunctionalities {
         super(eventController, participantController);
     }
 
-    // cadastrar/criar novo evento (todos os tipos)
     public  boolean create(Scanner scan){
 
         EventDTO event = new EventDTO();
-        // Dados comuns
         if(EventForm.registerTitle(scan, event) == InputResult.CANCELLED) return false;
         if(EventForm.registerDate(scan, event) == InputResult.CANCELLED) return false;
 
-        // Verifica duplicidade
         if(eventController.existsEventByTitleAndDate(event.getTitle(), event.getDate())) {
             TextBoxUtils.printError("An event with this title and date already exists!");
             return false;
@@ -75,7 +72,6 @@ public class EventFunctionalities extends BaseFunctionalities {
         return true;
     }
 
-    // Remoção pode ser realizada por ID, a partir da lista geral ou a partir de um atributo
     public  boolean remove(Scanner scan) {
         EventDTO dtoToRemove = selectEventByWay(scan, "remove");
         if (dtoToRemove == null) return false;
@@ -89,7 +85,6 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
     }
 
-    // Lista todos os eventos
     public void listAll(){
         Collection<EventDTO> events = eventController.listAll();
         if(events.isEmpty()){
@@ -98,13 +93,12 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
         TextBoxUtils.printTitle("Registered events:");
         for(EventDTO e : events){
-            String type = e.getClass().getSimpleName().replace("DTO", ""); // remove DTO from name
+            String type = e.getClass().getSimpleName().replace("DTO", ""); 
             TextBoxUtils.printLeftText(type + ": " + e.getTitle() + "   Modality: " + e.getModality().toString().toLowerCase() + "   Date: " + e.getDate() + "   Location: " + e.getLocation());
             TextBoxUtils.printUnderLineDisplayDivisor();
         }
     }
 
-    // Gera relatório de eventos
     public void generateReport(Scanner scan, EventReportOption reportOption) {
         List<EventDTO> events;
         String reportedValue;
@@ -146,7 +140,6 @@ public class EventFunctionalities extends BaseFunctionalities {
         switch (exportOption) {
             case YES:
                 try {
-                    // Sanitizar o nome do arquivo
                     String sanitizedFileName = sanitizeFileName(reportedValue) + ".json";
                     String filePath = eventController.exportReportToJson(events, reportOption.getDescription(), sanitizedFileName);
                     TextBoxUtils.printSuccess("Report exported to... 'reports/" + filePath + "'");
@@ -159,13 +152,10 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
     }
 
-    // Método para sanitizar o nome do arquivo
     private static String sanitizeFileName(String input) {
-        // Remover acentos e normalizar
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         String withoutAccents = normalized.replaceAll("\\p{M}", "");
 
-        // Remover caracteres inválidos para nomes de arquivos
         return withoutAccents.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
     }
 

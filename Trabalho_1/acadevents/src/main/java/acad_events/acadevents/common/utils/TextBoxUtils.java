@@ -109,7 +109,6 @@ public class TextBoxUtils {
 
         int maxLines = Math.max(lines1.size(), Math.max(lines2.size(), lines3.size()));
 
-        // Linha de divisão superior
         System.out.println(displayLimitator + "_".repeat(colWidth1) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth2) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth3) + displayLimitator);
@@ -129,7 +128,6 @@ public class TextBoxUtils {
                                 part3 + displayLimitator);
         }
 
-        // Linha de divisão inferior
         System.out.println(displayLimitator + "_".repeat(colWidth1) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth2) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth3) + displayLimitator);

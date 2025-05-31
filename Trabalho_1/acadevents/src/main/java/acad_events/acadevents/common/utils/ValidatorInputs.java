@@ -35,14 +35,13 @@ public class ValidatorInputs {
     public static boolean isValidPhone(String phone){
         if (phone == null) return false;
 
-        // Permite apenas números, números com espaço ou números com espaço e traço
-        if (!phone.matches("^\\d{2} \\d{4}-\\d{4}$") &&   // 71 1111-1111
-            !phone.matches("^\\d{2} \\d{5}-\\d{4}$") &&   // 71 11111-1111
-            !phone.matches("^\\d{3} \\d{4}-\\d{4}$") &&   // 071 1111-1111
-            !phone.matches("^\\d{3} \\d{5}-\\d{4}$") &&   // 071 11111-1111
-            !phone.matches("^\\d{10,11}$") &&             // Apenas números (10 ou 11 dígitos)
-            !phone.matches("^\\d{2} \\d{8,9}$") &&        // Com espaço (10 ou 11 dígitos)
-            !phone.matches("^\\d{3} \\d{7,8}$"))          // Com espaço (10 ou 11 dígitos)
+        if (!phone.matches("^\\d{2} \\d{4}-\\d{4}$") &&   // 11 1111-1111
+            !phone.matches("^\\d{2} \\d{5}-\\d{4}$") &&   // 11 11111-1111
+            !phone.matches("^\\d{3} \\d{4}-\\d{4}$") &&   // 111 1111-1111
+            !phone.matches("^\\d{3} \\d{5}-\\d{4}$") &&   // 111 11111-1111
+            !phone.matches("^\\d{10,11}$") &&             // (10 or 11 digits)
+            !phone.matches("^\\d{2} \\d{8,9}$") &&        // (10 ou 11 digits)
+            !phone.matches("^\\d{3} \\d{7,8}$"))          // (10 ou 11 digits)
             return false;
 
         return true;

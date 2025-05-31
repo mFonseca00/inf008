@@ -23,7 +23,6 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         ParticipantDTO participant = new ParticipantDTO();
         if(ParticipantForm.registerCpf(scan, participant) == InputResult.CANCELLED) return false;
 
-        // Verifica se já existe participante com o mesmo CPF
         if (participantController.existsByCPF(participant.getCpf())) {
             TextBoxUtils.printError("A participant with this CPF already exists!");
             return false;
@@ -33,7 +32,6 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         if(ParticipantForm.registerEmail(scan, participant) == InputResult.CANCELLED) return false;
         if(ParticipantForm.registerPhone(scan, participant) == InputResult.CANCELLED) return false;
 
-        // seleciona o tipo de participante (student, professor, external)
         ParticipantTypeOption type = ParticipantForm.selectType(scan);
 
         switch(type){
