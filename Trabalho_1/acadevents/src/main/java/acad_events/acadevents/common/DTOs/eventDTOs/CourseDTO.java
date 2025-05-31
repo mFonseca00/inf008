@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.DTOs.eventDTOs;
+package acad_events.acadevents.common.dtos.eventdtos;
 
 public class CourseDTO extends EventDTO{
     private String coordinator;

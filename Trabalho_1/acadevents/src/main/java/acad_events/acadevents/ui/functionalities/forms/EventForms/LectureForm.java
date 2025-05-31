@@ -1,7 +1,8 @@
 package acad_events.acadevents.ui.functionalities.forms.EventForms;
 
 import java.util.Scanner;
-import acad_events.acadevents.common.DTOs.eventDTOs.LectureDTO;
+
+import acad_events.acadevents.common.dtos.eventdtos.LectureDTO;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 

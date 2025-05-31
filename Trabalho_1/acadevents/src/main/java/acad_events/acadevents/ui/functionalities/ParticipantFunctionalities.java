@@ -3,10 +3,10 @@ package acad_events.acadevents.ui.functionalities;
 import java.util.Collection;
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.participantDTOs.*;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.controllers.EventController;
 import acad_events.acadevents.controllers.ParticipantController;
+import acad_events.acadevents.common.dtos.participantdtos.*;
 import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.ui.functionalities.enums.*;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;

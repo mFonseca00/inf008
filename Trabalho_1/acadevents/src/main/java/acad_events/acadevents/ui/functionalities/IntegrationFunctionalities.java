@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-import acad_events.acadevents.common.DTOs.eventDTOs.CourseDTO;
-import acad_events.acadevents.common.DTOs.eventDTOs.EventDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.StudentDTO;
+import acad_events.acadevents.common.dtos.eventdtos.CourseDTO;
+import acad_events.acadevents.common.dtos.eventdtos.EventDTO;
+import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.dtos.participantdtos.StudentDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.controllers.EventController;

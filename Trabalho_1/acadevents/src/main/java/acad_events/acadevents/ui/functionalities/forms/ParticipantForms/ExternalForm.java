@@ -1,7 +1,8 @@
 package acad_events.acadevents.ui.functionalities.forms.ParticipantForms;
 
 import java.util.Scanner;
-import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
+
+import acad_events.acadevents.common.dtos.participantdtos.ExternalDTO;
 import acad_events.acadevents.common.utils.MenuUtils;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.FieldValidatorType;

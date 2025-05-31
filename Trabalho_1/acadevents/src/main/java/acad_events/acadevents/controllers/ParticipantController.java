@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import acad_events.acadevents.common.DTOs.participantDTOs.ExternalDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.ParticipantDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.ProfessorDTO;
-import acad_events.acadevents.common.DTOs.participantDTOs.StudentDTO;
+import acad_events.acadevents.common.dtos.participantdtos.ExternalDTO;
+import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.dtos.participantdtos.ProfessorDTO;
+import acad_events.acadevents.common.dtos.participantdtos.StudentDTO;
 import acad_events.acadevents.models.participant.entities.External;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.models.participant.entities.Professor;

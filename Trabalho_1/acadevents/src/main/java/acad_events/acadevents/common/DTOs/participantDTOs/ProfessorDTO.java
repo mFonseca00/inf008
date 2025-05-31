@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.DTOs.participantDTOs;
+package acad_events.acadevents.common.dtos.participantdtos;
 
 import acad_events.acadevents.models.participant.enums.AcademyDepartment;
 
