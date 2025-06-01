@@ -212,7 +212,12 @@ public class EventForm extends BaseForm {
             TextBoxUtils.printTitle("Select an event");
             for (int i = 0; i < events.size(); i++) {
                 EventDTO event = events.get(i);
-                TextBoxUtils.printLeftText((i + 1) + " - " + event.getClass().getSimpleName() + " " + event.getModality().toString().toLowerCase() + " " + event.getTitle() + " Date: " + event.getDate() + " Location: " + event.getLocation());
+                String className = event.getClass().getSimpleName().replace("DTO", "");
+                TextBoxUtils.printLeftText((i + 1) + " - " + className + "  "
+                                                   + event.getModality().toString().toLowerCase()
+                                                   + "  " + event.getTitle()
+                                                   + "  Date: " + event.getDate()
+                                                   + "  Location: " + event.getLocation());
             }
             TextBoxUtils.printUnderLineDisplayDivisor();
             String inputStr = TextBoxUtils.inputLine(scan, "Select event number or 'cancel': ");

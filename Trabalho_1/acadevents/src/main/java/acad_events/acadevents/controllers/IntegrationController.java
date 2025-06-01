@@ -2,13 +2,12 @@ package acad_events.acadevents.controllers;
 
 import acad_events.acadevents.common.dtos.eventdtos.EventDTO;
 import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.repositories.EventRepository;
 import acad_events.acadevents.repositories.ParticipantRepository;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,20 +53,35 @@ public class IntegrationController {
         if(participantDTO == null || eventDTO == null){
             return "Participant or event not found.";
         }
-        // Verifica se está em alguma das listas
-        boolean isEnrolled = eventDTO.getPresentialParticipants().stream()
-            .anyMatch(p -> p.getCpf().equals(participantDTO.getCpf()))
-            || eventDTO.getOnlineParticipants().stream()
-            .anyMatch(p -> p.getCpf().equals(participantDTO.getCpf()));
-        if (!isEnrolled) {
+        boolean presentialEnrolled = false;
+        boolean onlineEnrolled = false;
+        for (ParticipantDTO p : eventDTO.getPresentialParticipants()) {
+            if (p.getCpf().equals(participantDTO.getCpf())) {
+                presentialEnrolled = true;
+                break;
+            }
+        }
+
+        if (!presentialEnrolled) {
+            for (ParticipantDTO p : eventDTO.getOnlineParticipants()) {
+                if (p.getCpf().equals(participantDTO.getCpf())) {
+                    onlineEnrolled = true;
+                    break;
+                }
+            }
+        }
+
+        if (!onlineEnrolled && !presentialEnrolled) {
             return "Participant is not enrolled in this event.";
         }
-        return "We certify that " + participantDTO.getName() +
-               " participated in the " + eventType + " " + eventDTO.getTitle() +
+
+        String certificateContent = "We certify that " + participantDTO.getName() +
+               " participated in the " + eventType + ": " + eventDTO.getTitle() +
                "\" held on " + eventDTO.getDate() + ".";
+        return TextBoxUtils.formatedCertificateText(certificateContent);
     }
 
-    public void exportCertificateToJson(String certificateText, String participantName, String eventTitle, String eventDate) throws IOException {
+    public void exportCertificateToTxt(String certificateText, String participantName, String eventTitle, String eventDate) throws IOException {
         File certificatesDir = new File("certificates");
         if (!certificatesDir.exists()) {
             certificatesDir.mkdir();
@@ -75,11 +89,11 @@ public class IntegrationController {
         String safeParticipant = participantName.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
         String safeEvent = eventTitle.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
         String safeDate = eventDate.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
-        String fileName = "certificate_" + safeParticipant + "_" + safeEvent + "_" + safeDate + ".json";
+        String fileName = "certificate_" + safeParticipant + "_" + safeEvent + "_" + safeDate + ".txt";
         String filePath = "certificates" + File.separator + fileName;
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         try (FileWriter writer = new FileWriter(filePath)) {
-            gson.toJson(certificateText, writer);
+            writer.write(certificateText);
         }
     }
 }

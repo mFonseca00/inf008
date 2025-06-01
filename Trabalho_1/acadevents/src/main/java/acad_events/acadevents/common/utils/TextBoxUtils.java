@@ -1,6 +1,8 @@
 package acad_events.acadevents.common.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -131,6 +133,53 @@ public class TextBoxUtils {
         System.out.println(displayLimitator + "_".repeat(colWidth1) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth2) + "_".repeat(colPadding) + displayLimitator +
                            "_".repeat(colWidth3) + displayLimitator);
+    }
+
+    public static String formatedCertificateText(String text) {
+        StringBuilder certificateBuilder = new StringBuilder();
+        String inputText = (text == null) ? "" : text;
+
+        certificateBuilder.append(" " + "_".repeat(width - (displayLimitator.length()*2)))
+                          .append(System.lineSeparator())
+                          .append(displayLimitator)
+                          .append(centerTextContent("AcadEvents Certificate"))
+                          .append(displayLimitator)
+                          .append(System.lineSeparator());
+
+        certificateBuilder.append(emptyLine()).append(System.lineSeparator());
+        certificateBuilder.append(emptyLine()).append(System.lineSeparator());
+
+        int contentWidth = width - (displayLimitator.length() * 2);
+        List<String> textLines = wrapText(inputText, contentWidth);
+
+        if (textLines.isEmpty()) {
+             certificateBuilder.append(displayLimitator)
+                               .append(centerTextContent(""))
+                               .append(displayLimitator)
+                               .append(System.lineSeparator());
+        } else {
+            for (String line : textLines) {
+                certificateBuilder.append(displayLimitator)
+                                  .append(centerTextContent(line))
+                                  .append(displayLimitator)
+                                  .append(System.lineSeparator());
+            }
+        }
+        
+        certificateBuilder.append(emptyLine()).append(System.lineSeparator());
+        certificateBuilder.append(emptyLine()).append(System.lineSeparator());
+
+        SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = date.format(new Date());
+        String dateLine = "Certified at: " + currentDate;
+
+        certificateBuilder.append(displayLimitator)
+                          .append(centerTextContent(dateLine))
+                          .append(displayLimitator)
+                          .append(System.lineSeparator())
+                          .append(displayLimitator + "_".repeat(width - (displayLimitator.length()*2)) + displayLimitator);
+    
+        return certificateBuilder.toString();
     }
 
     private static String padRight(String text, int length) {

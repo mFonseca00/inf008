@@ -19,40 +19,68 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
     }
 
     public boolean registerNew(Scanner scan){
-
+        TextBoxUtils.printTitle("Register New Participant");
         ParticipantDTO participant = new ParticipantDTO();
-        if(ParticipantForm.registerCpf(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.registerCpf(scan, participant) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Participant registration cancelled by user (CPF input).");
+            return false;
+        }
 
         if (participantController.existsByCPF(participant.getCpf())) {
             TextBoxUtils.printError("A participant with this CPF already exists!");
             return false;
         }
 
-        if(ParticipantForm.registerName(scan, participant) == InputResult.CANCELLED) return false;
-        if(ParticipantForm.registerEmail(scan, participant) == InputResult.CANCELLED) return false;
-        if(ParticipantForm.registerPhone(scan, participant) == InputResult.CANCELLED) return false;
+        if(ParticipantForm.registerName(scan, participant) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Participant registration cancelled by user (Name input).");
+            return false;
+        }
+        if(ParticipantForm.registerEmail(scan, participant) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Participant registration cancelled by user (Email input).");
+            return false;
+        }
+        if(ParticipantForm.registerPhone(scan, participant) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Participant registration cancelled by user (Phone input).");
+            return false;
+        }
 
         ParticipantTypeOption type = ParticipantForm.selectType(scan);
 
         switch(type){
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
-                if(StudentForm.registerEnrollment(scan, student) == InputResult.CANCELLED) return false;
+                if(StudentForm.registerEnrollment(scan, student) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Student registration cancelled by user (Enrollment input).");
+                    return false;
+                }
                 participantController.register(student);
                 break;
             case PROFESSOR:
                 ProfessorDTO professor = new ProfessorDTO(participant);
-                if(ProfessorForm.registerEmployeeId(scan, professor) == InputResult.CANCELLED) return false;
-                if(ProfessorForm.selectDepartment(scan, professor) == InputResult.CANCELLED) return false;
+                if(ProfessorForm.registerEmployeeId(scan, professor) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Professor registration cancelled by user (Employee ID input).");
+                    return false;
+                }
+                if(ProfessorForm.selectDepartment(scan, professor) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Professor registration cancelled by user (Department selection).");
+                    return false;
+                }
                 participantController.register(professor);
                 break;
             case EXTERNAL:
                 ExternalDTO external = new ExternalDTO(participant);
-                if(ExternalForm.registerOrg(scan, external) == InputResult.CANCELLED) return false;
-                if(ExternalForm.selectRole(scan, external) == InputResult.CANCELLED) return false;
+                if(ExternalForm.registerOrg(scan, external) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("External participant registration cancelled by user (Organization input).");
+                    return false;
+                }
+                if(ExternalForm.selectRole(scan, external) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("External participant registration cancelled by user (Role selection).");
+                    return false;
+                }
                 participantController.register(external);
                 break;
             case CANCELLED:
+                TextBoxUtils.printWarn("Participant type selection cancelled by user.");
                 return false;
         }
         TextBoxUtils.printSuccess("Participant registered successfully!");
@@ -60,8 +88,12 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
     }
 
     public boolean remove(Scanner scan) {
+        TextBoxUtils.printTitle("Remove Participant");
         String cpf = ParticipantForm.readCpf(scan);
-        if (cpf == null) return false;
+        if (cpf == null) {
+            TextBoxUtils.printWarn("Participant removal cancelled by user (CPF input).");
+            return false;
+        }
         boolean removed = participantController.delete(cpf);
         if (removed) {
             TextBoxUtils.printSuccess("Participant removed from the system!");

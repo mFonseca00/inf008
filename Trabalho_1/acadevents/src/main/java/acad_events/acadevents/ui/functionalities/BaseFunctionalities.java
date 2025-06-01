@@ -30,23 +30,35 @@ public abstract class BaseFunctionalities {
             case ALL_LIST: {
                 List<EventDTO> allEvents = (List<EventDTO>) eventController.listAll();
                 if (allEvents.isEmpty()) {
-                    TextBoxUtils.printTitle("No events found.");
+                    TextBoxUtils.printError("No events found.");
                     return null;
                 }
                 selectedEvent = EventForm.selectEvent(scan, allEvents);
+                if (selectedEvent == null) {
+                    TextBoxUtils.printWarn("Event selection from list cancelled by user.");
+                }
                 break;
             }
             case ATTRIBUTE_LIST: {
                 String valueSearch = null;
                 EventAttribute attribute = EventForm.selectAttribute(scan);
-                if (attribute == EventAttribute.CANCELLED) return null;
+                if (attribute == EventAttribute.CANCELLED) {
+                    TextBoxUtils.printWarn("Attribute selection for event search cancelled by user.");
+                    return null;
+                }
                 if (attribute == EventAttribute.MODALITY) {
                     Modality modality = EventForm.selectModality(scan);
-                    if (modality == null) return null;
+                    if (modality == null) {
+                        TextBoxUtils.printWarn("Modality selection for event search cancelled by user.");
+                        return null;
+                    }
                     valueSearch = modality.toString();
                 } else {
                     valueSearch = TextBoxUtils.inputLine(scan, "Enter the value for " + attribute.getDescription() + " or 'cancel': ");
-                    if ("cancel".equalsIgnoreCase(valueSearch)) return null;
+                    if ("cancel".equalsIgnoreCase(valueSearch)) {
+                        TextBoxUtils.printWarn("Value input for attribute search cancelled by user.");
+                        return null;
+                    }
                 }
                 filteredEvents = eventController.listByAttribute(attribute, valueSearch);
                 if (filteredEvents.isEmpty()) {
@@ -54,22 +66,32 @@ public abstract class BaseFunctionalities {
                     return null;
                 }
                 selectedEvent = EventForm.selectEvent(scan, filteredEvents);
+                if (selectedEvent == null) {
+                    TextBoxUtils.printWarn("Event selection from attribute list cancelled by user.");
+                }
                 break;
             }
             case ID: {
                 String idStr = EventForm.readId(scan);
-                if (idStr == null || idStr.isBlank()) return null;
+                if (idStr == null) {
+                    TextBoxUtils.printWarn("ID input for event search cancelled by user.");
+                    return null;
+                }
+
                 Long id = Long.parseLong(idStr);
+                                                 
                 filteredEvents = (List<EventDTO>) eventController.listAll();
                 selectedEvent = filteredEvents.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
                 if (selectedEvent == null) {
                     TextBoxUtils.printError("No event found with the given ID.");
-                    return null;
                 }
                 break;
             }
             case CANCELLED:
+                TextBoxUtils.printWarn("Event selection method cancelled by user.");
+                return null;
             default:
+                TextBoxUtils.printWarn("Invalid event selection method.");
                 return null;
         }
         return selectedEvent;

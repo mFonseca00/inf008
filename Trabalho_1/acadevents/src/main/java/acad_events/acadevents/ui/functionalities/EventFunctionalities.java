@@ -23,49 +23,92 @@ public class EventFunctionalities extends BaseFunctionalities {
     }
 
     public  boolean create(Scanner scan){
-
+        TextBoxUtils.printTitle("Create New Event");
         EventDTO event = new EventDTO();
-        if(EventForm.registerTitle(scan, event) == InputResult.CANCELLED) return false;
-        if(EventForm.registerDate(scan, event) == InputResult.CANCELLED) return false;
+        if(EventForm.registerTitle(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Title input).");
+            return false;
+        }
+        if(EventForm.registerDate(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Date input).");
+            return false;
+        }
 
         if(eventController.existsEventByTitleAndDate(event.getTitle(), event.getDate())) {
             TextBoxUtils.printError("An event with this title and date already exists!");
             return false;
         }
 
-        if(EventForm.registerLocation(scan, event) == InputResult.CANCELLED) return false;
-        if(EventForm.registerCapacity(scan, event) == InputResult.CANCELLED) return false;
-        if(EventForm.registerDescription(scan, event) == InputResult.CANCELLED) return false;
-        if(EventForm.registerModality(scan, event) == InputResult.CANCELLED) return false;
+        if(EventForm.registerLocation(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Location input).");
+            return false;
+        }
+        if(EventForm.registerCapacity(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Capacity input).");
+            return false;
+        }
+        if(EventForm.registerDescription(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Description input).");
+            return false;
+        }
+        if(EventForm.registerModality(scan, event) == InputResult.CANCELLED) {
+            TextBoxUtils.printWarn("Event creation cancelled by user (Modality selection).");
+            return false;
+        }
 
         EventType type = EventForm.selectType(scan);
 
         switch(type){
             case COURSE:
                 CourseDTO course = new CourseDTO(event);
-                if(CourseForm.registerCoordinator(scan, course) == InputResult.CANCELLED) return false;
-                if(CourseForm.registerKnowledgeArea(scan, course) == InputResult.CANCELLED) return false;
-                if(CourseForm.registerTotalHours(scan, course) == InputResult.CANCELLED) return false;
+                if(CourseForm.registerCoordinator(scan, course) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Course creation cancelled by user (Coordinator input).");
+                    return false;
+                }
+                if(CourseForm.registerKnowledgeArea(scan, course) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Course creation cancelled by user (Knowledge Area input).");
+                    return false;
+                }
+                if(CourseForm.registerTotalHours(scan, course) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Course creation cancelled by user (Total Hours input).");
+                    return false;
+                }
                 eventController.create(course);
                 break;
             case LECTURE:
                 LectureDTO lecture = new LectureDTO(event);
-                if(LectureForm.registerSpeaker(scan, lecture) == InputResult.CANCELLED) return false;
+                if(LectureForm.registerSpeaker(scan, lecture) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Lecture creation cancelled by user (Speaker input).");
+                    return false;
+                }
                 eventController.create(lecture);
                 break;
             case FAIR:
                 FairDTO fair = new FairDTO(event);
-                if(FairForm.registerOrganizer(scan, fair) == InputResult.CANCELLED) return false;
-                if(FairForm.registerNumberOfStands(scan, fair) == InputResult.CANCELLED) return false;
+                if(FairForm.registerOrganizer(scan, fair) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Fair creation cancelled by user (Organizer input).");
+                    return false;
+                }
+                if(FairForm.registerNumberOfStands(scan, fair) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Fair creation cancelled by user (Number of Stands input).");
+                    return false;
+                }
                 eventController.create(fair);
                 break;
             case WORKSHOP:
                 WorkshopDTO workshop = new WorkshopDTO(event);
-                if(WorkshopForm.registerInstructor(scan, workshop) == InputResult.CANCELLED) return false;
-                if(WorkshopForm.registerDurationHours(scan, workshop) == InputResult.CANCELLED) return false;
+                if(WorkshopForm.registerInstructor(scan, workshop) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Workshop creation cancelled by user (Instructor input).");
+                    return false;
+                }
+                if(WorkshopForm.registerDurationHours(scan, workshop) == InputResult.CANCELLED) {
+                    TextBoxUtils.printWarn("Workshop creation cancelled by user (Duration Hours input).");
+                    return false;
+                }
                 eventController.create(workshop);
                 break;
             case CANCELLED:
+                TextBoxUtils.printWarn("Event type selection cancelled by user.");
                 return false;
         }
         TextBoxUtils.printSuccess("Event created successfully!");
@@ -73,8 +116,11 @@ public class EventFunctionalities extends BaseFunctionalities {
     }
 
     public  boolean remove(Scanner scan) {
+        TextBoxUtils.printTitle("Remove Event");
         EventDTO dtoToRemove = selectEventByWay(scan, "remove");
-        if (dtoToRemove == null) return false;
+        if (dtoToRemove == null) {
+            return false;
+        }
         boolean removed = eventController.delete(dtoToRemove.getId());
         if (removed) {
             TextBoxUtils.printSuccess("Event removed successfully.");
@@ -105,8 +151,15 @@ public class EventFunctionalities extends BaseFunctionalities {
         switch (reportOption) {
             case DATE:
                 String date = EventForm.readDate(scan);
+                if (date == null) {
+                    TextBoxUtils.printWarn("Date input for report cancelled by user.");
+                    return;
+                }
                 reportedValue = date;
-                if (date == null || date.isBlank()) return;
+                if (date.isBlank()) {
+                    TextBoxUtils.printWarn("Date input cannot be blank for the report.");
+                     return;
+                }
                 events = eventController.listByAttribute(EventAttribute.DATE, date);
                 if (events.isEmpty()) {
                     TextBoxUtils.printError("No events found for this date.");
@@ -115,8 +168,11 @@ public class EventFunctionalities extends BaseFunctionalities {
                 break;
             case TYPE:
                 EventType typeOption = EventForm.selectType(scan);
+                if (typeOption == EventType.CANCELLED) {
+                    TextBoxUtils.printWarn("Event type selection for report cancelled by user.");
+                    return;
+                }
                 reportedValue = typeOption.getDescription();
-                if (typeOption == EventType.CANCELLED) return;
                 events = eventController.listByType(typeOption);
                 if (events.isEmpty()) {
                     TextBoxUtils.printError("No events found for this type.");

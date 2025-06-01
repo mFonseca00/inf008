@@ -31,9 +31,13 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
 
     public boolean enrollParticipantInEvent(Scanner scan) {
         String cpf = ParticipantForm.readCpf(scan);
+        if (cpf == null) {
+            TextBoxUtils.printWarn("CPF input cancelled by user.");
+            return false;
+        }
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printError("Participant not found.");
+            TextBoxUtils.printError("Participant not found with the provided CPF.");
             return false;
         }
         EventDTO selectedEvent = selectEventByWay(scan, "enroll");
@@ -98,11 +102,15 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
     }
 
-    public boolean removeParticipantFromEvent(Scanner scan) {
+    public boolean removeParticipantFromEvent(Scanner scan) { // Not implemented
         String cpf = ParticipantForm.readCpf(scan);
+        if (cpf == null) {
+            TextBoxUtils.printWarn("CPF input cancelled by user.");
+            return false;
+        }
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printError("Participant not found.");
+            TextBoxUtils.printError("Participant not found with the provided CPF.");
             return false;
         }
         EventDTO selectedEvent = selectEventByWay(scan, "remove participant");
@@ -163,9 +171,13 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
 
     public boolean generateCertificate(Scanner scan){
         String cpf = ParticipantForm.readCpf(scan);
+        if (cpf == null) {
+            TextBoxUtils.printWarn("CPF input cancelled by user.");
+            return false; 
+        }
         ParticipantDTO participant = participantController.findParticipantByCPF(cpf);
         if (participant == null) {
-            TextBoxUtils.printError("Participant not found.");
+            TextBoxUtils.printError("Participant not found with the provided CPF.");
             return false;
         }
 
@@ -184,6 +196,10 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
 
         EventDTO selectedEvent = EventForm.selectEvent(scan, enrolledEvents);
+        if (selectedEvent == null) {
+            TextBoxUtils.printWarn("Event selection cancelled by user.");
+            return false;
+        }
         
         String certificateText = integrationController.generateCertificade(
             participant,
@@ -192,11 +208,11 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         );
 
         TextBoxUtils.printTitle("Certificate generated");
-        TextBoxUtils.printLeftText(certificateText);
+        System.out.println(certificateText);
         YesOrNoOption option = BaseForm.selectYesOrNo(scan, "Do you want to export the certificate?");
         if (option == YesOrNoOption.YES) {
             try {
-                integrationController.exportCertificateToJson(
+                integrationController.exportCertificateToTxt(
                     certificateText,
                     participant.getName(),
                     selectedEvent.getTitle(),

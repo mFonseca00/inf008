@@ -14,11 +14,16 @@ import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 public class ParticipantForm extends BaseForm{
 
     public static String readCpf(Scanner scan) {
-        return ValidatorInputs.formatCPF(readField(
+        String cpfInput = readField(
             scan,
             "Enter CPF (format: xxx.xxx.xxx-xx) or 'cancel': ",
             "Invalid CPF.",
-            true, FieldValidatorType.CPF));
+            true, FieldValidatorType.CPF);
+
+        if (cpfInput == null) {
+            return null;
+        }
+        return ValidatorInputs.formatCPF(cpfInput);
     }
 
     public static InputResult registerCpf(Scanner scan, ParticipantDTO dto){
