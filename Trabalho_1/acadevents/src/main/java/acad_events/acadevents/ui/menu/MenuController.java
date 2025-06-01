@@ -99,8 +99,8 @@ public class MenuController {
                     partFunctions.registerNew(scan);
                     TextBoxUtils.pause(scan);
                     break;
-                case DELETE_PARTICIPANT:
-                    partFunctions.remove(scan);
+                case REMOVE_PARTICIPANT:
+                    partFunctions.remove(scan, integrFunctions); 
                     TextBoxUtils.pause(scan);
                     break;
                 case LIST_PARTICIPANTS:
@@ -154,6 +154,6 @@ public class MenuController {
         partFunctions.generateRandomParticipant(scan);
         eventFunctions.generateRandomEvent(scan);
         TextBoxUtils.printSuccess("Generation finished.");
-        TextBoxUtils.pause(new Scanner(System.in));
+        TextBoxUtils.pause(scan);
     }
 }

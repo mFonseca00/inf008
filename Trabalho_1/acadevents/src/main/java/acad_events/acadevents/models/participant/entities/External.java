@@ -17,5 +17,12 @@ public class External extends Participant{
         return "External participant" + super.toString() + " organization=" + organization + ", role=" + role + "]";
     }
 
+    public String getOrganization() {
+        return organization;
+    }
+
+    public ExternalRole getRole() {
+        return role;
+    }
 
 }

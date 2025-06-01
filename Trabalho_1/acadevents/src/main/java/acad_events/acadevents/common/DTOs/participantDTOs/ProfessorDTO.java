@@ -14,6 +14,10 @@ public class ProfessorDTO extends ParticipantDTO{
         this.setPhone(basic.getPhone());
     }
 
+    public ProfessorDTO() {
+        
+    }
+
     public String getEmployeeId() {
         return employeeId;
     }

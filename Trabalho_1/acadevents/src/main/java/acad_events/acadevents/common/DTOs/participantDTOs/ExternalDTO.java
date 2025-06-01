@@ -13,6 +13,9 @@ public class ExternalDTO extends ParticipantDTO{
         this.setPhone(basic.getPhone());
     }
 
+    public ExternalDTO() {
+    }
+
     public String getOrganization() {
         return organization;
     }

@@ -87,20 +87,39 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         return true;
     }
 
-    public boolean remove(Scanner scan) {
-        TextBoxUtils.printTitle("Remove Participant");
+    public boolean remove(Scanner scan, IntegrationFunctionalities integrationFuncs) {
+        TextBoxUtils.printTitle("Remove Participant from System");
         String cpf = ParticipantForm.readCpf(scan);
         if (cpf == null) {
-            TextBoxUtils.printWarn("Participant removal cancelled by user (CPF input).");
+            TextBoxUtils.printWarn("CPF input cancelled. Participant removal aborted.");
             return false;
         }
-        boolean removed = participantController.delete(cpf);
-        if (removed) {
-            TextBoxUtils.printSuccess("Participant removed from the system!");
-        } else {
-            TextBoxUtils.printError("Participant not found.");
+
+        ParticipantDTO participantToDelete = participantController.findParticipantByCPF(cpf);
+
+        if (participantToDelete == null) {
+            TextBoxUtils.printError("Participant with CPF " + cpf + " not found.");
+            return false;
         }
-        return removed;
+
+        TextBoxUtils.printWarn("Participant found: " + participantToDelete.getName());
+        
+        YesOrNoOption confirmation = BaseForm.selectYesOrNo(scan, "Are you sure you want to remove this participant from the system and all events?");
+        if (confirmation == YesOrNoOption.NO) {
+            TextBoxUtils.printWarn("Participant removal cancelled by user.");
+            return false;
+        }
+
+        integrationFuncs.unenrollParticipantFromAllRegisteredEvents(participantToDelete);
+
+        boolean removedFromSystem = participantController.delete(cpf);
+
+        if (removedFromSystem) {
+            TextBoxUtils.printSuccess("Participant '" + participantToDelete.getName() + "' removed successfully from the system.");
+        } else {
+            TextBoxUtils.printError("Failed to remove participant '" + participantToDelete.getName() + "' from the system.");
+        }
+        return removedFromSystem;
     }
 
     public void listAll() {

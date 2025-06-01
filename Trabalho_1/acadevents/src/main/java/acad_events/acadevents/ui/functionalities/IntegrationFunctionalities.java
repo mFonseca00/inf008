@@ -79,7 +79,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                 if (modality == null) return false;
                 if (modality == Modality.PRESENTIAL) {
                     if (presentialCount >= capacity) {
-                        TextBoxUtils.printError("Capacity limit reached for presential event. Cannot enroll participant.");
+                        TextBoxUtils.printError("Capacity limit reached. Cannot enroll participant.");
                         return false;
                     }
                     added = integrationController.enrollPresentialParticipantInEvent(participant, selectedEvent.getId());
@@ -102,7 +102,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
     }
 
-    public boolean removeParticipantFromEvent(Scanner scan) { // Not implemented
+    public boolean removeParticipantFromEvent(Scanner scan) {
         String cpf = ParticipantForm.readCpf(scan);
         if (cpf == null) {
             TextBoxUtils.printWarn("CPF input cancelled by user.");
@@ -227,4 +227,12 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         return true;
     }
 
+    public void unenrollParticipantFromAllRegisteredEvents(ParticipantDTO participantDTO) {
+        if (participantDTO == null) {
+            TextBoxUtils.printError("Null Participante data. Can't unenroll.");
+            return;
+        }
+        integrationController.unenrollParticipantFromAllEvents(participantDTO);
+        TextBoxUtils.printSuccess("Participant '" + participantDTO.getName() + "' unenrolled from all events.");
+    }
 }

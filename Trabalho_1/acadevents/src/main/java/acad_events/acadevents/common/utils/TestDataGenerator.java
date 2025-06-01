@@ -12,13 +12,56 @@ import java.util.Random;
 
 public class TestDataGenerator {
 
-    private static final String[] EVENT_TITLES = {"Java a fundo", "Sobre IA", "React na prática", "Tecnologias incríveis", "QT na prática"};
-    private static final String[] PARTICIPANT_NAMES = {"João Silva", "Maria Souza", "Carlos Pereira", "Ana Oliveira"};
-    private static final String[] KNOWLEDGE_AREAS = {"Tecnologia", "Inovação", "Gestão", "Marketing"};
-    private static final String[] ORGANIZATIONS = {"IFBA", "UFBA", "SENAI", "UNEB"};
-    private static final String[] INSTRUCTORS = {"Professor Alberto", "Professora Roberta", "Monitor João", "Monitora Maria"};
-    private static final String[] SPEAKERS = {"Doutor Carlos", "Mestre Ana", "Especialista Pedro", "Especialista Carla"};
-    private static final String[] COORDINATORS = {"Professor Marcos", "Professora Juliana", "Coordenador Paulo", "Coordenadora Patrícia"};
+    private static final String[] EVENT_TITLES = {
+        "Java a fundo", "Sobre IA", "React na pratica", "Tecnologias incriveis", "QT na pratica",
+        "Desenvolvimento Web Moderno", "Seguranca Cibernetica Essencial", "Computacao em Nuvem",
+        "Machine Learning Aplicado", "Big Data Analytics", "DevOps e Automacao", "Blockchain Descomplicado",
+        "UX UI Design Thinking", "Gestao de Projetos Ageis", "Marketing Digital",
+        "Python para Ciencia de Dados", "Arquitetura de Microservicos", "Internet das Coisas IoT",
+        "Realidade Virtual e Aumentada", "Desenvolvimento de Jogos Digitais", "Redes Neurais Artificiais",
+        "Computacao Quantica", "Etica em Inteligencia Artificial", "Lideranca em Tecnologia",
+        "Inovacao Aberta e Corporativa"
+    };
+    private static final String[] PARTICIPANT_NAMES = {
+        "Joao Silva", "Maria Souza", "Carlos Pereira", "Ana Oliveira", "Lucas Santos", "Juliana Costa",
+        "Pedro Almeida", "Fernanda Lima", "Marcos Rocha", "Beatriz Azevedo", "Ricardo Nunes", "Camila Dias",
+        "Gustavo Borges", "Leticia Farias", "Bruno Gomes", "Alice Ferreira", "Thiago Martins", "Laura Barbosa",
+        "Rafael Ribeiro", "Sofia Castro", "Daniel Araujo", "Manuela Cardoso", "Enzo Pinto", "Valentina Monteiro",
+        "Gabriel Correia"
+    };
+    private static final String[] KNOWLEDGE_AREAS = {
+        "Tecnologia", "Inovacao", "Gestao", "Marketing", "Engenharia de Software", "Ciencia de Dados",
+        "Redes de Computadores", "Inteligencia Artificial", "Desenvolvimento Mobile", "Financas",
+        "Recursos Humanos", "Logistica", "Saude Digital", "Educacao Tecnologica", "Sustentabilidade",
+        "Direito Digital", "Agronegocio Tecnologico", "Energias Renovaveis", "Biotecnologia", "Industria Criativa",
+        "Turismo Tecnologico", "Cidades Inteligentes", "Robotica Aplicada", "Comunicacao Social", "Psicologia Organizacional"
+    };
+    private static final String[] ORGANIZATIONS = {
+        "IFBA", "UFBA", "SENAI", "UNEB", "Google", "Microsoft", "Amazon", "Oracle", "IBM", "Apple",
+        "Facebook", "Twitter", "Nubank", "Magazine Luiza", "Globo", "Petrobras", "Vale", "Ambev",
+        "Natura", "Itau Unibanco", "Bradesco", "Santander", "Embraer", "TOTVS", "Stefanini"
+    };
+    private static final String[] INSTRUCTORS = {
+        "Alberto", "Roberta", "Joao", "Maria", "Fabio",
+        "Laura", "Andre", "Sofia", "Felipe", "Gabriela",
+        "Rafael", "Isabela", "Tiago", "Helena", "Vinicius",
+        "Davi", "Clara", "Miguel", "Eloisa", "Heitor",
+        "Lorena", "Igor", "Yasmin", "Arthur", "Cecilia"
+    };
+    private static final String[] SPEAKERS = {
+        "Doutor Carlos", "Mestre Ana", "Especialista Pedro", "Especialista Carla", "Pesquisador Sergio",
+        "Pesquisadora Monica", "Doutor Ricardo", "Mestre Patricia", "Especialista Daniel", "Especialista Vanessa",
+        "Consultor Eduardo", "Consultora Tatiana", "Doutor Marcelo", "Mestre Carolina", "Especialista Leonardo",
+        "Doutora Bianca", "Mestre Guilherme", "Especialista Luiza", "Pesquisador Rodrigo", "Pesquisadora Natalia",
+        "Doutor Samuel", "Mestre Vitoria", "Especialista Henrique", "Consultora Beatriz", "Doutora Julia"
+    };
+    private static final String[] COORDINATORS = {
+        "Marcos", "Juliana", "Paulo", "Patricia", "Antonio",
+        "Sandra", "Fernando", "Beatriz", "Rogerio", "Debora",
+        "Cristiano", "Viviane", "Samuel", "Amanda", "Nelson",
+        "Diego", "Renata", "Alex", "Priscila", "Flavio",
+        "Elaine", "Jose", "Fatima", "Roberto", "Simone"
+    };
 
     private static final Random random = new Random();
 
@@ -72,7 +115,7 @@ public class TestDataGenerator {
         String date = generateRandomDate();
         String location = "Local de Teste";
         int capacity = 10 + random.nextInt(100);
-        String description = "Descrição de Teste";
+        String description = "Uma simples descricao Teste";
         Modality modality = getRandomModality();
 
         switch (type) {
@@ -204,7 +247,7 @@ public class TestDataGenerator {
         while (true) {
             int day = 1 + random.nextInt(28);
             int month = 1 + random.nextInt(12);
-            int year = 2020 + random.nextInt(6); // 2020 to 2025
+            int year = 2025 + random.nextInt(6);
             date = String.format("%02d/%02d/%d", day, month, year);
             if (ValidatorInputs.isValidDate(date)) {
                 return date;

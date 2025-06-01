@@ -74,16 +74,18 @@ public abstract class BaseFunctionalities {
             case ID: {
                 String idStr = EventForm.readId(scan);
                 if (idStr == null) {
-                    TextBoxUtils.printWarn("ID input for event search cancelled by user.");
+                    TextBoxUtils.printWarn("Event selection from attribute list cancelled by user.");
                     return null;
                 }
-
-                Long id = Long.parseLong(idStr);
-                                                 
-                filteredEvents = (List<EventDTO>) eventController.listAll();
-                selectedEvent = filteredEvents.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
-                if (selectedEvent == null) {
-                    TextBoxUtils.printError("No event found with the given ID.");
+                try {
+                    Long id = Long.parseLong(idStr);
+                    selectedEvent = eventController.getEventById(id);
+                    if (selectedEvent == null) {
+                        TextBoxUtils.printError("Nenhum evento encontrado com o ID fornecido.");
+                    }
+                } catch (NumberFormatException e) {
+                    TextBoxUtils.printError("Invalid ID.");
+                    selectedEvent = null;
                 }
                 break;
             }

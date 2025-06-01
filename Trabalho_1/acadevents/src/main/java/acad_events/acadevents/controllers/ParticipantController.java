@@ -28,12 +28,44 @@ public class ParticipantController {
 
     private ParticipantDTO toDTO(Participant p) {
         if (p == null) return null;
-        ParticipantDTO dto = new ParticipantDTO();
-        dto.setCpf(p.getCPF());
-        dto.setName(p.getName());
-        dto.setEmail(p.getEmail());
-        dto.setPhone(p.getPhone());
-        return dto;
+
+        if (p instanceof Student) {
+            Student s = (Student) p;
+            StudentDTO dto = new StudentDTO();
+            dto.setCpf(s.getCPF());
+            dto.setName(s.getName());
+            dto.setEmail(s.getEmail());
+            dto.setPhone(s.getPhone());
+            dto.setEnrollment(s.getEnrollment());
+            return dto;
+        } else if (p instanceof Professor) {
+            Professor prof = (Professor) p;
+            ProfessorDTO dto = new ProfessorDTO();
+            dto.setCpf(prof.getCPF());
+            dto.setName(prof.getName());
+            dto.setEmail(prof.getEmail());
+            dto.setPhone(prof.getPhone());
+            dto.setEmployeeId(prof.getEmployeeId());
+            dto.setDepartment(prof.getDepartment());
+            return dto;
+        } else if (p instanceof External) {
+            External ext = (External) p;
+            ExternalDTO dto = new ExternalDTO();
+            dto.setCpf(ext.getCPF());
+            dto.setName(ext.getName());
+            dto.setEmail(ext.getEmail());
+            dto.setPhone(ext.getPhone());
+            dto.setOrganization(ext.getOrganization());
+            dto.setRole(ext.getRole());
+            return dto;
+        } else {
+            ParticipantDTO dto = new ParticipantDTO();
+            dto.setCpf(p.getCPF());
+            dto.setName(p.getName());
+            dto.setEmail(p.getEmail());
+            dto.setPhone(p.getPhone());
+            return dto;
+        }
     }
 
     public ParticipantDTO findParticipantByCPF(String cpf){

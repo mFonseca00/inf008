@@ -50,11 +50,8 @@ public class Event {
     }
 
     public boolean addOnlineParticipant(Participant p) {
-        if (onlineParticipants.size() < capacity) {
-            onlineParticipants.add(p);
-            return true;
-        }
-    return false;
+        onlineParticipants.add(p);
+        return true;
     }
 
     public boolean removeOnlineParticipant(Participant p) {

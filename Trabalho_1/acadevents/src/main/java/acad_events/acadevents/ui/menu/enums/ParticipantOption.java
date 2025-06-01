@@ -4,7 +4,7 @@ import acad_events.acadevents.common.utils.interfaces.I_EnumOptionList;
 
 public enum ParticipantOption implements I_EnumOptionList{
     REGISTER_PARTICIPANT(1, "Register new participant"),
-    DELETE_PARTICIPANT(2, "Delete participant"),
+    REMOVE_PARTICIPANT(2, "Remove participant from system"),
     LIST_PARTICIPANTS(3, "List participants"),
     ENROLL_IN_EVENT(4, "Enroll participant in event"),
     REMOVE_FROM_EVENT(5, "Remove participant from event"),

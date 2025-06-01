@@ -10,6 +10,9 @@ public class StudentDTO extends ParticipantDTO{
         this.setPhone(basic.getPhone());
     }
 
+    public StudentDTO() {
+    }
+
     public void setEnrollment(String enrollment) {
         this.enrollment = enrollment;
     }

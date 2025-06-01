@@ -1,5 +1,7 @@
 package acad_events.acadevents.models.participant.entities;
 
+import java.util.Objects;
+
 public abstract class Participant {
     private long Id;
     private static long nextID;
@@ -43,5 +45,18 @@ public abstract class Participant {
 
     public static void setNextID(long next) {
         nextID = next;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false; // Pode ser ajustado se a comparação entre subclasses for desejada de forma diferente
+        Participant that = (Participant) o;
+        return Objects.equals(CPF, that.CPF);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CPF);
     }
 }

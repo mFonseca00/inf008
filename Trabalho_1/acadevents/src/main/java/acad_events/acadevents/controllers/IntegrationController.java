@@ -4,6 +4,7 @@ import acad_events.acadevents.common.dtos.eventdtos.EventDTO;
 import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventType;
+import acad_events.acadevents.models.event.entities.Event;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.repositories.EventRepository;
 import acad_events.acadevents.repositories.ParticipantRepository;
@@ -11,6 +12,7 @@ import acad_events.acadevents.repositories.ParticipantRepository;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 public class IntegrationController {
     private final ParticipantRepository participantRepo;
@@ -47,6 +49,19 @@ public class IntegrationController {
         Participant participant = participantRepo.getParticipantByCPF(participantDTO.getCpf());
         if (participant == null) return false;
         return eventRepo.removeOnlineParticipantFromEvent(eventId, participant);
+    }
+
+    public void unenrollParticipantFromAllEvents(ParticipantDTO participantDTO) {
+        if (participantDTO == null) {
+            return;
+        }
+        Collection<Event> allEvents = eventRepo.getAllEvents();
+        if (allEvents != null) {
+            for (Event event : allEvents) {
+                this.removePresentialParticipantFromEvent(participantDTO, event.getId());
+                this.removeOnlineParticipantFromEvent(participantDTO, event.getId());
+            }
+        }
     }
 
     public String generateCertificade(ParticipantDTO participantDTO, EventType eventType, EventDTO eventDTO){

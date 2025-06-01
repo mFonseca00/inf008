@@ -17,4 +17,13 @@ public class Professor extends Participant{
     public String toString() {
         return "Professor" + super.toString() + " employeeId=" + employeeId + ", department=" + department + "]";
     }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public AcademyDepartment getDepartment() {
+        return department;
+    }
+
 }

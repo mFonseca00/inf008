@@ -12,5 +12,9 @@ public class Student extends Participant {
     public String toString() {
         return "Student: " + super. toString() + " enrollment=" + enrollment + "]";
     }
+
+    public String getEnrollment() {
+        return enrollment;
+    }
     
 }
