@@ -114,6 +114,7 @@ Ao escolher "Manage Participants", você verá:
 - Informe o CPF do participante.
 - Escolha o evento em que ele está inscrito.
 - O sistema gera um certificado textual com os dados do evento e do participante.
+- Poderá ser selecionada a opção de exportar o certificado em txt ou não.
 
 #### 6. Return to Main Menu
 
