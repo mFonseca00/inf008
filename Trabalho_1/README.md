@@ -39,7 +39,10 @@ O sistema é totalmente em linha de comando (console) e utiliza arquivos JSON pa
 ### Passos
 
 1. **Clone o repositório e acesse a pasta do projeto:**  
-   git clone <url-do-repositorio>  
+   git clone <https://github.com/mFonseca00/inf008.git>  
+   
+   Dentro da pasta do repositório, execute, abra a pasta do projeto.
+   
    cd Trabalho_1/acadevents  
 
 2. **Compile o projeto:**  
@@ -47,6 +50,19 @@ O sistema é totalmente em linha de comando (console) e utiliza arquivos JSON pa
 
 3. **Execute o sistema usando Maven:**  
    mvn exec:java  
+
+   **Observação:** Se o comando `mvn exec:java` não funcionar, certifique-se de que o `pom.xml` contém a configuração do plugin:
+
+    ```xml
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <mainClass>acad_events.acadevents.AcadEvents</mainClass>
+      </configuration>
+    </plugin>
+    ```
 
 4. **Ou execute diretamente pelo arquivo .class:**  
    Vá até a pasta onde está o arquivo compilado (por exemplo, `target/classes`) e execute:  
