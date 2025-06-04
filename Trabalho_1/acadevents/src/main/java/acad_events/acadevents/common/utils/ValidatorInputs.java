@@ -64,12 +64,18 @@ public class ValidatorInputs {
     }
 
     public static String formatCPF(String cpf) {
+        if (cpf == null) return null;
+        
         cpf = cpf.replaceAll("[^\\d]", "");
-        if (cpf.length() != 11) {
+        
+        if (cpf.length() != 11) return null;
+        
+        try {
+            return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." +
+                   cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
+        } catch (StringIndexOutOfBoundsException e) {
             return null;
         }
-        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." +
-               cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
     }
 
     public static String formatPhone(String phone) {

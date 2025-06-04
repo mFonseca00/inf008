@@ -120,10 +120,15 @@ public class EventController {
 
     public boolean existsEventByTitleAndDate(String title, String date) {
         Collection<Event> events = repository.getAllEvents();
+        if (events == null) return false;
         for (Event event : events) {
-            if (event.getTitle().equalsIgnoreCase(title) && event.getDate().equalsIgnoreCase(date)) {
+            if (event == null) continue;
+            String eventTitle = event.getTitle();
+            String eventDate = event.getDate();
+            if (eventTitle != null && eventDate != null && 
+                eventTitle.equalsIgnoreCase(title) && eventDate.equalsIgnoreCase(date)) {
                 return true;
-            }
+        }
         }
         return false;
     }
@@ -140,6 +145,7 @@ public class EventController {
     public List<EventDTO> listByType(EventType type){
         Collection<Event> events = repository.getEventsByType(type.toString());
         List<EventDTO> eventDTOs = new ArrayList<>();
+        if (events == null) return eventDTOs;
         for (Event e : events) {
             eventDTOs.add(toDTO(e));
         }
@@ -149,7 +155,7 @@ public class EventController {
     public List<EventDTO> listByAttribute(EventAttribute attribute, String value) {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
-
+        if (events == null) return eventDTOs;
         boolean hasValue = value != null && !value.isBlank();
         String valueLower = hasValue ? value.toLowerCase() : "";
 

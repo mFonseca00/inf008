@@ -55,7 +55,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
         boolean enrolledOnline = selectedEvent.getOnlineParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
-        boolean alreadyEnrolled = enrolledOnline || enrolledPresential? true : false;
+        boolean alreadyEnrolled = enrolledOnline || enrolledPresential;
 
         if (alreadyEnrolled) {
             TextBoxUtils.printError("Participant is already enrolled in this event.");
