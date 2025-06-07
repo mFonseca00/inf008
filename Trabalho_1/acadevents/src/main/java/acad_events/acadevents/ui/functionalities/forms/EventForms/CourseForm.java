@@ -36,7 +36,7 @@ public class CourseForm extends EventForm {
         String totalHours = readField(
             scan,
             "Enter the total hours of the course or 'cancel': ",
-            "Total hours must be informed.",
+            "Total hours must be a positive integer number.",
             true, FieldValidatorType.POSITIVE_INT
         );
         if (totalHours == null) return InputResult.CANCELLED;

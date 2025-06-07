@@ -92,7 +92,7 @@ public class IntegrationController {
 
         String certificateContent = "We certify that " + participantDTO.getName() +
                " participated in the " + eventType + ": " + eventDTO.getTitle() +
-               "\" held on " + eventDTO.getDate() + ".";
+               " held on " + eventDTO.getDate() + ".";
         return TextBoxUtils.formatedCertificateText(certificateContent);
     }
 
