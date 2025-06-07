@@ -10,7 +10,7 @@ import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.controllers.EventController;
 import acad_events.acadevents.controllers.ParticipantController;
-import acad_events.acadevents.common.dtos.eventdtos.*;
+import acad_events.acadevents.common.dtos.event.*;
 import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.ui.functionalities.enums.*;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;

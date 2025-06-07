@@ -12,12 +12,12 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import acad_events.acadevents.common.dtos.eventdtos.CourseDTO;
-import acad_events.acadevents.common.dtos.eventdtos.EventDTO;
-import acad_events.acadevents.common.dtos.eventdtos.FairDTO;
-import acad_events.acadevents.common.dtos.eventdtos.LectureDTO;
-import acad_events.acadevents.common.dtos.eventdtos.WorkshopDTO;
-import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.dtos.event.CourseDTO;
+import acad_events.acadevents.common.dtos.event.EventDTO;
+import acad_events.acadevents.common.dtos.event.FairDTO;
+import acad_events.acadevents.common.dtos.event.LectureDTO;
+import acad_events.acadevents.common.dtos.event.WorkshopDTO;
+import acad_events.acadevents.common.dtos.participant.ParticipantDTO;
 import acad_events.acadevents.common.utils.enums.EventAttribute;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.event.entities.Course;

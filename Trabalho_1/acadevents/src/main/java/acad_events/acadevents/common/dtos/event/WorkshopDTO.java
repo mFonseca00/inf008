@@ -1,4 +1,4 @@
-package acad_events.acadevents.common.dtos.eventdtos;
+package acad_events.acadevents.common.dtos.event;
 
 public class WorkshopDTO extends EventDTO{
     private String instructor;

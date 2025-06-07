@@ -1,7 +1,7 @@
 package acad_events.acadevents.controllers;
 
-import acad_events.acadevents.common.dtos.eventdtos.EventDTO;
-import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.dtos.event.EventDTO;
+import acad_events.acadevents.common.dtos.participant.ParticipantDTO;
 import acad_events.acadevents.common.utils.TextBoxUtils;
 import acad_events.acadevents.common.utils.enums.EventType;
 import acad_events.acadevents.models.event.entities.Event;

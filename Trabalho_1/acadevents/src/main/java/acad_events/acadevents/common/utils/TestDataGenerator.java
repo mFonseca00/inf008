@@ -1,7 +1,7 @@
 package acad_events.acadevents.common.utils;
 
-import acad_events.acadevents.common.dtos.eventdtos.*;
-import acad_events.acadevents.common.dtos.participantdtos.*;
+import acad_events.acadevents.common.dtos.event.*;
+import acad_events.acadevents.common.dtos.participant.*;
 import acad_events.acadevents.controllers.EventController;
 import acad_events.acadevents.controllers.ParticipantController;
 import acad_events.acadevents.models.event.enums.Modality;

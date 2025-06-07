@@ -1,9 +1,9 @@
-package acad_events.acadevents.common.dtos.eventdtos;
+package acad_events.acadevents.common.dtos.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import acad_events.acadevents.common.dtos.participantdtos.ParticipantDTO;
+import acad_events.acadevents.common.dtos.participant.ParticipantDTO;
 import acad_events.acadevents.models.event.enums.Modality;
 
 public class EventDTO {
