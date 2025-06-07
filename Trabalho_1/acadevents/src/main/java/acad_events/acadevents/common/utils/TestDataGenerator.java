@@ -10,8 +10,17 @@ import acad_events.acadevents.models.participant.enums.ExternalRole;
 
 import java.util.Random;
 
+/**
+ * Utility class for generating random test data in the AcadEvents system.
+ * Creates realistic participants and events with valid CPFs, emails, phone numbers, and dates.
+ * Essential for testing system functionality and demonstration purposes.
+ * 
+ * Used by: MenuController for "Generate Test Data" functionality
+ * Integration: Works with EventController and ParticipantController for data persistence
+ */
 public class TestDataGenerator {
 
+    // Pre-defined arrays with realistic Brazilian names and technology-related content
     private static final String[] EVENT_TITLES = {
         "Java a fundo", "Sobre IA", "React na pratica", "Tecnologias incriveis", "QT na pratica",
         "Desenvolvimento Web Moderno", "Seguranca Cibernetica Essencial", "Computacao em Nuvem",
@@ -65,6 +74,11 @@ public class TestDataGenerator {
 
     private static final Random random = new Random();
 
+    /**
+     * Generates a random participant with valid CPF and realistic data.
+     * Ensures CPF uniqueness by checking against existing participants.
+     * Creates different participant types: Student, Professor, or External.
+     */
     public static void generateRandomParticipant(ParticipantController participantController) {
         int type = random.nextInt(3); // 0: Student, 1: Professor, 2: External
         String cpf;
@@ -109,6 +123,11 @@ public class TestDataGenerator {
         }
     }
 
+    /**
+     * Generates a random academic event with realistic academic content.
+     * Creates different event types: Course, Lecture, Fair, or Workshop.
+     * Each type has specific attributes (coordinator for courses, speakers for lectures, etc.).
+     */
     public static void generateRandomEvent(EventController eventController) {
         int type = random.nextInt(4); // 0: Course, 1: Lecture, 2: Fair, 3: Workshop
         String title = EVENT_TITLES[random.nextInt(EVENT_TITLES.length)];
@@ -170,6 +189,7 @@ public class TestDataGenerator {
         }
     }
 
+    // Generates mathematically valid Brazilian CPF with proper verification digits
     private static String generateRandomCPF() {
         Random random = new Random();
         StringBuilder baseCpf = new StringBuilder();
@@ -185,6 +205,7 @@ public class TestDataGenerator {
         return ValidatorInputs.formatCPF(cpf);
     }
 
+    // Implements Brazilian CPF verification digit algorithm
     private static int calculateVerificationDigit(String base, int weight) {
         int sum = 0;
         for (int i = 0; i < base.length(); i++) {
@@ -194,6 +215,7 @@ public class TestDataGenerator {
         return (remainder < 2) ? 0 : (11 - remainder);
     }
 
+    // Creates email addresses based on participant names for realistic test data
     private static String generateRandomEmail(String name) {
         String email;
         email = name.toLowerCase().replace(" ", "_") + "@email.com";
@@ -201,6 +223,7 @@ public class TestDataGenerator {
            
     }
 
+    // Generates Brazilian phone number formats compatible with ValidatorInputs
     private static String generateRandomPhone() {
         Random random = new Random();
         int formatType = random.nextInt(4);
@@ -242,6 +265,7 @@ public class TestDataGenerator {
         return roles[random.nextInt(roles.length)];
     }
 
+    // Generates valid dates within reasonable academic event timeframe (2025-2030)
     private static String generateRandomDate() {
         String date;
         while (true) {

@@ -24,7 +24,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Repository class for participant data persistence and retrieval in the AcadEvents system.
+ * Manages dual-indexing for fast lookups by both ID and CPF.
+ * Handles JSON serialization/deserialization with polymorphic support for different participant types.
+ * 
+ * Key features:
+ * - Dual HashMap storage for lookups by ID or CPF
+ * - JSON persistence with type preservation for Student, Professor, and External participants
+ * - Automatic ID sequence management to prevent conflicts after system restarts
+ * - CPF-based operations for participant enrollment and certificate generation
+ * 
+ * Used by: ParticipantController for all participant persistence operations and
+ * IntegrationController for CPF-based participant lookup during event enrollment
+ */
 public class ParticipantRepository {
+    // Dual indexing for efficient access patterns - ID for internal operations, CPF for user interactions
     private Map<Long, Participant> participantsByID = new HashMap<>();
     private Map<String, Participant> participantsByCPF = new HashMap<>();
 
@@ -37,6 +52,7 @@ public class ParticipantRepository {
         return participantsByID.get(id);
     }
 
+    // CPF-based lookup - crucial for enrollment and certificate generation workflows
     public Participant getParticipantByCPF(String cpf){
         return participantsByCPF.get(cpf);
     }
@@ -55,6 +71,7 @@ public class ParticipantRepository {
     return false;
     }
 
+    // CPF-based removal - maintains data consistency across both indexes
     public boolean removeParticipantByCPF(String cpf){
         Participant participant = participantsByCPF.get(cpf);
         if(participant != null){
@@ -65,6 +82,7 @@ public class ParticipantRepository {
         return false;
     }
 
+    // JSON serialization with polymorphic type preservation for different participant types
     public void saveToJson(String filename) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<JsonObject> jsonList = new ArrayList<>();
@@ -84,6 +102,7 @@ public class ParticipantRepository {
         }
     }
 
+    // JSON deserialization with type resolution and ID sequence restoration
     public void loadFromJson(String filename) throws IOException {
         Gson gson = new Gson();
         try (Reader reader = new FileReader(filename)) {

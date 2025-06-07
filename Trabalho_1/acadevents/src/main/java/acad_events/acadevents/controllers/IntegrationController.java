@@ -14,6 +14,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * Controller for managing integration between participants and events in the AcadEvents system.
+ * Handles participant enrollment, unenrollment, and certificate generation functionality.
+ * Bridges the gap between EventRepository and ParticipantRepository for complex operations.
+ * 
+ * Key features:
+ * - Manages both presential and online participant enrollment in events
+ * - Handles participant removal from events (used when deleting participants)
+ * - Generates formatted certificates for event participation
+ * - Exports certificates to organized file structure with automatic naming
+ * - Validates participation before certificate generation
+ * 
+ * Used by: IntegrationFunctionalities for participant enrollment and certificate management
+ */
 public class IntegrationController {
     private final ParticipantRepository participantRepo;
     private final EventRepository eventRepo;
@@ -23,6 +37,7 @@ public class IntegrationController {
         this.eventRepo = eventRepo;
     }
 
+    // Enrollment methods for different participation modalities (presential/online)
     public boolean enrollPresentialParticipantInEvent(ParticipantDTO participantDTO, Long eventId) {
         if (participantDTO == null) return false;
         Participant participant = participantRepo.getParticipantByCPF(participantDTO.getCpf());
@@ -37,6 +52,7 @@ public class IntegrationController {
         return eventRepo.addOnlineParticipantToEvent(eventId, participant);
     }
 
+    // Unenrollment methods for removing participants from specific events
     public boolean removePresentialParticipantFromEvent(ParticipantDTO participantDTO, Long eventId) {
         if (participantDTO == null) return false;
         Participant participant = participantRepo.getParticipantByCPF(participantDTO.getCpf());
@@ -51,6 +67,7 @@ public class IntegrationController {
         return eventRepo.removeOnlineParticipantFromEvent(eventId, participant);
     }
 
+    // Cleanup method: removes participant from all events (used during participant deletion)
     public void unenrollParticipantFromAllEvents(ParticipantDTO participantDTO) {
         if (participantDTO == null) {
             return;
@@ -64,6 +81,7 @@ public class IntegrationController {
         }
     }
 
+    // Certificate generation with participation validation and formatted output
     public String generateCertificade(ParticipantDTO participantDTO, EventType eventType, EventDTO eventDTO){
         if(participantDTO == null || eventDTO == null){
             return "Participant or event not found.";
@@ -96,6 +114,7 @@ public class IntegrationController {
         return TextBoxUtils.formatedCertificateText(certificateContent);
     }
 
+    // Certificate export with automatic directory creation and sanitized file naming
     public void exportCertificateToTxt(String certificateText, String participantName, String eventTitle, String eventDate) throws IOException {
         File certificatesDir = new File("certificates");
         if (!certificatesDir.exists()) {

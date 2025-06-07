@@ -10,9 +10,24 @@ import acad_events.acadevents.controllers.EventController;
 import acad_events.acadevents.controllers.ParticipantController;
 import acad_events.acadevents.models.event.enums.Modality;
 import acad_events.acadevents.ui.functionalities.enums.EventWayToSelectEventsOption;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.EventForm;
+import acad_events.acadevents.ui.functionalities.forms.event_forms.EventForm;
 
+/**
+ * Abstract base class for all functionality classes in the AcadEvents system.
+ * Provides shared dependencies and common operations for event and participant management.
+ * Implements the Template Method pattern for event selection workflows.
+ * 
+ * Key features:
+ * - Dependency injection for EventController and ParticipantController
+ * - Centralized event selection logic with multiple search strategies
+ * - Consistent error handling and user feedback across all functionality classes
+ * - Supports event selection by: full list, attribute filtering, or direct ID lookup
+ * 
+ * Extended by: EventFunctionalities, ParticipantFunctionalities, and IntegrationFunctionalities
+ * Used in: Event deletion, participant enrollment, certificate generation workflows
+ */
 public abstract class BaseFunctionalities {
+    // Core controllers injected to all functionality classes for data operations
     protected final EventController eventController;
     protected final ParticipantController participantController;
 
@@ -21,6 +36,7 @@ public abstract class BaseFunctionalities {
         this.participantController = participantController;
     }
 
+    // Template method providing three strategies for event selection across the system
     protected EventDTO selectEventByWay(Scanner scan, String operation) {
         EventWayToSelectEventsOption option = EventForm.selectWayToSelectEvent(scan, operation);
         List<EventDTO> filteredEvents = null;
@@ -28,6 +44,7 @@ public abstract class BaseFunctionalities {
 
         switch (option) {
             case ALL_LIST: {
+                // Strategy 1: Select from complete event list (used for general operations)
                 List<EventDTO> allEvents = (List<EventDTO>) eventController.listAll();
                 if (allEvents.isEmpty()) {
                     TextBoxUtils.printError("No events found.");
@@ -40,6 +57,7 @@ public abstract class BaseFunctionalities {
                 break;
             }
             case ATTRIBUTE_LIST: {
+                // Strategy 2: Filtered search by event attributes (title, date, location, modality)
                 String valueSearch = null;
                 EventAttribute attribute = EventForm.selectAttribute(scan);
                 if (attribute == EventAttribute.CANCELLED) {
@@ -72,6 +90,7 @@ public abstract class BaseFunctionalities {
                 break;
             }
             case ID: {
+                // Strategy 3: Direct ID lookup (fastest method for known event IDs)
                 String idStr = EventForm.readId(scan);
                 if (idStr == null) {
                     TextBoxUtils.printWarn("Event selection from attribute list cancelled by user.");
@@ -81,7 +100,7 @@ public abstract class BaseFunctionalities {
                     Long id = Long.parseLong(idStr);
                     selectedEvent = eventController.getEventById(id);
                     if (selectedEvent == null) {
-                        TextBoxUtils.printError("Nenhum evento encontrado com o ID fornecido.");
+                        TextBoxUtils.printError("No events found for given ID.");
                     }
                 } catch (NumberFormatException e) {
                     TextBoxUtils.printError("Invalid ID.");

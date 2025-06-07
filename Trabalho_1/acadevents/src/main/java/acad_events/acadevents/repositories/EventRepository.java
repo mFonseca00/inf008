@@ -12,9 +12,26 @@ import com.google.gson.*;
 import acad_events.acadevents.models.event.entities.*;
 import acad_events.acadevents.models.participant.entities.*;
 
+/**
+ * Repository class for event data persistence and retrieval in the AcadEvents system.
+ * Manages in-memory storage and JSON file serialization/deserialization of events.
+ * Handles participant enrollment operations for both presential and online participation.
+ * 
+ * Key features:
+ * - In-memory storage using HashMap for fast ID-based lookups
+ * - JSON persistence with polymorphic support for different event types (Course, Lecture, Workshop, Fair)
+ * - Complex deserialization handling for nested participant objects with type preservation
+ * - Participant enrollment management for events with dual modality support
+ * - Automatic ID sequence management to prevent conflicts after system restarts
+ * 
+ * Used by: EventController for all event persistence operations and IntegrationController
+ * for participant enrollment functionality
+ */
 public class EventRepository {
+    // In-memory storage for fast access and manipulation before persistence
     private Map<Long, Event> eventsById = new HashMap<>();
 
+    // Gson configuration for pretty-printed JSON output
     private static final Gson gson;
     static {
         gson = new GsonBuilder()
@@ -30,6 +47,7 @@ public class EventRepository {
         return eventsById.get(id);
     }
 
+    // Type-based filtering for report generation (used by EventController.listByType)
     public List<Event> getEventsByType(String type){
         List<Event> events = new ArrayList<>();
         for (Event event : eventsById.values()){
@@ -53,6 +71,7 @@ public class EventRepository {
         return false;
     }
 
+    // Participant enrollment methods supporting dual modality (presential/online)
     public boolean addPresentialParticipantToEvent(Long eventId, Participant participant) {
         Event event = getEventById(eventId);
         if (event != null) {
@@ -85,6 +104,7 @@ public class EventRepository {
         return false;
     }
 
+    // JSON serialization with polymorphic type preservation for events and participants
     public void saveToJson(String filename) throws IOException {
         List<Event> events = new ArrayList<>(getAllEvents());
         JsonArray jsonArray = new JsonArray();
@@ -125,6 +145,7 @@ public class EventRepository {
         }
     }
 
+    // Event type resolution for polymorphic deserialization
     private Class<? extends Event> getEventClassFromString(String eventType) {
         switch (eventType) {
             case "Course": return Course.class;
@@ -137,6 +158,7 @@ public class EventRepository {
         }
     }
 
+    // Complex participant deserialization preserving polymorphic types (Student, Professor, External)
     private List<Participant> deserializeParticipantList(JsonArray participantsArrayJson) {
         List<Participant> participants = new ArrayList<>();
         if (participantsArrayJson == null) {
@@ -173,6 +195,7 @@ public class EventRepository {
         return participants;
     }
 
+    // JSON deserialization with ID sequence restoration to prevent conflicts
     public void loadFromJson(String filename) throws IOException {
         try (Reader reader = new FileReader(filename)) {
             JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();

@@ -14,14 +14,30 @@ import acad_events.acadevents.common.dtos.event.*;
 import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.ui.functionalities.enums.*;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.*;
+import acad_events.acadevents.ui.functionalities.forms.event_forms.*;
 
+/**
+ * UI functionality class for event management operations in the AcadEvents system.
+ * Extends BaseFunctionalities to inherit shared event selection and controller access.
+ * Handles all event-related user interactions including CRUD operations and report generation.
+ * 
+ * Key features:
+ * - Multi-step event creation with type-specific attributes (Course, Lecture, Workshop, Fair)
+ * - Polymorphic event handling with different forms for each event type
+ * - Unified report generation method supporting both date and type filtering
+ * - Automatic file export with organized directory structure and timestamped filenames
+ * - Integration with TestDataGenerator for realistic test data creation
+ * 
+ * Used by: EventMenu for all event management operations
+ * Integration: Works with EventController for business logic and EventForm classes for user input
+ */
 public class EventFunctionalities extends BaseFunctionalities {
 
     public EventFunctionalities(EventController eventController, ParticipantController participantController) {
         super(eventController, participantController);
     }
 
+    // Multi-step event creation with business rule validation (duplicate title+date prevention)
     public  boolean create(Scanner scan){
         TextBoxUtils.printTitle("Create New Event");
         EventDTO event = new EventDTO();
@@ -58,6 +74,7 @@ public class EventFunctionalities extends BaseFunctionalities {
 
         EventType type = EventForm.selectType(scan);
 
+        // Polymorphic event creation with type-specific attributes and forms
         switch(type){
             case COURSE:
                 CourseDTO course = new CourseDTO(event);
@@ -115,6 +132,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         return true;
     }
 
+    // Event deletion using inherited event selection strategies from BaseFunctionalities
     public  boolean remove(Scanner scan) {
         TextBoxUtils.printTitle("Remove Event");
         EventDTO dtoToRemove = selectEventByWay(scan, "remove");
@@ -131,6 +149,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
     }
 
+    // Simple event listing with formatted display showing key information
     public void listAll(){
         Collection<EventDTO> events = eventController.listAll();
         if(events.isEmpty()){
@@ -145,6 +164,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
     }
 
+    // Unified report generation method supporting both date and type filtering with export capability
     public void generateReport(Scanner scan, EventReportOption reportOption) {
         List<EventDTO> events;
         String reportedValue;
@@ -208,6 +228,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         }
     }
 
+    // File name sanitization for cross-platform compatibility (removes special characters and accents)
     private static String sanitizeFileName(String input) {
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         String withoutAccents = normalized.replaceAll("\\p{M}", "");
@@ -215,6 +236,7 @@ public class EventFunctionalities extends BaseFunctionalities {
         return withoutAccents.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
     }
 
+    // Test data generation using TestDataGenerator for realistic event creation
     public void generateRandomEvent(Scanner scan) {
         TextBoxUtils.printTitle("Generating test data...");
         int quantity = BaseForm.readQuantity(scan, "How many events do you want to generate?");

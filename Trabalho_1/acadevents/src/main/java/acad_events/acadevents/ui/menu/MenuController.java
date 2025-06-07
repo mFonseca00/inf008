@@ -11,16 +11,40 @@ import acad_events.acadevents.ui.menu.enums.EventOption;
 import acad_events.acadevents.ui.menu.enums.MainMenuOption;
 import acad_events.acadevents.ui.menu.enums.ParticipantOption;
 import acad_events.acadevents.ui.menu.enums.ReportOption;
-import acad_events.acadevents.ui.menu.subMenus.EventMenu;
-import acad_events.acadevents.ui.menu.subMenus.MainMenu;
-import acad_events.acadevents.ui.menu.subMenus.ParticipantMenu;
-import acad_events.acadevents.ui.menu.subMenus.ReportMenu;
+import acad_events.acadevents.ui.menu.sub_menus.EventMenu;
+import acad_events.acadevents.ui.menu.sub_menus.MainMenu;
+import acad_events.acadevents.ui.menu.sub_menus.ParticipantMenu;
+import acad_events.acadevents.ui.menu.sub_menus.ReportMenu;
 
+/**
+ * Central navigation controller for the AcadEvents system's console-based user interface.
+ * Manages the main application flow and coordinates all menu interactions and functionality execution.
+ * Acts as the primary orchestrator between menu presentation and business logic execution.
+ * 
+ * Key features:
+ * - Main application loop with persistent navigation until exit
+ * - Hierarchical menu system with main menu and specialized sub-menus
+ * - Dependency injection for all functionality classes to maintain clean separation
+ * - Consistent UI flow with screen clearing, option handling, and user pause management
+ * - Integrated test data generation for both participants and events
+ * 
+ * Menu structure:
+ * - Main Menu: Entry point with 5 core options (events, participants, reports, test data, exit)
+ * - Event Sub-menu: CRUD operations for academic events with multiple types
+ * - Participant Sub-menu: Participant management plus integration features (enrollment, certificates)
+ * - Report Sub-menu: Event reporting with type and date filtering options
+ * 
+ * Used by: AcadEvents main class as the primary UI controller
+ * Integration: Coordinates EventFunctionalities, ParticipantFunctionalities, and IntegrationFunctionalities
+ */
 public class MenuController {
+    // Menu presentation components for each specialized area
     private final MainMenu mainMenu = new MainMenu();
     private final EventMenu eventMenu = new EventMenu();
     private final ParticipantMenu partMenu = new ParticipantMenu();
     private final ReportMenu reportMenu = new ReportMenu();
+    
+    // Business logic functionality classes injected for clean separation of concerns
     private final ParticipantFunctionalities partFunctions;
     private final EventFunctionalities eventFunctions;
     private final IntegrationFunctionalities integrFunctions;
@@ -31,6 +55,7 @@ public class MenuController {
         this.integrFunctions = integrFunctions;
     }
 
+    // Main application loop - runs until user chooses to exit
     public void run(){
         Scanner scan = new Scanner(System.in);
         MainMenuOption option = null;
@@ -60,6 +85,7 @@ public class MenuController {
         scan.close();
     }
 
+    // Event management sub-menu handling CRUD operations for academic events
     private void eventsSubMenu(Scanner scan){
         EventOption option = null;
         do{
@@ -87,6 +113,7 @@ public class MenuController {
         }while(option != EventOption.RETURN);
     }
 
+    // Participant management sub-menu with both CRUD operations and integration features
     private void participantsSubMenu(Scanner scan){
         ParticipantOption option = null;
         do{
@@ -100,6 +127,7 @@ public class MenuController {
                     TextBoxUtils.pause(scan);
                     break;
                 case REMOVE_PARTICIPANT:
+                    // Critical: Uses IntegrationFunctionalities to handle event unenrollment during deletion
                     partFunctions.remove(scan, integrFunctions); 
                     TextBoxUtils.pause(scan);
                     break;
@@ -126,6 +154,7 @@ public class MenuController {
         }while(option != ParticipantOption.RETURN);
     }
 
+    // Report generation sub-menu supporting both type-based and date-based filtering
     private void reportsSubMenu(Scanner scan){
         ReportOption option = null;
         do {
@@ -149,6 +178,7 @@ public class MenuController {
         } while (option != ReportOption.RETURN);
     }
 
+    // Consolidated test data generation for both participants and events in a single operation
     private void generateTestData(Scanner scan) {
         TextBoxUtils.clearDisplay();
         partFunctions.generateRandomParticipant(scan);

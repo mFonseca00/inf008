@@ -14,6 +14,21 @@ import acad_events.acadevents.models.participant.entities.Professor;
 import acad_events.acadevents.models.participant.entities.Student;
 import acad_events.acadevents.repositories.ParticipantRepository;
 
+/**
+ * Controller class for managing participant operations in the AcadEvents system.
+ * Handles business logic for CRUD operations and participant type management.
+ * Acts as intermediary between UI layer and ParticipantRepository for data persistence.
+ * 
+ * Key features:
+ * - Manages three participant types: Student, Professor, and External with specific attributes
+ * - Prevents duplicate CPF registration (business rule enforcement)
+ * - Converts between Entity and DTO objects for clean layer separation
+ * - Provides CPF-based participant lookup and validation
+ * - Used extensively by ParticipantFunctionalities and IntegrationController
+ * 
+ * Integration: Works with TestDataGenerator for test data creation and supports
+ * participant enrollment in events through IntegrationController
+ */
 public class ParticipantController {
 
     ParticipantRepository repository = new ParticipantRepository();
@@ -22,10 +37,12 @@ public class ParticipantController {
         return repository;
     }
 
+    // Business rule validation: ensures CPF uniqueness across the system
     public boolean existsByCPF(String cpf) {
         return repository.getParticipantByCPF(cpf) != null;
     }
 
+    // Entity-to-DTO conversion with polymorphic handling for different participant types
     private ParticipantDTO toDTO(Participant p) {
         if (p == null) return null;
 
@@ -68,11 +85,13 @@ public class ParticipantController {
         }
     }
 
+    // CPF-based participant lookup (used for enrollment and certificate generation)
     public ParticipantDTO findParticipantByCPF(String cpf){
         Participant participant = repository.getParticipantByCPF(cpf);
         return toDTO(participant);
     }
 
+    // Type-specific registration methods with duplicate CPF prevention
     public boolean register(StudentDTO dto) {
         if (repository.getParticipantByCPF(dto.getCpf()) == null) {
             Student student = new Student(
@@ -120,11 +139,13 @@ public class ParticipantController {
         return false;
     }
 
+    // Participant removal (triggers cleanup in IntegrationController to unenroll from events)
     public boolean delete(String CPF) {
         boolean response = repository.removeParticipantByCPF(CPF);
         return response;
     }
 
+    // Simplified listing for display purposes (returns basic participant info)
     public Collection<ParticipantDTO> list() {
         Collection<Participant> participants = repository.getAllParticipants();
         List<ParticipantDTO> dtos = new ArrayList<>();

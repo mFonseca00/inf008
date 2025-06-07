@@ -28,6 +28,18 @@ import acad_events.acadevents.models.event.entities.Workshop;
 import acad_events.acadevents.models.participant.entities.Participant;
 import acad_events.acadevents.repositories.EventRepository;
 
+/**
+ * Controller class for managing event operations in the AcadEvents system.
+ * Handles business logic for CRUD operations, data validation, and report generation.
+ * Acts as intermediary between UI layer and EventRepository for data persistence.
+ * 
+ * Key features:
+ * - Creates different event types (Course, Lecture, Workshop, Fair) with validation
+ * - Prevents duplicate events (same title and date)
+ * - Provides filtering and search capabilities by various attributes
+ * - Exports event reports to JSON with automatic file organization
+ * - Converts between Entity and DTO objects for clean separation of concerns
+ */
 public class EventController {
 
     EventRepository repository = new EventRepository();
@@ -42,6 +54,7 @@ public class EventController {
         return toDTO(event);
     }
 
+    // Event creation methods with business rule validation (no duplicate title+date)
     public boolean create(CourseDTO dto){
         if (existsEventByTitleAndDate(dto.getTitle(), dto.getDate())) {
             return false;
@@ -118,6 +131,7 @@ public class EventController {
         return repository.removeEventById(eventId);
     }
 
+    // Business rule: prevents duplicate events with same title and date
     public boolean existsEventByTitleAndDate(String title, String date) {
         Collection<Event> events = repository.getAllEvents();
         if (events == null) return false;
@@ -142,6 +156,7 @@ public class EventController {
         return eventDTOs;
     }
 
+    // Filtering methods for report generation (used by EventFunctionalities)
     public List<EventDTO> listByType(EventType type){
         Collection<Event> events = repository.getEventsByType(type.toString());
         List<EventDTO> eventDTOs = new ArrayList<>();
@@ -152,6 +167,7 @@ public class EventController {
         return eventDTOs;
     }
 
+    // Flexible search method supporting multiple event attributes
     public List<EventDTO> listByAttribute(EventAttribute attribute, String value) {
         Collection<Event> events = repository.getAllEvents();
         List<EventDTO> eventDTOs = new ArrayList<>();
@@ -186,6 +202,7 @@ public class EventController {
         return eventDTOs;
     }
 
+    // Entity-to-DTO conversion with polymorphic handling for different event types
     private EventDTO toDTO(Event e) {
         EventDTO dto;
         if (e instanceof Course) {
@@ -248,6 +265,7 @@ public class EventController {
         return dto;
     }
 
+    // Report export with automatic directory creation and timestamped filenames
     public String exportReportToJson(List<EventDTO> dtos, String reportOption, String filename) throws IOException {
         String safeReportOption = reportOption.replaceAll("[\\\\/:*?\"<>|\\s]", "_");
         File reportSubDir = new File("reports" + File.separator + safeReportOption);

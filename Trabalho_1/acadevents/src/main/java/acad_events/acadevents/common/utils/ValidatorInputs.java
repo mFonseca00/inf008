@@ -4,7 +4,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Input validation utility class for the AcadEvents system.
+ * Provides validation methods for Brazilian document formats and common data types.
+ * Essential for ensuring data integrity throughout the application.
+ * 
+ * Used by: Form classes for real-time input validation and TestDataGenerator for test data creation
+ * Integration: Called from all user input forms to validate CPF, email, phone, and date formats
+ */
 public class ValidatorInputs {
+    
+    // Validates Brazilian CPF using official algorithm with check digits
     public static boolean isValidCPF(String cpf){
         if(cpf == null) return false;
 
@@ -27,11 +37,13 @@ public class ValidatorInputs {
         return secondCheck == (digits.charAt(10) - '0');
     }
 
+    // Standard email format validation using regex pattern
     public static boolean isValidEmail(String email){
         if (email == null) return false;
         return email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$");
     }
 
+    // Brazilian phone number format validation (supports multiple formats)
     public static boolean isValidPhone(String phone){
         if (phone == null) return false;
 
@@ -47,11 +59,13 @@ public class ValidatorInputs {
         return true;
     }
 
+    // Validates positive integers for capacity, hours, and quantity fields
     public static boolean isPositiveInteger(String value){
         if (value == null) return false;
         return value.matches("^[1-9]\\d*$");
     }
 
+    // Date validation for Brazilian format (dd/MM/yyyy) used in event scheduling
     public static boolean isValidDate(String date) {
         if (date == null) return false;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -63,6 +77,7 @@ public class ValidatorInputs {
         }
     }
 
+    // Formats CPF to standard Brazilian display format (XXX.XXX.XXX-XX)
     public static String formatCPF(String cpf) {
         if (cpf == null) return null;
         
@@ -78,6 +93,7 @@ public class ValidatorInputs {
         }
     }
 
+    // Formats phone numbers to standard Brazilian display patterns
     public static String formatPhone(String phone) {
         phone = phone.replaceAll("[^\\d]", "");
         if (phone.length() == 10) {

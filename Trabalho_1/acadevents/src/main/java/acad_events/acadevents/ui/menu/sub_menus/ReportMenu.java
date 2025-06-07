@@ -1,4 +1,4 @@
-package acad_events.acadevents.ui.menu.subMenus;
+package acad_events.acadevents.ui.menu.sub_menus;
 
 import java.util.Scanner;
 

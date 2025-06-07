@@ -10,14 +10,35 @@ import acad_events.acadevents.common.dtos.participant.*;
 import acad_events.acadevents.common.utils.TestDataGenerator;
 import acad_events.acadevents.ui.functionalities.enums.*;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.*;
+import acad_events.acadevents.ui.functionalities.forms.participant_forms.*;
 
+/**
+ * UI functionality class for participant management operations in the AcadEvents system.
+ * Extends BaseFunctionalities to inherit shared controller access and utility methods.
+ * Handles all participant-related user interactions including CRUD operations and test data generation.
+ * 
+ * Key features:
+ * - Multi-step participant registration with type-specific attributes (Student, Professor, External)
+ * - Polymorphic participant handling with different forms for each participant type
+ * - Integrated participant removal with automatic event unenrollment through IntegrationFunctionalities
+ * - CPF-based duplicate prevention (Brazilian tax ID uniqueness enforcement)
+ * - Test data generation using TestDataGenerator for realistic participant creation
+ * 
+ * Business rules enforced:
+ * - CPF uniqueness across the entire system (no duplicate registrations)
+ * - Type-specific validation: Students need enrollment, Professors need employee ID and department, External participants need organization and role
+ * - Participant deletion triggers automatic unenrollment from all events to maintain data consistency
+ * 
+ * Used by: ParticipantMenu for all participant management operations
+ * Integration: Works with ParticipantController for business logic and IntegrationFunctionalities for event-related cleanup
+ */
 public class ParticipantFunctionalities extends BaseFunctionalities {
 
     public ParticipantFunctionalities(EventController eventController, ParticipantController participantController) {
         super(eventController, participantController);
     }
 
+    // Multi-step participant registration with CPF uniqueness validation and type-specific attribute handling
     public boolean registerNew(Scanner scan){
         TextBoxUtils.printTitle("Register New Participant");
         ParticipantDTO participant = new ParticipantDTO();
@@ -26,6 +47,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
             return false;
         }
 
+        // Business rule: CPF must be unique across the entire system
         if (participantController.existsByCPF(participant.getCpf())) {
             TextBoxUtils.printError("A participant with this CPF already exists!");
             return false;
@@ -46,6 +68,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
 
         ParticipantTypeOption type = ParticipantForm.selectType(scan);
 
+        // Polymorphic participant creation with type-specific attributes and validation
         switch(type){
             case STUDENT:
                 StudentDTO student = new StudentDTO(participant);
@@ -87,6 +110,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         return true;
     }
 
+    // Comprehensive participant removal with automatic event unenrollment to maintain data consistency
     public boolean remove(Scanner scan, IntegrationFunctionalities integrationFuncs) {
         TextBoxUtils.printTitle("Remove Participant from System");
         String cpf = ParticipantForm.readCpf(scan);
@@ -110,6 +134,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
             return false;
         }
 
+        // Critical: Remove participant from all events before system deletion to maintain data integrity
         integrationFuncs.unenrollParticipantFromAllRegisteredEvents(participantToDelete);
 
         boolean removedFromSystem = participantController.delete(cpf);
@@ -122,6 +147,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         return removedFromSystem;
     }
 
+    // Simple participant listing with formatted table display using TextBoxUtils
     public void listAll() {
         Collection<ParticipantDTO> participants = participantController.list();
         if (participants.isEmpty()) {
@@ -135,6 +161,7 @@ public class ParticipantFunctionalities extends BaseFunctionalities {
         TextBoxUtils.printUnderLineDisplayDivisor();
     }
 
+    // Test data generation using TestDataGenerator for realistic participant creation with valid CPFs
     public void generateRandomParticipant(Scanner scan) {
         TextBoxUtils.printTitle("Generating test data...");
         int quantity = BaseForm.readQuantity(scan, "How many participants do you want to generate?");

@@ -17,9 +17,30 @@ import acad_events.acadevents.controllers.ParticipantController;
 import acad_events.acadevents.models.event.enums.Modality;
 import acad_events.acadevents.ui.functionalities.enums.YesOrNoOption;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
-import acad_events.acadevents.ui.functionalities.forms.EventForms.EventForm;
-import acad_events.acadevents.ui.functionalities.forms.ParticipantForms.ParticipantForm;
+import acad_events.acadevents.ui.functionalities.forms.event_forms.EventForm;
+import acad_events.acadevents.ui.functionalities.forms.participant_forms.ParticipantForm;
 
+/**
+ * UI functionality class for participant-event integration operations in the AcadEvents system.
+ * Extends BaseFunctionalities to inherit shared event selection and controller access.
+ * Handles complex workflows involving both participants and events with business rule enforcement.
+ * 
+ * Key features:
+ * - Participant enrollment with capacity validation and participant type restrictions
+ * - Multi-modality support (presential, online, hybrid) with appropriate enrollment logic
+ * - Certificate generation with participation validation and optional file export
+ * - Participant unenrollment from events (used during participant deletion)
+ * - Duplicate enrollment prevention and comprehensive error handling
+ * 
+ * Business rules enforced:
+ * - Only students can enroll in courses (CourseDTO restriction)
+ * - Presential events have capacity limits, online events are unlimited
+ * - Hybrid events allow choice between presential/online participation
+ * - Certificate generation requires confirmed participation in selected event
+ * 
+ * Used by: ParticipantMenu for enrollment, certificate generation, and participant removal workflows
+ * Integration: Works with IntegrationController for business logic and inherits event selection from BaseFunctionalities
+ */
 public class IntegrationFunctionalities extends BaseFunctionalities {
 
     private final IntegrationController integrationController;
@@ -29,6 +50,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         this.integrationController = integrationController;
     }
 
+    // Complex enrollment workflow with business rule validation and multi-modality support
     public boolean enrollParticipantInEvent(Scanner scan) {
         String cpf = ParticipantForm.readCpf(scan);
         if (cpf == null) {
@@ -46,11 +68,13 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         int presentialCount = selectedEvent.getPresentialParticipants().size();
         int capacity = selectedEvent.getCapacity();
 
+        // Business rule: Only students can enroll in courses
         if (selectedEvent instanceof CourseDTO && !(participant instanceof StudentDTO)) {
             TextBoxUtils.printError("Only students can enroll in courses.");
             return false;
         }
 
+        // Duplicate enrollment prevention
         boolean enrolledPresential = selectedEvent.getPresentialParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf()));
         boolean enrolledOnline = selectedEvent.getOnlineParticipants().stream()
@@ -62,6 +86,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
             return false;
         }
 
+        // Multi-modality enrollment logic with capacity validation for presential events
         boolean added = false;
         switch (selectedEvent.getModality()) {
             case PRESENTIAL:
@@ -102,6 +127,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
     }
 
+    // Participant unenrollment with comprehensive modality handling
     public boolean removeParticipantFromEvent(Scanner scan) {
         String cpf = ParticipantForm.readCpf(scan);
         if (cpf == null) {
@@ -169,6 +195,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         }
     }
 
+    // Certificate generation with participation validation and optional file export
     public boolean generateCertificate(Scanner scan){
         String cpf = ParticipantForm.readCpf(scan);
         if (cpf == null) {
@@ -183,6 +210,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
 
         Collection<EventDTO> allEvents = eventController.listAll();
 
+        // Filter events where participant is actually enrolled (presential or online)
         List<EventDTO> enrolledEvents = allEvents.stream()
             .filter(event -> event.getPresentialParticipants().stream()
                     .anyMatch(p -> p.getCpf().equals(participant.getCpf())) ||
@@ -227,6 +255,7 @@ public class IntegrationFunctionalities extends BaseFunctionalities {
         return true;
     }
 
+    // Cleanup method: removes participant from all events during participant deletion
     public void unenrollParticipantFromAllRegisteredEvents(ParticipantDTO participantDTO) {
         if (participantDTO == null) {
             TextBoxUtils.printError("Null Participante data. Can't unenroll.");

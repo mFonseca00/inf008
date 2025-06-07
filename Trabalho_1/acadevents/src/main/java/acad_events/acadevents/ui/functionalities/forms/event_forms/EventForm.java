@@ -1,4 +1,4 @@
-package acad_events.acadevents.ui.functionalities.forms.EventForms;
+package acad_events.acadevents.ui.functionalities.forms.event_forms;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,8 +14,33 @@ import acad_events.acadevents.ui.functionalities.enums.EventWayToSelectEventsOpt
 import acad_events.acadevents.ui.functionalities.enums.InputResult;
 import acad_events.acadevents.ui.functionalities.forms.BaseForm;
 
+/**
+ * Core form class for event data entry and management operations in the AcadEvents system.
+ * Extends BaseForm to inherit common validation patterns and user interaction methods.
+ * Handles all common event attributes and provides sophisticated event selection mechanisms.
+ * 
+ * Key features:
+ * - Brazilian date format validation (dd/MM/yyyy) for event scheduling
+ * - Multi-modality support (Presential, Online, Hybrid) with specialized selection for enrollment
+ * - Comprehensive event selection strategies: full list, attribute filtering, or direct ID lookup
+ * - Event type selection supporting all academic event types (Course, Lecture, Workshop, Fair)
+ * - Capacity validation for venue management and participant enrollment limits
+ * 
+ * Selection mechanisms:
+ * - Template Method pattern implementation used by BaseFunctionalities for consistent event selection
+ * - Supports three selection strategies: ALL_LIST, ATTRIBUTE_LIST, and ID-based lookup
+ * - Attribute filtering by title, date, location, and modality for targeted event searches
+ * - Specialized modality selection excluding HYBRID for participant enrollment operations
+ * 
+ * Used by: EventFunctionalities for event creation, BaseFunctionalities for event selection,
+ * and IntegrationFunctionalities for participant enrollment workflows
+ * 
+ * Integration: Works with EventDTO for data transfer, MenuUtils for standardized option display,
+ * and TextBoxUtils for consistent UI presentation across the system
+ */
 public class EventForm extends BaseForm {
 
+    // Direct ID input for fast event lookup - used in event deletion and modification workflows
     public static String readId(Scanner scan) {
         return readField(
             scan,
@@ -24,6 +49,7 @@ public class EventForm extends BaseForm {
             true, FieldValidatorType.POSITIVE_INT);
     }
 
+    // Brazilian date format input for event scheduling and report generation
     public static String readDate(Scanner scan) {
         return readField(
             scan,
@@ -32,6 +58,7 @@ public class EventForm extends BaseForm {
             true, FieldValidatorType.DATE);
     }
 
+    // Event title registration with non-blank validation for event identification
     public static InputResult registerTitle(Scanner scan, EventDTO dto){
         String title = readField(
             scan,
@@ -44,6 +71,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
+    // Date registration with Brazilian format validation for academic event scheduling
     public static InputResult registerDate(Scanner scan, EventDTO dto){
         String date = readField(
             scan,
@@ -56,6 +84,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
+    // Location validation for venue management and event logistics
     public static InputResult registerLocation(Scanner scan, EventDTO dto){
         String location = readField(
             scan,
@@ -68,6 +97,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
+    // Capacity validation for participant enrollment limits and venue management
     public static InputResult registerCapacity(Scanner scan, EventDTO dto){
         String capacity = readField(
             scan,
@@ -81,6 +111,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
+    // Event description for academic content and participant information
     public static InputResult registerDescription(Scanner scan, EventDTO dto){
         String description = readField(
             scan,
@@ -93,6 +124,7 @@ public class EventForm extends BaseForm {
         return InputResult.SUCCESS;        
     }
 
+    // Modality selection for event delivery format - supports Presential, Online, and Hybrid
     public static InputResult registerModality(Scanner scan, EventDTO dto) {
         while (true) {
             TextBoxUtils.printTitle("Select an event modality");
@@ -112,6 +144,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // General modality selection used in report generation and event filtering
     public static Modality selectModality(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select event modality");
@@ -130,6 +163,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // Specialized modality selection for participant enrollment - excludes HYBRID option
     public static Modality selectPresentialOrOnlineModality(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select modality for enrollment: ");
@@ -153,6 +187,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // Event type selection supporting all academic event types with polymorphic handling
     public static EventType selectType(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select event type");
@@ -171,6 +206,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // Selection strategy chooser - implements Template Method pattern for BaseFunctionalities
     public static EventWayToSelectEventsOption selectWayToSelectEvent(Scanner scan, String operation) {
         while (true) {
             TextBoxUtils.printTitle("Select an option to " + operation);
@@ -189,6 +225,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // Attribute selection for filtered event searches - supports title, date, location, modality
     public static EventAttribute selectAttribute(Scanner scan) {
         while (true) {
             TextBoxUtils.printTitle("Select an attribute to remove an event");
@@ -207,6 +244,7 @@ public class EventForm extends BaseForm {
         }
     }
 
+    // Event selection from list with detailed display - used in deletion, enrollment, and certificate workflows
     public static EventDTO selectEvent(Scanner scan, List<EventDTO> events) {
         while (true) {
             TextBoxUtils.printTitle("Select an event");

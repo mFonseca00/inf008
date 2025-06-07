@@ -6,11 +6,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Core utility class for console UI formatting in the AcadEvents system.
+ * Provides standardized text display, user input handling, and certificate generation.
+ * Creates consistent visual presentation using box-style formatting with borders.
+ * 
+ * Used by: All UI classes for standardized console output and input formatting
+ * Integration: Works with StyleStrings for colors and MenuUtils for option display
+ */
 public class TextBoxUtils {
+    // Console display configuration for consistent box-style formatting
     private static String displayDivisor;
     private static int width = 100;
     private static String displayLimitator = "|";
 
+    // Cross-platform console clearing (Windows PowerShell and Unix systems)
     public static void clearDisplay() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -32,6 +42,7 @@ public class TextBoxUtils {
         for (int i = 0; i < space; i++) System.out.println();
     }
 
+    // Core formatting method for colored messages with box borders
     private static void printFormattedMessage(String message, String style) {
         System.out.println(" " + "_".repeat(width - (displayLimitator.length() * 2)));
         printEmptyLine();
@@ -39,6 +50,7 @@ public class TextBoxUtils {
         printUnderLineDisplayDivisor();
     }
 
+    // Standardized message types for consistent UI feedback across the system
     public static void printTitle(String title) {
         printFormattedMessage(title, StyleStrings.BOLD);
     }
@@ -69,12 +81,14 @@ public class TextBoxUtils {
         System.out.println(emptyLine());
     }
 
+    // Left-aligned text with automatic word wrapping for long content
     public static void printLeftText(String text) {
         for (String line : wrapText(text, width - (displayLimitator.length() * 2) - 2)) {
             System.out.println(displayLimitator + leftTextContent(line) + displayLimitator);
         }
     }
 
+    // Styled user input prompt with green arrow indicator and text wrapping
     public static String inputLine(Scanner scan, String inputLabel){
         int leftPadding = 2;
         int maxInputLength = width - 2 - leftPadding;
@@ -95,6 +109,7 @@ public class TextBoxUtils {
         return value;
     }
 
+    // Three-column table formatting for structured data display (reports, lists)
     public static void printTableRow(String col1, String col2, String col3) {
         int totalWidth = width - (displayLimitator.length()*4);
         int colPadding = 2;
@@ -135,6 +150,7 @@ public class TextBoxUtils {
                            "_".repeat(colWidth3) + displayLimitator);
     }
 
+    // Certificate generation with formatted box layout and date stamping
     public static String formatedCertificateText(String text) {
         StringBuilder certificateBuilder = new StringBuilder();
         String inputText = (text == null) ? "" : text;
@@ -191,6 +207,7 @@ public class TextBoxUtils {
         return displayLimitator + " ".repeat(width - (displayLimitator.length()*2)) + displayLimitator;
     }
 
+    // Text alignment utilities for consistent formatting within box borders
     private static String centerTextContent(String text) {
         if (text.length() >= width - (displayLimitator.length()*2)) {
             return text.substring(0, width - (displayLimitator.length()*2));
@@ -209,6 +226,7 @@ public class TextBoxUtils {
         return padLeft + text + padRight;
     }
 
+    // Intelligent text wrapping to maintain readability within box constraints
     private static List<String> wrapText(String text, int maxWidth) {
         List<String> lines = new ArrayList<>();
         text = text.trim();
