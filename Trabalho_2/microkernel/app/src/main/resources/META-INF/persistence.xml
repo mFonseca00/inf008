@@ -3,12 +3,12 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-    <persistence-unit name="livraria-pu" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="bookstore-pu" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <!--classes de entidade-->
-        <!-- 
+        <!-- Classes de entidade -->
         <class>br.edu.ifba.inf008.interfaces.models.User</class>
+        <!--
         <class>br.edu.ifba.inf008.interfaces.models.Book</class>
         <class>br.edu.ifba.inf008.interfaces.models.Loan</class>
         -->
@@ -16,9 +16,9 @@
         <properties>
             <!-- Configurações de Conexão JDBC -->
             <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/livraria"/>
-            <property name="jakarta.persistence.jdbc.user" value="user"/>
-            <property name="jakarta.persistence.jdbc.password" value="password"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3307/bookstore"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="root"/>
 
             <!-- Dialeto SQL do Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>

@@ -22,24 +22,24 @@ public class User {
 
     private String email;
 
-    @Column(name = "registred_at")
-    private LocalDateTime registredAt;
+    @Column(name = "registered_at")
+    private LocalDateTime registeredAt;
     
     // Construtores
 
     public User() {}
 
-    public User(Long userId, String name, String email, LocalDateTime registredAt) {
+    public User(Long userId, String name, String email, LocalDateTime registeredAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
-        this.registredAt = registredAt;
+        this.registeredAt = registeredAt;
     }
 
     public User(String name, String email) {
         this.name = name;
         this.email = email;
-        this.registredAt = LocalDateTime.now();
+        this.registeredAt = LocalDateTime.now();
     }
 
     // Getters e Setters
@@ -56,8 +56,8 @@ public class User {
         return email;
     }
 
-    public LocalDateTime getRegistredAt() {
-        return registredAt;
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
     }
 
     public void setName(String name) {
@@ -72,15 +72,15 @@ public class User {
         this.userId = userId;
     }
 
-    public void setRegistredAt(LocalDateTime registredAt) {
-        this.registredAt = registredAt;
+    public void setRegisteredAt(LocalDateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     // toString
 
     @Override
     public String toString() {
-        return "User [userId=" + userId + ", name=" + name + ", email=" + email + ", registredAt=" + registredAt + "]";
+        return "User [userId=" + userId + ", name=" + name + ", email=" + email + ", registeredAt=" + registeredAt + "]";
     }
 
 }
