@@ -4,9 +4,12 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,15 +21,84 @@ public class Loan {
     @Column(name = "loan_id")
     private Long loanId;
 
-    @Column(name = "book_id")
-    private Long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "loan_date")
     private LocalDate loanDate;
 
     @Column(name = "return_date")
     private LocalDate returnDate;
+
+    // Construtores
+    public Loan() {}
+
+    public Loan(Long loanId, Book book, User user, LocalDate loanDate, LocalDate returnDate) {
+        this.loanId = loanId;
+        this.book = book;
+        this.user = user;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+    }
+
+    public Loan(Book book, User user, LocalDate loanDate) {
+        this.book = book;
+        this.user = user;
+        this.loanDate = loanDate;
+    }
+
+    // Getters e Setters
+    public Long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDate getLoanDate() {
+        return loanDate;
+    }
+
+    public void setLoanDate(LocalDate loanDate) {
+        this.loanDate = loanDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    // toString
+
+    @Override
+    public String toString() {
+        return "Loan [loanId=" + loanId + ", book=" + book.getTitle() + 
+               ", user=" + user.getName() + ", loanDate=" + loanDate + 
+               ", returnDate=" + returnDate + "]";
+    }
 }

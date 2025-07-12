@@ -27,4 +27,84 @@ public class Book {
 
     @Column(name = "copies_available")
     private int copiesAvailable;
+
+    // Construtores
+
+    public Book() {}
+
+    public Book(Long bookId, String title, String author, String isbn, int publishedYear, int copiesAvailable) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.publishedYear = publishedYear;
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    public Book(String title, String author, String isbn, int publishedYear, int copiesAvailable) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.publishedYear = publishedYear;
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    // Getters e Setters
+
+    public Long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public int getPublishedYear() {
+        return publishedYear;
+    }
+
+    public void setPublishedYear(int publishedYear) {
+        this.publishedYear = publishedYear;
+    }
+
+    public int getCopiesAvailable() {
+        return copiesAvailable;
+    }
+
+    public void setCopiesAvailable(int copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    // toString
+
+    @Override
+    public String toString() {
+        return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", isbn=" + isbn
+                + ", publishedYear=" + publishedYear + ", copiesAvailable=" + copiesAvailable + "]";
+    }
+
 }
