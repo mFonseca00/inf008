@@ -5,18 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUserDAO {
-    // Criar
     User save(User user);
     
-    // Ler
-    Optional<User> findById(Long id);
+    Optional<User> findById(Integer id);
     List<User> findAll();
     List<User> findByName(String name);
     Optional<User> findByEmail(String email);
     
-    // Atualizar
     User update(User user);
     
-    // Deletar
-    boolean delete(Long id);
+    boolean delete(Integer id);
 }

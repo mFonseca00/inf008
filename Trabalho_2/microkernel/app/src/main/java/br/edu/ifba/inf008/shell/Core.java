@@ -1,7 +1,11 @@
 package br.edu.ifba.inf008.shell;
 
 import br.edu.ifba.inf008.interfaces.*;
+import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
+import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
 import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
+import br.edu.ifba.inf008.persistence.BookDAO;
+import br.edu.ifba.inf008.persistence.LoanDAO;
 import br.edu.ifba.inf008.persistence.UserDAO;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +20,8 @@ public class Core extends ICore
         
         // Inicializa os DAOs
         userDAO = new UserDAO();
+        bookDAO = new BookDAO();
+        loanDAO = new LoanDAO();
     }
 
     public static boolean init() {
@@ -47,8 +53,20 @@ public class Core extends ICore
         return userDAO;
     }
 
+    @Override
+    public IBookDAO getBookDAO() {
+        return bookDAO;
+    }
+
+    @Override
+    public ILoanDAO getLoanDAO() {
+        return loanDAO;
+    }
+
     private IAuthenticationController authenticationController = new AuthenticationController();
     private IIOController ioController = new IOController();
     private IPluginController pluginController = new PluginController();
     private IUserDAO userDAO;
+    private IBookDAO bookDAO;
+    private ILoanDAO loanDAO;
 }

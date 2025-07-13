@@ -19,7 +19,7 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loan_id")
-    private Long loanId;
+    private Integer loanId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
@@ -38,7 +38,7 @@ public class Loan {
     // Construtores
     public Loan() {}
 
-    public Loan(Long loanId, Book book, User user, LocalDate loanDate, LocalDate returnDate) {
+    public Loan(Integer loanId, Book book, User user, LocalDate loanDate, LocalDate returnDate) {
         this.loanId = loanId;
         this.book = book;
         this.user = user;
@@ -46,18 +46,19 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
-    public Loan(Book book, User user, LocalDate loanDate) {
+    public Loan(Book book, User user, LocalDate loanDate, LocalDate returnDate) {
         this.book = book;
         this.user = user;
         this.loanDate = loanDate;
+        this.returnDate = returnDate;
     }
 
     // Getters e Setters
-    public Long getLoanId() {
+    public Integer getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(Long loanId) {
+    public void setLoanId(Integer loanId) {
         this.loanId = loanId;
     }
 

@@ -8,10 +8,9 @@
 
         <!-- Classes de entidade -->
         <class>br.edu.ifba.inf008.interfaces.models.User</class>
-        <!--
         <class>br.edu.ifba.inf008.interfaces.models.Book</class>
         <class>br.edu.ifba.inf008.interfaces.models.Loan</class>
-        -->
+        
 
         <properties>
             <!-- Configurações de Conexão JDBC -->
@@ -20,8 +19,8 @@
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="root"/>
 
-            <!-- Dialeto SQL do Hibernate -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <!-- O dialeto é detectado automaticamente pelo Hibernate -->
+            <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/> -->
 
             <!-- Mostra o SQL gerado no console (debug) -->
             <property name="hibernate.show_sql" value="true"/>

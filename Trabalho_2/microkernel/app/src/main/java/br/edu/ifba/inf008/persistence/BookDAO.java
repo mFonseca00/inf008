@@ -1,7 +1,7 @@
 package br.edu.ifba.inf008.persistence;
 
-import br.edu.ifba.inf008.interfaces.models.User;
-import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
+import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,22 +11,22 @@ import jakarta.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDAO implements IUserDAO {
+public class BookDAO implements IBookDAO {
 
     private EntityManagerFactory emf;
 
-    public UserDAO() {
+    public BookDAO() {
         this.emf = JPAUtil.getEntityManagerFactory();
     }
 
     @Override
-    public User save(User user) {
+    public Book save(Book book) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(user);
+            em.persist(book);
             em.getTransaction().commit();
-            return user;
+            return book;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -39,54 +39,28 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
+    public Optional<Book> findById(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {
-            User user = em.find(User.class, id);
-            return Optional.ofNullable(user);
+            Book book = em.find(Book.class, id);
+            return Optional.ofNullable(book);
         } finally {
             em.close();
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public Optional<Book> findByIsbn(String isbn) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<User> findByName(String name) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(:name)", 
-                User.class
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE b.isbn = :isbn", 
+                Book.class
             );
-            query.setParameter("name", "%" + name + "%");
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE u.email = :email", 
-                User.class
-            );
-            query.setParameter("email", email);
+            query.setParameter("isbn", isbn);
             try {
-                User user = query.getSingleResult();
-                return Optional.of(user);
+                Book book = query.getSingleResult();
+                return Optional.of(book);
             } catch (NoResultException e) {
                 return Optional.empty();
             }
@@ -96,13 +70,69 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public User update(User user) {
+    public List<Book> findByTitle(String title) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(:title)", 
+                Book.class
+            );
+            query.setParameter("title", "%" + title + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> findByAuthor(String author) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.author) LIKE LOWER(:author)", 
+                Book.class
+            );
+            query.setParameter("author", "%" + author + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> findByPublishedYear(int year) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE b.publishedYear = :year", 
+                Book.class
+            );
+            query.setParameter("year", year);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Book update(Book book) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            User updatedUser = em.merge(user);
+            Book updatedBook = em.merge(book);
             em.getTransaction().commit();
-            return updatedUser;
+            return updatedBook;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -119,9 +149,9 @@ public class UserDAO implements IUserDAO {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            User user = em.find(User.class, id);
-            if (user != null) {
-                em.remove(user);
+            Book book = em.find(Book.class, id);
+            if (book != null) {
+                em.remove(book);
                 em.getTransaction().commit();
                 return true;
             } else {
