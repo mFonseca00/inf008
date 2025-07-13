@@ -19,7 +19,8 @@ public class App {
             // Inicializa o Core
             Core.init();
             
-            // Testes para DAOs (apagar no final)
+            // Testes para DAOs
+            // FIXME: apagar no final
             // testUserDAO();
             // testBookDAO();
             // testLoanDAO();
@@ -31,7 +32,7 @@ public class App {
     }
     
 
-    // Apagar métodos de teste no DAO final
+    // FIXME: Apagar métodos de teste no DAO final
     private static void testUserDAO() {
         try {
             System.out.println("===== Testando UserDAO =====");
