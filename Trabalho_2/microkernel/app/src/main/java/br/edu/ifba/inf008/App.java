@@ -19,10 +19,10 @@ public class App {
             // Inicializa o Core
             Core.init();
             
-            // Testes para DAOs
-            testUserDAO();
-            testBookDAO();
-            testLoanDAO();
+            // Testes para DAOs (apagar no final)
+            // testUserDAO();
+            // testBookDAO();
+            // testLoanDAO();
             
         } finally {
             // Fecha recursos do Hibernate
@@ -30,6 +30,8 @@ public class App {
         }
     }
     
+
+    // Apagar métodos de teste no DAO final
     private static void testUserDAO() {
         try {
             System.out.println("===== Testando UserDAO =====");
