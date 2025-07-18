@@ -67,8 +67,16 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
     @Override
     public Node createTabContent() {
         try {
-            // Carrega o FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserView.fxml"));
+            // Tenta encontrar o arquivo FXML
+            java.net.URL fxmlUrl = getClass().getResource("/fxml/UserView.fxml");
+            
+            // Se o arquivo FXML não for encontrado, lança uma exceção imediatamente
+            if (fxmlUrl == null) {
+                throw new IOException("Arquivo FXML não encontrado: /fxml/UserView.fxml");
+            }
+            
+            // Se chegou aqui, o arquivo FXML foi encontrado
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             loader.setController(this);
             
             // Carrega a raiz do FXML
@@ -78,10 +86,34 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
             setupComponents();
             
             return root;
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Alterando de IOException para Exception para capturar todos os tipos de erro
             e.printStackTrace();
-            // Em caso de erro, retorna uma interface básica
-            return createFallbackContent();
+            
+            // Cria uma tela simples informando o erro
+            VBox errorContainer = new VBox(15);
+            errorContainer.setPadding(new Insets(30));
+            errorContainer.setAlignment(javafx.geometry.Pos.CENTER);
+            
+            Label errorTitle = new Label("Não foi possível carregar a interface");
+            errorTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
+            
+            Label errorMessage = new Label("Ocorreu um erro ao carregar a interface do plugin de usuários.");
+            Label errorDetail = new Label("Detalhes: " + e.getMessage());
+            errorDetail.setStyle("-fx-font-style: italic;");
+            
+            Label contactAdmin = new Label("Entre em contato com o administrador do sistema.");
+            
+            errorContainer.getChildren().addAll(
+                errorTitle,
+                new Label(""),  
+                errorMessage,
+                errorDetail,
+                new Label(""),  
+                contactAdmin
+            );
+            
+            return errorContainer;
         }
     }
     
@@ -210,62 +242,5 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
         List<User> users = ICore.getInstance().getUserDAO().findAll();
         tableUsers.getItems().clear();
         tableUsers.getItems().addAll(users);
-    }
-    
-    // Interface de contingência caso o FXML não seja encontrado
-    private Node createFallbackContent() {
-        VBox container = new VBox(15);
-        container.setPadding(new Insets(20));
-        
-        // Título
-        Label title = new Label("Gerenciamento de Usuários");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        
-        // Formulário de cadastro básico
-        VBox registerForm = new VBox(10);
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        
-        txtName = new TextField();
-        txtEmail = new TextField();
-        grid.add(new Label("Nome:"), 0, 0);
-        grid.add(txtName, 1, 0);
-        grid.add(new Label("Email:"), 0, 1);
-        grid.add(txtEmail, 1, 1);
-        
-        btnSave = new Button("Cadastrar");
-        lblMessage = new Label();
-        
-        // Busca básica
-        HBox searchBox = new HBox(10);
-        txtSearch = new TextField();
-        btnSearch = new Button("Buscar");
-        searchBox.getChildren().addAll(txtSearch, btnSearch);
-        
-        // Tabela básica
-        tableUsers = new TableView<>();
-        setupTable();
-        
-        // Botão de atualizar
-        btnRefresh = new Button("Atualizar");
-        
-        // Montar interface
-        registerForm.getChildren().addAll(new Label("Cadastro de Usuários"), grid, btnSave, lblMessage);
-        
-        container.getChildren().addAll(
-            title, 
-            registerForm,
-            new Label("Buscar Usuários"),
-            searchBox,
-            tableUsers,
-            btnRefresh
-        );
-        
-        // Configurar ações
-        setupButtonActions();
-        loadInitialData();
-        
-        return container;
     }
 }
