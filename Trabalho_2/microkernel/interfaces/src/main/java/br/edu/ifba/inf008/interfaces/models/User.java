@@ -25,8 +25,6 @@ public class User {
     @Column(name = "registered_at")
     private LocalDateTime registeredAt;
     
-    // Construtores
-
     public User() {}
 
     public User(Integer userId, String name, String email, LocalDateTime registeredAt) {
@@ -41,8 +39,6 @@ public class User {
         this.email = email;
         this.registeredAt = LocalDateTime.now();
     }
-
-    // Getters e Setters
 
     public Integer getUserId() {
         return userId;
@@ -75,8 +71,6 @@ public class User {
     public void setRegisteredAt(LocalDateTime registeredAt) {
         this.registeredAt = registeredAt;
     }
-
-    // toString
 
     @Override
     public String toString() {

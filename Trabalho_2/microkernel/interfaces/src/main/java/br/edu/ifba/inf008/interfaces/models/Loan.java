@@ -35,7 +35,6 @@ public class Loan {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
-    // Construtores
     public Loan() {}
 
     public Loan(Integer loanId, Book book, User user, LocalDate loanDate, LocalDate returnDate) {
@@ -53,7 +52,6 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
-    // Getters e Setters
     public Integer getLoanId() {
         return loanId;
     }
@@ -93,8 +91,6 @@ public class Loan {
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
-
-    // toString
 
     @Override
     public String toString() {

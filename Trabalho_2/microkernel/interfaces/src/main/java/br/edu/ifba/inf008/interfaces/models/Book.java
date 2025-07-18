@@ -28,8 +28,6 @@ public class Book {
     @Column(name = "copies_available")
     private int copiesAvailable;
 
-    // Construtores
-
     public Book() {}
 
     public Book(Integer bookId, String title, String author, String isbn, int publishedYear, int copiesAvailable) {
@@ -48,8 +46,6 @@ public class Book {
         this.publishedYear = publishedYear;
         this.copiesAvailable = copiesAvailable;
     }
-
-    // Getters e Setters
 
     public Integer getBookId() {
         return bookId;
@@ -98,8 +94,6 @@ public class Book {
     public void setCopiesAvailable(int copiesAvailable) {
         this.copiesAvailable = copiesAvailable;
     }
-
-    // toString
 
     @Override
     public String toString() {
