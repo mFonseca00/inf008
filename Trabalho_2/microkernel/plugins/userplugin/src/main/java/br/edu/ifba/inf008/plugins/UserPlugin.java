@@ -5,6 +5,9 @@ import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.plugins.service.UserService;
+import br.edu.ifba.inf008.plugins.util.ValidationService;
+import br.edu.ifba.inf008.plugins.ui.UIUtils;
 
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -25,11 +28,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 public class UserPlugin implements IPluginUI, ILibraryPlugin
 {
-    // FXML components
     @FXML private TextField txtName;
     @FXML private TextField txtEmail;
     @FXML private Button btnSave;
@@ -45,9 +46,7 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
     @FXML private Button btnDelete;
     
     private Integer editingUserId = null;
-    
-    private static final Pattern EMAIL_PATTERN = 
-        Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)\\.(\\w+)$");
+    private UserService userService = new UserService();
     
     @Override
     public boolean init() {
@@ -78,77 +77,47 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
     @Override
     public Node createTabContent() {
         try {
-            // Tenta encontrar o arquivo FXML
             java.net.URL fxmlUrl = getClass().getResource("/fxml/UserView.fxml");
             
-            // Se o arquivo FXML não for encontrado, lança uma exceção imediatamente
             if (fxmlUrl == null) {
                 throw new IOException("Arquivo FXML não encontrado: /fxml/UserView.fxml");
             }
             
-            // Se chegou aqui, o arquivo FXML foi encontrado
             FXMLLoader loader = new FXMLLoader(fxmlUrl);
             loader.setController(this);
             
-            // Carrega a raiz do FXML
             Node root = loader.load();
             
-            // Configura os componentes após o carregamento do FXML
             setupComponents();
             
             return root;
         } catch (Exception e) {
             e.printStackTrace();
             
-            VBox errorContainer = new VBox(15);
-            errorContainer.setPadding(new Insets(30));
-            errorContainer.setAlignment(javafx.geometry.Pos.CENTER);
-            
-            Label errorTitle = new Label("Não foi possível carregar a interface");
-            errorTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
-            
-            Label errorMessage = new Label("Ocorreu um erro ao carregar a interface do plugin de usuários.");
-            Label errorDetail = new Label("Detalhes: " + e.getMessage());
-            errorDetail.setStyle("-fx-font-style: italic;");
-            
-            Label contactAdmin = new Label("Entre em contato com o administrador do sistema.");
-            
-            errorContainer.getChildren().addAll(
-                errorTitle,
-                new Label(""),  
-                errorMessage,
-                errorDetail,
-                new Label(""),  
-                contactAdmin
+            return UIUtils.createErrorContainer(
+                "Não foi possível carregar a interface",
+                "Ocorreu um erro ao carregar a interface do plugin de usuários.",
+                e.getMessage()
             );
-            
-            return errorContainer;
         }
     }
     
-    // Configuração dos componentes após o FXML ser carregado
     private void setupComponents() {
-        // Configura a tabela
         setupTable();
 
-        // Configura o combo de tipo de busca
         setupSearchOptions();
         
-        // Configura os eventos dos botões
         setupButtonActions();
         
-        // Carrega dados iniciais
         loadInitialData();
     }
 
     private void setupSearchOptions() {
-        // Adiciona opções ao ComboBox
         cmbSearchType.getItems().addAll("Nome", "Email");
-        cmbSearchType.setValue("Nome"); // Valor padrão
+        cmbSearchType.setValue("Nome");
     }
     
     private void setupTable() {
-        // Configuração das colunas da tabela
         TableColumn<User, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         
@@ -168,145 +137,146 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
     }
     
     private void setupButtonActions() {
-        // Ação do botão Salvar/Cadastrar
         btnSave.setOnAction(event -> {
             try {
                 String name = txtName.getText();
                 String email = txtEmail.getText();
                 
-                // Validações
-                if (name == null || name.trim().isEmpty()) {
-                    lblMessage.setStyle("-fx-text-fill: #d31414;");
-                    lblMessage.setText("O campo \"Nome\" é obrigatório");
+                if (!ValidationService.isNotEmpty(name)) {
+                    displayErrorMessage("O campo \"Nome\" é obrigatório");
                     return;
                 }
-                if (email == null || email.trim().isEmpty() || !isValidEmail(email)) {
-                    lblMessage.setStyle("-fx-text-fill: #d31414;");
-                    lblMessage.setText("O campo \"Email\" é inválido");
+                if (!ValidationService.isValidEmail(email)) {
+                    displayErrorMessage("O campo \"Email\" é inválido");
                     return;
                 }
                 
                 boolean isEditing = editingUserId != null;
                 
                 if (isEditing) {
-                    // Modo de edição - atualiza o usuário existente
-                    Optional<User> existingUser = ICore.getInstance().getUserDAO().findById(editingUserId);
-                    
-                    if (existingUser.isPresent()) {
-                        User user = existingUser.get();
-                        user.setName(name);
-                        user.setEmail(email);
-                        
-                        User updatedUser = ICore.getInstance().getUserDAO().update(user);
-                        
-                        if (updatedUser != null) {
-                            resetForm();
-                            loadInitialData();
-                        } else {
-                            lblMessage.setStyle("-fx-text-fill: #d31414;");
-                            lblMessage.setText("Erro ao atualizar usuário");
-                        }
-                    } else {
-                        lblMessage.setStyle("-fx-text-fill: #d31414;");
-                        lblMessage.setText("Usuário não encontrado. ID: " + editingUserId);
-                        resetForm();
-                    }
+                    handleUpdateUser(name, email);
                 } else {
-                    // Modo de cadastro - cria um novo usuário
-                    User newUser = new User(name, email);
-                    User savedUser = ICore.getInstance().getUserDAO().save(newUser);
-                    
-                    if (savedUser != null) {
-                        resetForm();
-                        loadInitialData();
-                    } else {
-                        lblMessage.setStyle("-fx-text-fill: #d31414;");
-                        lblMessage.setText("Erro ao cadastrar usuário");
-                    }
+                    handleCreateUser(name, email);
                 }
             } catch (Exception e) {
-                lblMessage.setStyle("-fx-text-fill: #d31414;");
-                lblMessage.setText("Erro: " + e.getMessage());
+                displayErrorMessage("Erro: " + e.getMessage());
                 e.printStackTrace();
             }
         });
 
-        // Ação do botão Cancelar
         btnCancel.setOnAction(event -> {
             resetForm();
             lblMessage.setText("Edição cancelada");
         });
         
-        // Ação do botão Buscar
         btnSearch.setOnAction(event -> {
-            String query = txtSearch.getText();
-            String searchType = cmbSearchType.getValue();
-            List<User> users;
-            
-            if (query.isEmpty()) {
-                users = ICore.getInstance().getUserDAO().findAll();
-            } else if ("Email".equals(searchType)) {
-                // Busca por email
-                Optional<User> userOpt = ICore.getInstance().getUserDAO().findByEmail(query);
-                users = userOpt.isPresent() ? List.of(userOpt.get()) : List.of();
-            } else {
-                // Busca por nome
-                users = ICore.getInstance().getUserDAO().findByName(query);
-            }
-            
-            tableUsers.getItems().clear();
-            tableUsers.getItems().addAll(users);
+            handleSearch();
         });
 
-        // Ação do botão Limpar
         btnClear.setOnAction(event -> {
             txtSearch.clear();
             loadInitialData();
         });
 
-        // Ação do botão Atualizar
         btnRefresh.setOnAction(event -> loadInitialData());
         
-        // Ação do botão Excluir (se existir)
         if (btnDelete != null) {
-            btnDelete.setOnAction(event -> {
-                User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
-                if (selectedUser != null) {
-                    boolean deleted = ICore.getInstance().getUserDAO().delete(selectedUser.getUserId());
-                    if (deleted) {
-                        tableUsers.getItems().remove(selectedUser);
-                        resetForm();
-                    } else {
-                        lblMessage.setText("Erro ao remover usuário");
-                    }
-                } else {
-                    lblMessage.setText("Selecione um usuário para remover");
-                }
-            });
+            btnDelete.setOnAction(event -> handleDelete());
         }
         
-        // Ação do botão Editar (se existir)
         if (btnEdit != null) {
-            btnEdit.setOnAction(event -> {
-                User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
-                if (selectedUser != null) {
-                    txtName.setText(selectedUser.getName());
-                    txtEmail.setText(selectedUser.getEmail());
-                    
-                    editingUserId = selectedUser.getUserId();
-                    
-                    btnSave.setText("Atualizar");
-                    btnCancel.setVisible(true);
-                    lblMessage.setStyle("-fx-text-fill: #d1a000ff;");
-                    lblMessage.setText("Editando usuário #" + editingUserId);
-                } else {
-                    lblMessage.setText("Selecione um usuário para editar");
-                }
-            });
+            btnEdit.setOnAction(event -> handleEdit());
         }
     }
     
-    // Método para resetar o formulário e voltar ao modo de cadastro
+    private void handleCreateUser(String name, String email) {
+        User savedUser = userService.createUser(name, email);
+        
+        if (savedUser != null) {
+            resetForm();
+            loadInitialData();
+        } else {
+            displayErrorMessage("Erro ao cadastrar usuário");
+        }
+    }
+    
+    private void handleUpdateUser(String name, String email) {
+        Optional<User> existingUser = userService.findUserById(editingUserId);
+        
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            user.setName(name);
+            user.setEmail(email);
+            
+            User updatedUser = userService.updateUser(user);
+            
+            if (updatedUser != null) {
+                resetForm();
+                loadInitialData();
+            } else {
+                displayErrorMessage("Erro ao atualizar usuário");
+            }
+        } else {
+            displayErrorMessage("Usuário não encontrado. ID: " + editingUserId);
+            resetForm();
+        }
+    }
+    
+    private void handleSearch() {
+        String query = txtSearch.getText();
+        String searchType = cmbSearchType.getValue();
+        List<User> users;
+        
+        if (query.isEmpty()) {
+            users = userService.getAllUsers();
+        } else if ("Email".equals(searchType)) {
+            Optional<User> userOpt = userService.findUserByEmail(query);
+            users = userOpt.isPresent() ? List.of(userOpt.get()) : List.of();
+        } else {
+            users = userService.findUsersByName(query);
+        }
+        
+        tableUsers.getItems().clear();
+        tableUsers.getItems().addAll(users);
+    }
+    
+    private void handleDelete() {
+        User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            boolean deleted = userService.deleteUser(selectedUser.getUserId());
+            if (deleted) {
+                tableUsers.getItems().remove(selectedUser);
+                resetForm();
+            } else {
+                lblMessage.setText("Erro ao remover usuário");
+            }
+        } else {
+            lblMessage.setText("Selecione um usuário para remover");
+        }
+    }
+    
+    private void handleEdit() {
+        User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            txtName.setText(selectedUser.getName());
+            txtEmail.setText(selectedUser.getEmail());
+            
+            editingUserId = selectedUser.getUserId();
+            
+            btnSave.setText("Atualizar");
+            btnCancel.setVisible(true);
+            lblMessage.setStyle("-fx-text-fill: #d1a000ff;");
+            lblMessage.setText("Editando usuário #" + editingUserId);
+        } else {
+            lblMessage.setText("Selecione um usuário para editar");
+        }
+    }
+    
+    private void displayErrorMessage(String message) {
+        lblMessage.setStyle("-fx-text-fill: #d31414;");
+        lblMessage.setText(message);
+    }
+    
     private void resetForm() {
         txtName.clear();
         txtEmail.clear();
@@ -318,15 +288,8 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
     }
     
     private void loadInitialData() {
-        List<User> users = ICore.getInstance().getUserDAO().findAll();
+        List<User> users = userService.getAllUsers();
         tableUsers.getItems().clear();
         tableUsers.getItems().addAll(users);
-    }
-    
-    private boolean isValidEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            return false;
-        }
-        return EMAIL_PATTERN.matcher(email).matches();
     }
 }
