@@ -5,9 +5,6 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
-/**
- * Utility class for UI operations
- */
 public class UIUtils {
     
     public static VBox createErrorContainer(String errorTitle, String errorMessage, String errorDetail) {
