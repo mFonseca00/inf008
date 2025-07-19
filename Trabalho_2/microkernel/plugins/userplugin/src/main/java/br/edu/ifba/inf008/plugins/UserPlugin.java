@@ -1,9 +1,7 @@
 package br.edu.ifba.inf008.plugins;
 
-import br.edu.ifba.inf008.interfaces.IPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
-import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.service.UserService;
 import br.edu.ifba.inf008.plugins.util.ValidationService;
@@ -17,10 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 

@@ -2,7 +2,6 @@ package br.edu.ifba.inf008.plugins.ui;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
