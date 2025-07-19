@@ -58,6 +58,10 @@ public class UIController extends Application implements IUIController
             Scene scene = new Scene(root, 960, 600);
 
             primaryStage.setScene(scene);
+
+            primaryStage.setMinWidth(800);
+            primaryStage.setMinHeight(500);
+
             primaryStage.show();
 
             // Inicializa os plugins
