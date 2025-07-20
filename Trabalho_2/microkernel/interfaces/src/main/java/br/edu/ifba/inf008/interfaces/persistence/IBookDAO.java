@@ -9,7 +9,7 @@ public interface IBookDAO {
     Book save(Book book);
 
     Optional<Book> findById(Integer id);
-    Optional<Book> findByIsbn(String isbn);
+    List<Book> findByIsbn(String isbn);
     List<Book> findByTitle(String title);
     List<Book> findByAuthor(String author);
     List<Book> findByPublishedYear(int year);

@@ -30,6 +30,7 @@ userplugin/
     │   │   ├── UIUtils.java          # Utilitários de UI
     │   │   └── components/
     │   │       └── UserTableFactory.java  # Fábrica para tabela de usuários
+    │   |       └── MessageUtils.java      # Utilitários para exibição de mensagens
     │   └── util/
     │       └── ValidationService.java     # Validação de dados
     └── resources/
@@ -77,6 +78,10 @@ A classe `ValidationService` fornece métodos de validação para dados de usuá
 
 A classe `UserViewModel` é um modelo de visualização que adapta a entidade `User` para uso na interface gráfica, utilizando propriedades observáveis do JavaFX.
 
+### 7. MessageUtils
+
+A classe `MessageUtils` fornece métodos utilitários para exibição de mensagens na interface gráfica, com estilos visuais distintos para diferentes tipos de mensagens (erro, sucesso, confirmação).
+
 ## Integração com o Sistema
 
 O `UserPlugin` se integra ao sistema central Alexandria através de:
@@ -101,7 +106,8 @@ O `UserPlugin` se integra ao sistema central Alexandria através de:
 - **Busca Avançada**: Filtro por nome ou email
 - **Gestão de Dados**: Visualização em tabela com opções para editar e excluir
 - **Validação**: Verificação de campos obrigatórios e formato de email
-- **Feedback Visual**: Mensagens de erro e sucesso para o usuário
+- **Feedback Visual**: Mensagens de erro, sucesso e confirmação para o usuário
+- **Confirmação de Exclusão**: Solicita confirmação antes de excluir um usuário
 
 ## Tecnologias Utilizadas
 

@@ -1,17 +1,17 @@
 package br.edu.ifba.inf008.plugins.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.service.UserService;
+import br.edu.ifba.inf008.plugins.ui.components.MessageUtils;
 import br.edu.ifba.inf008.plugins.util.ValidationService;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
-import java.util.List;
-import java.util.Optional;
 
 public class UserController {
     
@@ -106,7 +106,7 @@ public class UserController {
     
     public void handleCancel() {
         resetForm();
-        lblMessage.setText("Edição cancelada");
+        displayConfirmationMessage("Edição cancelada");
     }
     
     public void handleEdit() {
@@ -119,10 +119,9 @@ public class UserController {
             
             btnSave.setText("Atualizar");
             btnCancel.setVisible(true);
-            lblMessage.setStyle("-fx-text-fill: #d1a000ff;");
-            lblMessage.setText("Editando usuário #" + editingUserId);
+            displayConfirmationMessage("Editando usuário #" + editingUserId);
         } else {
-            lblMessage.setText("Selecione um usuário para editar");
+            displayErrorMessage("Selecione um usuário para editar");
         }
     }
     
@@ -133,11 +132,12 @@ public class UserController {
             if (deleted) {
                 tableUsers.getItems().remove(selectedUser);
                 resetForm();
+                displaySuccessMessage("Usuário excluído com sucesso!");
             } else {
-                lblMessage.setText("Erro ao remover usuário");
+                displayErrorMessage("Erro ao remover usuário");
             }
         } else {
-            lblMessage.setText("Selecione um usuário para remover");
+            displayErrorMessage("Selecione um usuário para remover");
         }
     }
     
@@ -147,6 +147,7 @@ public class UserController {
         if (savedUser != null) {
             resetForm();
             loadInitialData();
+            displaySuccessMessage("Usuário cadastrado com sucesso!");
         } else {
             displayErrorMessage("Erro ao cadastrar usuário");
         }
@@ -165,6 +166,7 @@ public class UserController {
             if (updatedUser != null) {
                 resetForm();
                 loadInitialData();
+                displaySuccessMessage("Usuário atualizado com sucesso!");
             } else {
                 displayErrorMessage("Erro ao atualizar usuário");
             }
@@ -175,8 +177,15 @@ public class UserController {
     }
     
     private void displayErrorMessage(String message) {
-        lblMessage.setStyle("-fx-text-fill: #d31414;");
-        lblMessage.setText(message);
+        MessageUtils.displayErrorMessage(lblMessage, message);
+    }
+    
+    private void displaySuccessMessage(String message) {
+        MessageUtils.displaySuccessMessage(lblMessage, message);
+    }
+    
+    private void displayConfirmationMessage(String message) {
+        MessageUtils.displayConfirmationMessage(lblMessage, message);
     }
     
     private void resetForm() {
@@ -185,8 +194,7 @@ public class UserController {
         editingUserId = null;
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
-        lblMessage.setText("");
-        lblMessage.setStyle("");
+        MessageUtils.clearMessage(lblMessage);
     }
     
     private void loadInitialData() {

@@ -1,15 +1,14 @@
 package br.edu.ifba.inf008.persistence;
 
+import java.util.List;
+import java.util.Optional;
+
 import br.edu.ifba.inf008.interfaces.models.Book;
 import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.NoResultException;
-
-import java.util.List;
-import java.util.Optional;
 
 public class BookDAO implements IBookDAO {
 
@@ -50,20 +49,15 @@ public class BookDAO implements IBookDAO {
     }
 
     @Override
-    public Optional<Book> findByIsbn(String isbn) {
+    public List<Book> findByIsbn(String isbn) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Book> query = em.createQuery(
-                "SELECT b FROM Book b WHERE b.isbn = :isbn", 
+                "SELECT b FROM Book b WHERE LOWER(b.isbn) LIKE LOWER(:isbnPattern)", 
                 Book.class
             );
-            query.setParameter("isbn", isbn);
-            try {
-                Book book = query.getSingleResult();
-                return Optional.of(book);
-            } catch (NoResultException e) {
-                return Optional.empty();
-            }
+            query.setParameter("isbnPattern", isbn + "%");
+            return query.getResultList();
         } finally {
             em.close();
         }

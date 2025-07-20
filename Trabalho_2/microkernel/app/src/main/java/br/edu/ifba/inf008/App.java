@@ -1,17 +1,17 @@
 package br.edu.ifba.inf008;
 
-import br.edu.ifba.inf008.shell.Core;
+import java.time.LocalDate;
+import java.util.List;
+
 import br.edu.ifba.inf008.interfaces.ICore;
-import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
-import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
-import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
-import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.interfaces.models.Book;
 import br.edu.ifba.inf008.interfaces.models.Loan;
-import java.util.List;
-import java.time.LocalDate;
-
+import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
+import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
+import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
+import br.edu.ifba.inf008.shell.Core;
 
 public class App {
     public static void main(String[] args) {
@@ -112,8 +112,15 @@ public class App {
             
             // Teste 3: Buscar por ISBN
             System.out.println("Buscando livro por ISBN: " + savedBook.getIsbn());
-            Book bookByIsbn = bookDAO.findByIsbn(savedBook.getIsbn()).orElse(null);
-            System.out.println("Encontrado por ISBN: " + (bookByIsbn != null ? bookByIsbn.getTitle() : "Não encontrado"));
+            List<Book> booksByIsbn = bookDAO.findByIsbn(savedBook.getIsbn());
+            if (booksByIsbn.isEmpty()) {
+                System.out.println("Nenhum livro encontrado com ISBN começando com: " + savedBook.getIsbn());
+            } else {
+                System.out.println("Encontrado(s) " + booksByIsbn.size() + " livro(s) por ISBN:");
+                for (Book book : booksByIsbn) {
+                    System.out.println(" - " + book.getTitle() + " (ISBN: " + book.getIsbn() + ")");
+                }
+            }
             
             // Teste 4: Atualizar livro
             System.out.println("Atualizando livro...");
