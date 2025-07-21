@@ -12,6 +12,7 @@ public interface ILoanDAO {
     Optional<Loan> findById(Integer id);
     List<Loan> findByBookId(Integer bookId);
     List<Loan> findByUserId(Integer userId);
+    List<Loan> findByUserIdWithDetails(Integer userId);
     List<Loan> findByLoanDate(LocalDate loanDate);
     List<Loan> findByReturnDate(LocalDate returnDate);
     List<Loan> findByUserName(String userName);

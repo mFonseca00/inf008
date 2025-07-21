@@ -1,5 +1,7 @@
 package br.edu.ifba.inf008.plugins.ui.components;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 public class UserMessageUtils {
@@ -22,5 +24,20 @@ public class UserMessageUtils {
     public static void clearMessage(Label label) {
         label.setText("");
         label.setStyle("");
+    }
+    
+    /**
+     * Mostra um dialog de confirmação para o usuário
+     * @param message Mensagem a ser exibida
+     * @return true se o usuário confirmar, false caso contrário
+     */
+    public static boolean showConfirmation(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Confirmação necessária");
+        alert.setContentText(message);
+        
+        ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+        return result == ButtonType.OK;
     }
 }

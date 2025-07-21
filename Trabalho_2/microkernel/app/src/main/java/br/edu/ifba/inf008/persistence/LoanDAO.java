@@ -80,6 +80,21 @@ public class LoanDAO implements ILoanDAO {
     }
 
     @Override
+    public List<Loan> findByUserIdWithDetails(Integer userId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.user.userId = :userId", 
+                Loan.class
+            );
+            query.setParameter("userId", userId);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public List<Loan> findByLoanDate(LocalDate loanDate) {
         EntityManager em = emf.createEntityManager();
         try {

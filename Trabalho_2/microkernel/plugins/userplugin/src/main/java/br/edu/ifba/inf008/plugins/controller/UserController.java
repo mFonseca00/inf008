@@ -128,11 +128,31 @@ public class UserController {
     public void handleDelete() {
         User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
+            // Verificar se há empréstimos ativos antes de confirmar a exclusão
+            String warningMessage = userService.getActiveLoansWarning(selectedUser.getUserId());
+            
+            if (warningMessage != null) {
+                // Mostrar aviso sobre empréstimos ativos e pedir confirmação
+                boolean confirmed = UserMessageUtils.showConfirmation(
+                    warningMessage + "\n\nDeseja continuar com a exclusão do usuário?"
+                );
+                
+                if (!confirmed) {
+                    displayConfirmationMessage("Exclusão cancelada pelo usuário");
+                    return;
+                }
+            }
+            
             boolean deleted = userService.deleteUser(selectedUser.getUserId());
             if (deleted) {
                 tableUsers.getItems().remove(selectedUser);
                 resetForm();
-                displaySuccessMessage("Usuário excluído com sucesso!");
+                
+                if (warningMessage != null) {
+                    displaySuccessMessage("Usuário excluído com sucesso! Os empréstimos ativos foram finalizados e as cópias dos livros foram atualizadas.");
+                } else {
+                    displaySuccessMessage("Usuário excluído com sucesso!");
+                }
             } else {
                 displayErrorMessage("Erro ao remover usuário");
             }
