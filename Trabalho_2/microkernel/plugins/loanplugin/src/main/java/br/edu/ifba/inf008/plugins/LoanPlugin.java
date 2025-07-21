@@ -123,12 +123,12 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         cmbUser.setConverter(new StringConverter<User>() {
             @Override
             public String toString(User user) {
-                return user != null ? user.getName() + " (" + user.getUserId() + ")" : "";
+                return user != null ? user.getName() + " (" + user.getEmail() + ")" : "";
             }
             
             @Override
             public User fromString(String string) {
-                return null; // Não é usado para entrada direta
+                return null;
             }
         });
         
@@ -136,12 +136,12 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         cmbBook.setConverter(new StringConverter<Book>() {
             @Override
             public String toString(Book book) {
-                return book != null ? book.getTitle() + " - " + book.getAuthor() : "";
+                return book != null ? book.getTitle() + " - " + book.getAuthor() + " ( ISBN:" + book.getIsbn() + ")": "";
             }
             
             @Override
             public Book fromString(String string) {
-                return null; // Não é usado para entrada direta
+                return null;
             }
         });
         
