@@ -29,6 +29,8 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
 {
     @FXML private ComboBox<User> cmbUser;
     @FXML private ComboBox<Book> cmbBook;
+    @FXML private TextField txtUserFilter;
+    @FXML private TextField txtBookFilter;
     @FXML private DatePicker dtpLoanDate;
     @FXML private DatePicker dtpReturnDate;
     @FXML private Label lblReturnDate;
@@ -113,7 +115,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         setupButtonActions();
         
         controller.initialize(
-            cmbUser, cmbBook, dtpLoanDate, dtpReturnDate, lblReturnDate,
+            cmbUser, cmbBook, txtUserFilter, txtBookFilter, dtpLoanDate, dtpReturnDate, lblReturnDate,
             btnSave, btnCancel, lblMessage, txtSearch, tableLoans, cmbSearchType
         );
     }

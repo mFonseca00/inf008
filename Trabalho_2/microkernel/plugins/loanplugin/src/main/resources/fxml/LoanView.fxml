@@ -31,24 +31,24 @@
                <children>
                   <GridPane hgap="10.0" vgap="10.0">
                      <children>
-                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <ComboBox fx:id="cmbUser" prefHeight="25.0" prefWidth="106.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label prefHeight="17.0" prefWidth="57.0" text="Livro:" GridPane.columnIndex="2" />
-                        <ComboBox fx:id="cmbBook" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="3" />
-                        <Label text="Data de Empréstimo: " GridPane.columnIndex="4" />
-                        <DatePicker fx:id="dtpLoanDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="5" />
-                        <DatePicker fx:id="dtpReturnDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="7" visible="false"/>
-                        <Label fx:id="lblReturnDate" text="Data de Devolução:" GridPane.columnIndex="6" visible="false" />
+                        <Label text="Filtro Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="txtUserFilter" promptText="Digite para filtrar usuários..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cmbUser" prefHeight="25.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Filtro Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="txtBookFilter" promptText="Digite para filtrar livros..." GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Label prefHeight="17.0" prefWidth="57.0" text="Livro:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cmbBook" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="Data de Empréstimo: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="dtpLoanDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblReturnDate" text="Data de Devolução:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="dtpReturnDate" prefHeight="25.0" prefWidth="138.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                      </children>
                      <columnConstraints>
-                        <ColumnConstraints maxWidth="74.0" minWidth="43.0" prefWidth="43.0" />
-                        <ColumnConstraints maxWidth="196.0" minWidth="106.0" prefWidth="111.0" />
-                        <ColumnConstraints maxWidth="108.0" minWidth="33.0" prefWidth="33.0" />
-                        <ColumnConstraints maxWidth="157.0" minWidth="110.0" prefWidth="117.0" />
-                        <ColumnConstraints maxWidth="139.0" minWidth="112.0" prefWidth="118.0" />
-                        <ColumnConstraints maxWidth="173.0" minWidth="137.0" prefWidth="137.0" />
-                        <ColumnConstraints maxWidth="134.0" minWidth="106.0" prefWidth="106.0" />
-                        <ColumnConstraints maxWidth="166.0" minWidth="143.0" prefWidth="166.0" />
+                        <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                        <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints />

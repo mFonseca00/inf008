@@ -2,6 +2,7 @@ package br.edu.ifba.inf008.plugins.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.edu.ifba.inf008.interfaces.models.Book;
 import br.edu.ifba.inf008.interfaces.models.Loan;
@@ -11,6 +12,7 @@ import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
 import br.edu.ifba.inf008.plugins.ui.UserUIUtils;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -26,6 +28,8 @@ public class LoanController {
     
     private ComboBox<User> cmbUser;
     private ComboBox<Book> cmbBook;
+    private TextField txtUserFilter;
+    private TextField txtBookFilter;
     private DatePicker dtpLoanDate;
     private DatePicker dtpReturnDate;
     private Label lblReturnDate;
@@ -35,6 +39,10 @@ public class LoanController {
     private TextField txtSearch;
     private TableView<Loan> tableLoans;
     private ComboBox<String> cmbSearchType;
+    
+    // Listas completas para filtragem
+    private ObservableList<User> allUsers = FXCollections.observableArrayList();
+    private ObservableList<Book> allBooks = FXCollections.observableArrayList();
     
     private Loan currentLoan;
     
@@ -47,6 +55,8 @@ public class LoanController {
     public void initialize(
             ComboBox<User> cmbUser, 
             ComboBox<Book> cmbBook, 
+            TextField txtUserFilter,
+            TextField txtBookFilter,
             DatePicker dtpLoanDate,
             DatePicker dtpReturnDate,
             Label lblReturnDate,
@@ -59,6 +69,8 @@ public class LoanController {
         
         this.cmbUser = cmbUser;
         this.cmbBook = cmbBook;
+        this.txtUserFilter = txtUserFilter;
+        this.txtBookFilter = txtBookFilter;
         this.dtpLoanDate = dtpLoanDate;
         this.dtpReturnDate = dtpReturnDate;
         this.lblReturnDate = lblReturnDate;
@@ -69,10 +81,56 @@ public class LoanController {
         this.tableLoans = tableLoans;
         this.cmbSearchType = cmbSearchType;
         
+        // Configurar filtros
+        setupFilters();
+        
         // Carregar dados iniciais
         loadLoans();
         loadUsers();
         loadBooks();
+    }
+    
+    private void setupFilters() {
+        // Configurar listener para filtro de usuários
+        txtUserFilter.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterUsers(newValue);
+        });
+        
+        // Configurar listener para filtro de livros
+        txtBookFilter.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterBooks(newValue);
+        });
+    }
+    
+    private void filterUsers(String filter) {
+        if (filter == null || filter.trim().isEmpty()) {
+            cmbUser.setItems(allUsers);
+            return;
+        }
+        
+        String filterLower = filter.toLowerCase();
+        ObservableList<User> filteredUsers = allUsers.stream()
+                .filter(user -> user.getName().toLowerCase().startsWith(filterLower) ||
+                               user.getEmail().toLowerCase().startsWith(filterLower))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        
+        cmbUser.setItems(filteredUsers);
+    }
+    
+    private void filterBooks(String filter) {
+        if (filter == null || filter.trim().isEmpty()) {
+            cmbBook.setItems(allBooks);
+            return;
+        }
+        
+        String filterLower = filter.toLowerCase();
+        ObservableList<Book> filteredBooks = allBooks.stream()
+                .filter(book -> book.getTitle().toLowerCase().startsWith(filterLower) ||
+                               book.getAuthor().toLowerCase().startsWith(filterLower) ||
+                               book.getIsbn().toLowerCase().startsWith(filterLower))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        
+        cmbBook.setItems(filteredBooks);
     }
     
     private void loadLoans() {
@@ -271,7 +329,8 @@ public class LoanController {
     public void loadUsers() {
         try {
             List<User> users = userService.getAllUsers();
-            cmbUser.setItems(FXCollections.observableArrayList(users));
+            allUsers.setAll(users);
+            cmbUser.setItems(allUsers);
         } catch (Exception e) {
             UserUIUtils.showMessage(lblMessage, "Erro ao carregar usuários: " + e.getMessage(), true);
         }
@@ -284,7 +343,8 @@ public class LoanController {
             if (availableBooks.isEmpty()) {
                 UserUIUtils.showMessage(lblMessage, "Não há livros disponíveis para empréstimo", true);
             }
-            cmbBook.setItems(FXCollections.observableArrayList(availableBooks));
+            allBooks.setAll(availableBooks);
+            cmbBook.setItems(allBooks);
         } catch (Exception e) {
             UserUIUtils.showMessage(lblMessage, "Erro ao carregar livros: " + e.getMessage(), true);
         }
