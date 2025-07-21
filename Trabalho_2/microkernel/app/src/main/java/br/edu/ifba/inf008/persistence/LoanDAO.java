@@ -1,15 +1,15 @@
 package br.edu.ifba.inf008.persistence;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import br.edu.ifba.inf008.interfaces.models.Loan;
 import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 public class LoanDAO implements ILoanDAO {
 
@@ -148,6 +148,63 @@ public class LoanDAO implements ILoanDAO {
             TypedQuery<Loan> query = em.createQuery(
                 "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user", 
                 Loan.class
+            );
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Encontra todos os empréstimos ativos (sem data de devolução) em ordem de data de empréstimo.
+     * @return Uma lista de empréstimos ativos.
+     */
+    public List<Loan> findActiveLoans() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT l FROM Loan l WHERE l.returnDate IS NULL ORDER BY l.loanDate ASC", 
+                Loan.class
+            );
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Retorna um ranking de livros mais emprestados.
+     * @return Uma lista de arrays de objetos, onde cada array contém: título, autor, ISBN e contagem de empréstimos.
+     */
+    public List<Object[]> findBookLoanRanking() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Object[]> query = em.createQuery(
+                "SELECT l.book.title, l.book.author, l.book.isbn, COUNT(l.book) as loanCount " +
+                "FROM Loan l " +
+                "GROUP BY l.book.title, l.book.author, l.book.isbn " +
+                "ORDER BY loanCount DESC", 
+                Object[].class
+            );
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Retorna um ranking de usuários com mais empréstimos.
+     * @return Uma lista de arrays de objetos, onde cada array contém: nome do usuário, email e contagem de empréstimos.
+     */
+    public List<Object[]> findUserLoanRanking() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Object[]> query = em.createQuery(
+                "SELECT l.user.name, l.user.email, COUNT(l.user) as loanCount " +
+                "FROM Loan l " +
+                "GROUP BY l.user.name, l.user.email " +
+                "ORDER BY loanCount DESC", 
+                Object[].class
             );
             return query.getResultList();
         } finally {
