@@ -1,5 +1,6 @@
 package br.edu.ifba.inf008.plugins.ui.components;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -7,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 import br.edu.ifba.inf008.interfaces.models.Loan;
 import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class ReportExporter {
     
@@ -18,11 +21,16 @@ public class ReportExporter {
     /**
      * Exporta o ranking de usuários para CSV
      */
-    public static void exportUserRanking(ObservableList<Object[]> data) throws IOException {
+    public static String exportUserRanking(ObservableList<Object[]> data) throws IOException {
         String timestamp = LocalDateTime.now().format(DATETIME_FORMATTER);
-        String filename = "ranking_usuarios_" + timestamp + ".csv";
+        String defaultFilename = "ranking_usuarios_" + timestamp + ".csv";
         
-        try (FileWriter writer = new FileWriter(filename)) {
+        File selectedFile = showSaveDialog("Exportar Ranking de Usuários", defaultFilename);
+        if (selectedFile == null) {
+            return null; // Usuário cancelou
+        }
+        
+        try (FileWriter writer = new FileWriter(selectedFile)) {
             // Cabeçalho
             writer.write("Nome,Email,Quantidade de Empréstimos\n");
             
@@ -33,17 +41,22 @@ public class ReportExporter {
             }
         }
         
-        System.out.println("Relatório exportado: " + filename);
+        return selectedFile.getAbsolutePath();
     }
     
     /**
      * Exporta o ranking de livros para CSV
      */
-    public static void exportBookRanking(ObservableList<Object[]> data) throws IOException {
+    public static String exportBookRanking(ObservableList<Object[]> data) throws IOException {
         String timestamp = LocalDateTime.now().format(DATETIME_FORMATTER);
-        String filename = "ranking_livros_" + timestamp + ".csv";
+        String defaultFilename = "ranking_livros_" + timestamp + ".csv";
         
-        try (FileWriter writer = new FileWriter(filename)) {
+        File selectedFile = showSaveDialog("Exportar Ranking de Livros", defaultFilename);
+        if (selectedFile == null) {
+            return null; // Usuário cancelou
+        }
+        
+        try (FileWriter writer = new FileWriter(selectedFile)) {
             // Cabeçalho
             writer.write("Título,Autor,ISBN,Quantidade de Empréstimos\n");
             
@@ -54,17 +67,22 @@ public class ReportExporter {
             }
         }
         
-        System.out.println("Relatório exportado: " + filename);
+        return selectedFile.getAbsolutePath();
     }
     
     /**
      * Exporta os empréstimos ativos para CSV
      */
-    public static void exportActiveLoans(ObservableList<Loan> data) throws IOException {
+    public static String exportActiveLoans(ObservableList<Loan> data) throws IOException {
         String timestamp = LocalDateTime.now().format(DATETIME_FORMATTER);
-        String filename = "emprestimos_ativos_" + timestamp + ".csv";
+        String defaultFilename = "emprestimos_ativos_" + timestamp + ".csv";
         
-        try (FileWriter writer = new FileWriter(filename)) {
+        File selectedFile = showSaveDialog("Exportar Empréstimos Ativos", defaultFilename);
+        if (selectedFile == null) {
+            return null; // Usuário cancelou
+        }
+        
+        try (FileWriter writer = new FileWriter(selectedFile)) {
             // Cabeçalho
             writer.write("ID,Usuário,Email,Livro,Autor,Data do Empréstimo,Dias em Aberto\n");
             
@@ -85,6 +103,32 @@ public class ReportExporter {
             }
         }
         
-        System.out.println("Relatório exportado: " + filename);
+        return selectedFile.getAbsolutePath();
+    }
+    
+    /**
+     * Mostra o dialog para o usuário escolher onde salvar o arquivo
+     */
+    private static File showSaveDialog(String title, String defaultFilename) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.setInitialFileName(defaultFilename);
+        
+        // Configurar filtros de extensão
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("Arquivos CSV", "*.csv");
+        FileChooser.ExtensionFilter allFilter = new FileChooser.ExtensionFilter("Todos os arquivos", "*.*");
+        fileChooser.getExtensionFilters().addAll(csvFilter, allFilter);
+        
+        // Definir diretório inicial (Documentos do usuário)
+        String userHome = System.getProperty("user.home");
+        File documentsDir = new File(userHome, "Documents");
+        if (documentsDir.exists()) {
+            fileChooser.setInitialDirectory(documentsDir);
+        } else {
+            fileChooser.setInitialDirectory(new File(userHome));
+        }
+        
+        // Mostrar o dialog de salvamento
+        return fileChooser.showSaveDialog(new Stage());
     }
 }

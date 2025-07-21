@@ -60,8 +60,10 @@ public class ReportController {
     
     public void handleExportUserRanking() {
         try {
-            ReportExporter.exportUserRanking(tableUserRanking.getItems());
-            ReportMessageUtils.showSuccess("Relatório exportado com sucesso!");
+            String filePath = ReportExporter.exportUserRanking(tableUserRanking.getItems());
+            if (filePath != null) {
+                ReportMessageUtils.showSuccess("Relatório exportado com sucesso em:\n" + filePath);
+            }
         } catch (Exception e) {
             ReportMessageUtils.showError("Erro ao exportar relatório: " + e.getMessage());
         }
@@ -73,8 +75,10 @@ public class ReportController {
     
     public void handleExportBookRanking() {
         try {
-            ReportExporter.exportBookRanking(tableBookRanking.getItems());
-            ReportMessageUtils.showSuccess("Relatório exportado com sucesso!");
+            String filePath = ReportExporter.exportBookRanking(tableBookRanking.getItems());
+            if (filePath != null) {
+                ReportMessageUtils.showSuccess("Relatório exportado com sucesso em:\n" + filePath);
+            }
         } catch (Exception e) {
             ReportMessageUtils.showError("Erro ao exportar relatório: " + e.getMessage());
         }
@@ -86,8 +90,10 @@ public class ReportController {
     
     public void handleExportActiveLoans() {
         try {
-            ReportExporter.exportActiveLoans(tableActiveLoans.getItems());
-            ReportMessageUtils.showSuccess("Relatório exportado com sucesso!");
+            String filePath = ReportExporter.exportActiveLoans(tableActiveLoans.getItems());
+            if (filePath != null) {
+                ReportMessageUtils.showSuccess("Relatório exportado com sucesso em:\n" + filePath);
+            }
         } catch (Exception e) {
             ReportMessageUtils.showError("Erro ao exportar relatório: " + e.getMessage());
         }
