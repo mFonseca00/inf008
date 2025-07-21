@@ -1,23 +1,22 @@
 package br.edu.ifba.inf008.plugins;
 
-import br.edu.ifba.inf008.interfaces.IPluginUI;
+import java.io.IOException;
+
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
+import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.controller.UserController;
 import br.edu.ifba.inf008.plugins.service.UserService;
-import br.edu.ifba.inf008.plugins.ui.UIUtils;
+import br.edu.ifba.inf008.plugins.ui.UserUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.UserTableFactory;
-
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TableView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 
 public class UserPlugin implements IPluginUI, ILibraryPlugin
 {
@@ -85,7 +84,7 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
         } catch (Exception e) {
             e.printStackTrace();
             
-            return UIUtils.createErrorContainer(
+            return UserUIUtils.createErrorContainer(
                 "Não foi possível carregar a interface",
                 "Ocorreu um erro ao carregar a interface do plugin de usuários.",
                 e.getMessage()

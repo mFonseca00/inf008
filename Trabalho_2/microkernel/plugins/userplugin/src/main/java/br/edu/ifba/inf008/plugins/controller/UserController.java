@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.service.UserService;
-import br.edu.ifba.inf008.plugins.ui.components.MessageUtils;
-import br.edu.ifba.inf008.plugins.util.ValidationService;
+import br.edu.ifba.inf008.plugins.service.UserValidationService;
+import br.edu.ifba.inf008.plugins.ui.components.UserMessageUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -55,11 +55,11 @@ public class UserController {
             String name = txtName.getText();
             String email = txtEmail.getText();
             
-            if (!ValidationService.isNotEmpty(name)) {
+            if (!UserValidationService.isNotEmpty(name)) {
                 displayErrorMessage("O campo \"Nome\" é obrigatório");
                 return;
             }
-            if (!ValidationService.isValidEmail(email)) {
+            if (!UserValidationService.isValidEmail(email)) {
                 displayErrorMessage("O campo \"Email\" é inválido");
                 return;
             }
@@ -187,15 +187,15 @@ public class UserController {
     }
     
     private void displayErrorMessage(String message) {
-        MessageUtils.displayErrorMessage(lblMessage, message);
+        UserMessageUtils.displayErrorMessage(lblMessage, message);
     }
     
     private void displaySuccessMessage(String message) {
-        MessageUtils.displaySuccessMessage(lblMessage, message);
+        UserMessageUtils.displaySuccessMessage(lblMessage, message);
     }
     
     private void displayConfirmationMessage(String message) {
-        MessageUtils.displayConfirmationMessage(lblMessage, message);
+        UserMessageUtils.displayConfirmationMessage(lblMessage, message);
     }
     
     private void resetForm() {
@@ -204,7 +204,7 @@ public class UserController {
         editingUserId = null;
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
-        MessageUtils.clearMessage(lblMessage);
+        UserMessageUtils.clearMessage(lblMessage);
     }
     
     private void loadInitialData() {

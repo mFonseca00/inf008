@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class UIUtils {
+public class UserUIUtils {
     
     public static Node createErrorContainer(String title, String message, String details) {
         VBox errorContainer = new VBox(10);

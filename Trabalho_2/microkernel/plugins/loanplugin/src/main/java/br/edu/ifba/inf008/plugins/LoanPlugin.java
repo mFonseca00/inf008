@@ -12,7 +12,7 @@ import br.edu.ifba.inf008.plugins.controller.LoanController;
 import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
-import br.edu.ifba.inf008.plugins.ui.UIUtils;
+import br.edu.ifba.inf008.plugins.ui.UserUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.LoanTableFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -97,7 +97,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         } catch (Exception e) {
             e.printStackTrace();
             
-            return UIUtils.createErrorContainer(
+            return UserUIUtils.createErrorContainer(
                 "Não foi possível carregar a interface",
                 "Ocorreu um erro ao carregar a interface do plugin de empréstimos.",
                 e.getMessage()

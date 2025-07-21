@@ -1,8 +1,8 @@
-package br.edu.ifba.inf008.plugins.util;
+package br.edu.ifba.inf008.plugins.service;
 
 import java.util.regex.Pattern;
 
-public class ValidationService {
+public class UserValidationService {
     
     private static final Pattern EMAIL_PATTERN = 
         Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)\\.(\\w+)$");

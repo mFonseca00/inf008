@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class UIUtils {
+public class BookUIUtils {
 
     public static VBox createErrorContainer(String errorTitle, String errorMessage, String errorDetail) {
         VBox errorContainer = new VBox(15);

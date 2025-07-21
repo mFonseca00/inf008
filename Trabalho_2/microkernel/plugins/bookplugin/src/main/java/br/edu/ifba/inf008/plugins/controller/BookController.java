@@ -5,8 +5,8 @@ import java.util.List;
 
 import br.edu.ifba.inf008.interfaces.models.Book;
 import br.edu.ifba.inf008.plugins.service.BookService;
-import br.edu.ifba.inf008.plugins.ui.components.MessageUtils;
-import br.edu.ifba.inf008.plugins.util.ValidationService;
+import br.edu.ifba.inf008.plugins.service.BookValidationService;
+import br.edu.ifba.inf008.plugins.ui.components.BookMessageUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -80,23 +80,23 @@ public class BookController {
                 return;
             }
 
-            if (!ValidationService.isNotEmpty(title)) {
+            if (!BookValidationService.isNotEmpty(title)) {
                 displayErrorMessage("O campo \"Título\" é obrigatório");
                 return;
             }
-            if (!ValidationService.isNotEmpty(author)) {
+            if (!BookValidationService.isNotEmpty(author)) {
                 displayErrorMessage("O campo \"Autor\" é obrigatório");
                 return;
             }
-            if (!ValidationService.isNotEmpty(isbn)) {
+            if (!BookValidationService.isNotEmpty(isbn)) {
                 displayErrorMessage("O campo \"ISBN\" é obrigatório");
                 return;
             }
-            if (!ValidationService.isValidPublicationYear(publicationYear)) {
+            if (!BookValidationService.isValidPublicationYear(publicationYear)) {
                 displayErrorMessage("O campo \"Ano de Publicação\" é inválido");
                 return;
             }
-            if (!ValidationService.isValidCopiesNumber(availableCopies)) {
+            if (!BookValidationService.isValidCopiesNumber(availableCopies)) {
                 displayErrorMessage("O campo \"Cópias Disponíveis\" deve ser um número positivo");
                 return;
             }
@@ -235,15 +235,15 @@ public class BookController {
     }
 
     private void displayErrorMessage(String message) {
-        MessageUtils.displayErrorMessage(lblMessage, message);
+        BookMessageUtils.displayErrorMessage(lblMessage, message);
     }
     
     private void displaySuccessMessage(String message) {
-        MessageUtils.displaySuccessMessage(lblMessage, message);
+        BookMessageUtils.displaySuccessMessage(lblMessage, message);
     }
     
     private void displayConfirmationMessage(String message) {
-        MessageUtils.displayConfirmationMessage(lblMessage, message);
+        BookMessageUtils.displayConfirmationMessage(lblMessage, message);
     }
 
     private void resetForm() {
@@ -255,7 +255,7 @@ public class BookController {
         editingBookId = null;
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
-        MessageUtils.clearMessage(lblMessage);
+        BookMessageUtils.clearMessage(lblMessage);
     }
 
     private void loadInitialData() {

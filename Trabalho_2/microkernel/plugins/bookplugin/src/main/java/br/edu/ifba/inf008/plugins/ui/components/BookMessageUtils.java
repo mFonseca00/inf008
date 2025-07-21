@@ -2,7 +2,7 @@ package br.edu.ifba.inf008.plugins.ui.components;
 
 import javafx.scene.control.Label;
 
-public class MessageUtils {
+public class BookMessageUtils {
     
 
     public static void displayErrorMessage(Label label, String message) {

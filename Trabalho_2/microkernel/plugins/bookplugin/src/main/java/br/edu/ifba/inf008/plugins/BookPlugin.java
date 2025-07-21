@@ -7,7 +7,7 @@ import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.models.Book;
 import br.edu.ifba.inf008.plugins.controller.BookController;
 import br.edu.ifba.inf008.plugins.service.BookService;
-import br.edu.ifba.inf008.plugins.ui.UIUtils;
+import br.edu.ifba.inf008.plugins.ui.BookUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.BookTableFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,7 +87,7 @@ public class BookPlugin implements IPluginUI, ILibraryPlugin
         } catch (Exception e) {
             e.printStackTrace();
             
-            return UIUtils.createErrorContainer(
+            return BookUIUtils.createErrorContainer(
                 "Não foi possível carregar a interface",
                 "Ocorreu um erro ao carregar a interface do plugin de livros.",
                 e.getMessage()
