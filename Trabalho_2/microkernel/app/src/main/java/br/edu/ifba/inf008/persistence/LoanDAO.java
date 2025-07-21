@@ -163,7 +163,7 @@ public class LoanDAO implements ILoanDAO {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.returnDate IS NULL ORDER BY l.loanDate ASC", 
+                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.returnDate IS NULL ORDER BY l.loanDate ASC", 
                 Loan.class
             );
             return query.getResultList();
