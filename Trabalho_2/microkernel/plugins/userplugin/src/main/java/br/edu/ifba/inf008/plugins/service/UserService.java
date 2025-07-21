@@ -71,7 +71,7 @@ public class UserService {
         }
         
         warning.append("\nAo excluir o usuário, estes empréstimos serão automaticamente finalizados ")
-               .append("e as cópias dos livros serão devolvidas ao estoque.");
+               .append("e as cópias dos livros serão devolvidas ao estoque.\n");
         
         return warning.toString();
     }
