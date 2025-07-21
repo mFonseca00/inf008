@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -29,20 +30,42 @@
          <content>
             <VBox spacing="10.0">
                <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <CheckBox fx:id="chkShowFilters" mnemonicParsing="false" selected="false" text="Filtros Avançados" />
+                     </children>
+                  </HBox>
+                  <VBox fx:id="filtersContainer" spacing="10.0" visible="false">
+                     <children>
+                        <GridPane hgap="10.0" vgap="10.0">
+                           <children>
+                              <Label text="Filtro de Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                              <TextField fx:id="txtUserFilter" promptText="Digite para filtrar usuários..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                              <Label text="Filtro de Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                              <TextField fx:id="txtBookFilter" promptText="Digite para filtrar livros..." GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
+                              <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                              <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
+                              <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
                   <GridPane hgap="10.0" vgap="10.0">
                      <children>
-                        <Label text="Filtro Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="txtUserFilter" promptText="Digite para filtrar usuários..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cmbUser" prefHeight="25.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Filtro Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                        <TextField fx:id="txtBookFilter" promptText="Digite para filtrar livros..." GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                        <Label prefHeight="17.0" prefWidth="57.0" text="Livro:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cmbBook" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="Data de Empréstimo: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="dtpLoanDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="lblReturnDate" text="Data de Devolução:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="dtpReturnDate" prefHeight="25.0" prefWidth="138.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="cmbUser" prefHeight="25.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label prefHeight="17.0" prefWidth="57.0" text="Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="cmbBook" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Label text="Data de Empréstimo: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <DatePicker fx:id="dtpLoanDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblReturnDate" text="Data de Devolução:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <DatePicker fx:id="dtpReturnDate" prefHeight="25.0" prefWidth="138.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                      <columnConstraints>
                         <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />

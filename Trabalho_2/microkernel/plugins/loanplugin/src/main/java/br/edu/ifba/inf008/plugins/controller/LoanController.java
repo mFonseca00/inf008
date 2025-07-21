@@ -102,6 +102,22 @@ public class LoanController {
         });
     }
     
+    public void clearFilters() {
+        if (txtUserFilter != null) {
+            txtUserFilter.clear();
+        }
+        if (txtBookFilter != null) {
+            txtBookFilter.clear();
+        }
+        // Resetar ComboBoxes para mostrar todos os itens
+        if (cmbUser != null) {
+            cmbUser.setItems(allUsers);
+        }
+        if (cmbBook != null) {
+            cmbBook.setItems(allBooks);
+        }
+    }
+    
     private void filterUsers(String filter) {
         if (filter == null || filter.trim().isEmpty()) {
             cmbUser.setItems(allUsers);

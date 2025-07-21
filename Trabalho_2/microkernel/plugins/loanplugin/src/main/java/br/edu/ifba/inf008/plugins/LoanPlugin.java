@@ -18,11 +18,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class LoanPlugin implements IPluginUI, ILibraryPlugin
@@ -31,6 +33,8 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
     @FXML private ComboBox<Book> cmbBook;
     @FXML private TextField txtUserFilter;
     @FXML private TextField txtBookFilter;
+    @FXML private CheckBox chkShowFilters;
+    @FXML private VBox filtersContainer;
     @FXML private DatePicker dtpLoanDate;
     @FXML private DatePicker dtpReturnDate;
     @FXML private Label lblReturnDate;
@@ -163,6 +167,18 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         btnSearch.setOnAction(event -> controller.handleSearch());
         btnClear.setOnAction(event -> controller.handleClear());
         btnRefresh.setOnAction(event -> controller.handleRefresh());
+        
+        // Configurar CheckBox para mostrar/ocultar filtros
+        chkShowFilters.setOnAction(event -> {
+            boolean showFilters = chkShowFilters.isSelected();
+            filtersContainer.setVisible(showFilters);
+            filtersContainer.setManaged(showFilters); // Remove espaço quando oculto
+            
+            // Limpar filtros quando ocultar
+            if (!showFilters) {
+                controller.clearFilters();
+            }
+        });
         
         if (btnDelete != null) {
             btnDelete.setOnAction(event -> controller.handleDelete());
