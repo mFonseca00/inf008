@@ -105,6 +105,11 @@ public class LoanController {
                 UserUIUtils.showMessage(lblMessage, "Selecione a data de empréstimo", true);
                 return;
             }
+
+            if (loanDate.isAfter(LocalDate.now())) {
+                UserUIUtils.showMessage(lblMessage, "A data de empréstimo não pode ser futura", true);
+                return;
+            }
             
             if (currentLoan == null) {
                 // Verificar se o livro tem cópias disponíveis
