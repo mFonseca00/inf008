@@ -1,9 +1,10 @@
 package br.edu.ifba.inf008.plugins.ui;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class UIUtils {
     
@@ -31,5 +32,14 @@ public class UIUtils {
         );
         
         return errorContainer;
+    }
+    
+    public static void showMessage(Label messageLabel, String message, boolean isError) {
+        messageLabel.setText(message);
+        messageLabel.setTextFill(isError ? Color.RED : Color.GREEN);
+    }
+    
+    public static void clearMessage(Label messageLabel) {
+        messageLabel.setText("");
     }
 }

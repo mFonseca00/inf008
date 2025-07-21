@@ -108,6 +108,38 @@ public class LoanDAO implements ILoanDAO {
             em.close();
         }
     }
+    
+    @Override
+    public List<Loan> findByUserName(String userName) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user " +
+                "WHERE LOWER(l.user.name) LIKE LOWER(:userName)", 
+                Loan.class
+            );
+            query.setParameter("userName", "%" + userName + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override
+    public List<Loan> findByBookTitle(String bookTitle) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user " +
+                "WHERE LOWER(l.book.title) LIKE LOWER(:bookTitle)", 
+                Loan.class
+            );
+            query.setParameter("bookTitle", "%" + bookTitle + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
     public List<Loan> findAll() {

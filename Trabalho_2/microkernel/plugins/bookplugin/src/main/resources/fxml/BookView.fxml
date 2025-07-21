@@ -73,7 +73,7 @@
                <children>
                   <HBox spacing="10.0">
                      <children>
-                        <ComboBox fx:id="cmbSearchType" prefHeight="25.0" prefWidth="90.0" />
+                        <ComboBox fx:id="cmbSearchType" prefHeight="25.0" prefWidth="105.0" promptText="Buscar por:" />
                         <TextField fx:id="txtSearch" promptText="Digite sua busca..." HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnClear" mnemonicParsing="false" text="Limpar" />
                         <Button fx:id="btnSearch" mnemonicParsing="false" text="Buscar" />

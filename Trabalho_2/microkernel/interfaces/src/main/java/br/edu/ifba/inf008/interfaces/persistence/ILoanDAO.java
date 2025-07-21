@@ -14,6 +14,8 @@ public interface ILoanDAO {
     List<Loan> findByUserId(Integer userId);
     List<Loan> findByLoanDate(LocalDate loanDate);
     List<Loan> findByReturnDate(LocalDate returnDate);
+    List<Loan> findByUserName(String userName);
+    List<Loan> findByBookTitle(String bookTitle);
     List<Loan> findAll();
 
     Loan update(Loan loan);

@@ -12,7 +12,7 @@
     
     <MenuBar fx:id="menuBar">
         <menus>
-            <Menu text="Arquivo">
+            <Menu text="Geral">
                 <items>
                     <MenuItem onAction="#handleExit" text="Sair" />
                 </items>
