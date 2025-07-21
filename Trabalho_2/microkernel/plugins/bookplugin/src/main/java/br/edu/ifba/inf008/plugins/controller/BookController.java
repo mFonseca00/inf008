@@ -196,6 +196,11 @@ public class BookController {
     }
 
     private void handleCreateBook(String title, String author, String isbn, int publicationYear, int availableCopies) {
+        if (bookService.isbnExists(isbn)) {
+            displayErrorMessage("ISBN já cadastrado. Por favor, verifique o código ISBN informado.");
+            return;
+        }
+        
         Book savedBook = bookService.createBook(title, author, isbn, publicationYear, availableCopies);
 
         if (savedBook != null) {
@@ -209,6 +214,11 @@ public class BookController {
 
     private void handleUpdateBook(String title, String author, String isbn, int publicationYear, int availableCopies) {
         if (editingBookId != null) {
+            if (bookService.isbnExistsExcludingBook(isbn, editingBookId)) {
+                displayErrorMessage("ISBN já cadastrado em outro livro. Por favor, verifique o código ISBN informado.");
+                return;
+            }
+            
             Book bookToUpdate = new Book(editingBookId, title, author, isbn, publicationYear, availableCopies);
             Book updatedBook = bookService.updateBook(bookToUpdate);
 

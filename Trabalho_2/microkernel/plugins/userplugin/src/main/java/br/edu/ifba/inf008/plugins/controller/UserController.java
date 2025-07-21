@@ -142,6 +142,11 @@ public class UserController {
     }
     
     private void handleCreateUser(String name, String email) {
+        if (userService.isEmailExists(email)) {
+            displayErrorMessage("Email já cadastrado. Por favor, utilize outro endereço de email.");
+            return;
+        }
+        
         User savedUser = userService.createUser(name, email);
         
         if (savedUser != null) {
@@ -154,6 +159,11 @@ public class UserController {
     }
     
     private void handleUpdateUser(String name, String email) {
+        if (userService.isEmailExistsExcludingUser(email, editingUserId)) {
+            displayErrorMessage("Email já cadastrado para outro usuário. Por favor, utilize outro endereço de email.");
+            return;
+        }
+        
         Optional<User> existingUser = userService.findUserById(editingUserId);
         
         if (existingUser.isPresent()) {

@@ -45,4 +45,15 @@ public class BookService {
     public boolean deleteBook(Integer bookId) {
         return ICore.getInstance().getBookDAO().delete(bookId);
     }
+    
+    public boolean isbnExists(String isbn) {
+        List<Book> booksWithSameIsbn = findBookByIsbn(isbn);
+        return !booksWithSameIsbn.isEmpty();
+    }
+    
+    public boolean isbnExistsExcludingBook(String isbn, Integer bookId) {
+        List<Book> booksWithSameIsbn = findBookByIsbn(isbn);
+        return booksWithSameIsbn.stream()
+                .anyMatch(book -> !book.getBookId().equals(bookId));
+    }
 }

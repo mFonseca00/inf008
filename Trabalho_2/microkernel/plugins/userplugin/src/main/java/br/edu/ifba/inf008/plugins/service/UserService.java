@@ -1,10 +1,10 @@
 package br.edu.ifba.inf008.plugins.service;
 
-import br.edu.ifba.inf008.interfaces.ICore;
-import br.edu.ifba.inf008.interfaces.models.User;
-
 import java.util.List;
 import java.util.Optional;
+
+import br.edu.ifba.inf008.interfaces.ICore;
+import br.edu.ifba.inf008.interfaces.models.User;
 
 
 public class UserService {
@@ -42,5 +42,15 @@ public class UserService {
 
     public boolean deleteUser(Integer userId) {
         return ICore.getInstance().getUserDAO().delete(userId);
+    }
+    
+    public boolean isEmailExists(String email) {
+        Optional<User> existingUser = findUserByEmail(email);
+        return existingUser.isPresent();
+    }
+    
+    public boolean isEmailExistsExcludingUser(String email, Integer userId) {
+        Optional<User> existingUser = findUserByEmail(email);
+        return existingUser.isPresent() && !existingUser.get().getUserId().equals(userId);
     }
 }
