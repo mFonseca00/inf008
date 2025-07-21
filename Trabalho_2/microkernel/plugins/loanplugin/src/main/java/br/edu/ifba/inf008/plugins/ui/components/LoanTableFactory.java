@@ -12,15 +12,12 @@ public class LoanTableFactory {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static void configureTable(TableView<Loan> tableView) {
-        // Configuração da tabela
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
-        // Coluna de ID do empréstimo
         TableColumn<Loan, Integer> loanIdColumn = new TableColumn<>("ID");
         loanIdColumn.setCellValueFactory(new PropertyValueFactory<>("loanId"));
         loanIdColumn.setPrefWidth(50);
         
-        // Coluna do usuário (nome)
         TableColumn<Loan, String> userColumn = new TableColumn<>("Usuário");
         userColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -30,7 +27,6 @@ public class LoanTableFactory {
         });
         userColumn.setPrefWidth(150);
         
-        // Coluna do email do usuário
         TableColumn<Loan, String> userEmailColumn = new TableColumn<>("Email");
         userEmailColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -40,7 +36,6 @@ public class LoanTableFactory {
         });
         userEmailColumn.setPrefWidth(180);
         
-        // Coluna do livro (título)
         TableColumn<Loan, String> bookColumn = new TableColumn<>("Livro");
         bookColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -50,7 +45,6 @@ public class LoanTableFactory {
         });
         bookColumn.setPrefWidth(200);
         
-        // Coluna do ISBN do livro
         TableColumn<Loan, String> isbnColumn = new TableColumn<>("ISBN");
         isbnColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -60,7 +54,6 @@ public class LoanTableFactory {
         });
         isbnColumn.setPrefWidth(120);
         
-        // Coluna da data de empréstimo
         TableColumn<Loan, String> loanDateColumn = new TableColumn<>("Data de Empréstimo");
         loanDateColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -70,7 +63,6 @@ public class LoanTableFactory {
         });
         loanDateColumn.setPrefWidth(120);
         
-        // Coluna da data de devolução
         TableColumn<Loan, String> returnDateColumn = new TableColumn<>("Data de Devolução");
         returnDateColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -80,7 +72,6 @@ public class LoanTableFactory {
         });
         returnDateColumn.setPrefWidth(120);
         
-        // Coluna de status do empréstimo
         TableColumn<Loan, String> statusColumn = new TableColumn<>("Status");
         statusColumn.setCellValueFactory(cellData -> {
             Loan loan = cellData.getValue();
@@ -108,7 +99,6 @@ public class LoanTableFactory {
         });
         statusColumn.setPrefWidth(80);
         
-        // Adicionando todas as colunas à tabela
         tableView.getColumns().setAll(loanIdColumn, userColumn, userEmailColumn, bookColumn, isbnColumn, loanDateColumn, returnDateColumn, statusColumn);
         
     }
