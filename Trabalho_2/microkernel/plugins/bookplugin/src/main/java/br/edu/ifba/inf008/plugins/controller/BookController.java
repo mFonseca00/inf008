@@ -180,20 +180,30 @@ public class BookController {
     }
 
     public void handleDelete() {
-        Book selectedBook = tableBooks.getSelectionModel().getSelectedItem();
-        if (selectedBook != null) {
-            boolean deleted = bookService.deleteBook(selectedBook.getBookId());
-            if (deleted) {
-                tableBooks.getItems().remove(selectedBook);
-                resetForm();
-                displaySuccessMessage("Livro excluído com sucesso!");
-            } else {
-                displayErrorMessage("Erro ao excluir o livro");
-            }
-        } else {
-            displayErrorMessage("Selecione um livro para excluir");
+    Book selectedBook = tableBooks.getSelectionModel().getSelectedItem();
+    if (selectedBook != null) {
+        String confirmationMessage = "Deseja continuar com a exclusão do livro \"" 
+            + selectedBook.getTitle() + "\" de " + selectedBook.getAuthor() + "?";
+        
+        boolean confirmed = BookMessageUtils.showConfirmation(confirmationMessage);
+        
+        if (!confirmed) {
+            displayConfirmationMessage("Exclusão cancelada pelo usuário");
+            return;
         }
+        
+        boolean deleted = bookService.deleteBook(selectedBook.getBookId());
+        if (deleted) {
+            tableBooks.getItems().remove(selectedBook);
+            resetForm();
+            displaySuccessMessage("Livro excluído com sucesso!");
+        } else {
+            displayErrorMessage("Erro ao excluir o livro");
+        }
+    } else {
+        displayErrorMessage("Selecione um livro para excluir");
     }
+}
 
     private void handleCreateBook(String title, String author, String isbn, int publicationYear, int availableCopies) {
         if (bookService.isbnExists(isbn)) {

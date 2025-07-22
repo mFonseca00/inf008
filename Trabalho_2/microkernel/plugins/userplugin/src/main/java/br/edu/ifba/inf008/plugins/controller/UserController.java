@@ -139,6 +139,17 @@ public class UserController {
                     return;
                 }
             }
+            else{
+                String confirmationMessage = "Deseja continuar com a exclusão do usuário \"" 
+                    + selectedUser.getName() + "\" proprietário do email \"" + selectedUser.getEmail() + "\"?";
+                
+                boolean confirmed = UserMessageUtils.showConfirmation(confirmationMessage);
+                
+                if (!confirmed) {
+                    displayConfirmationMessage("Exclusão cancelada pelo usuário");
+                    return;
+                }
+            }
             
             boolean deleted = userService.deleteUser(selectedUser.getUserId());
             if (deleted) {

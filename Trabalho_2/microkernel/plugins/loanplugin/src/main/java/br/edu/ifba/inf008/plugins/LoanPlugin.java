@@ -12,12 +12,14 @@ import br.edu.ifba.inf008.plugins.controller.LoanController;
 import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
-import br.edu.ifba.inf008.plugins.ui.UserUIUtils;
+import br.edu.ifba.inf008.plugins.ui.LoanUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.LoanTableFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -26,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import javafx.scene.control.Tooltip;
 
 public class LoanPlugin implements IPluginUI, ILibraryPlugin
 {
@@ -103,7 +106,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         } catch (Exception e) {
             e.printStackTrace();
             
-            return UserUIUtils.createErrorContainer(
+            return LoanUIUtils.createErrorContainer(
                 "Não foi possível carregar a interface",
                 "Ocorreu um erro ao carregar a interface do plugin de empréstimos.",
                 e.getMessage()
@@ -176,7 +179,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         
         if (btnDelete != null) {
             btnDelete.setOnAction(event -> controller.handleDelete());
-            javafx.scene.control.Tooltip tooltip = new javafx.scene.control.Tooltip(
+            Tooltip tooltip = new javafx.scene.control.Tooltip(
                 "Somente empréstimos já devolvidos podem ser excluídos.\n" +
                 "Empréstimos ativos precisam ser devolvidos primeiro."
             );

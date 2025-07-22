@@ -1,5 +1,7 @@
 package br.edu.ifba.inf008.plugins.ui.components;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 public class BookMessageUtils {
@@ -30,5 +32,15 @@ public class BookMessageUtils {
     
     private static void clearMessageStyles(Label label) {
         label.getStyleClass().removeAll("message-error", "message-success", "message-warning", "message-info");
+    }
+
+    public static boolean showConfirmation(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Confirmação necessária");
+        alert.setContentText(message);
+        
+        ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+        return result == ButtonType.OK;
     }
 }
