@@ -27,14 +27,14 @@
     
     <TabPane fx:id="tabPane" side="BOTTOM" VBox.vgrow="ALWAYS">
         <tabs>
-            <Tab closable="false" text="Início">
+            <Tab closable="false" text="Boas Vindas">
                 <content>
                     <VBox styleClass="welcome-content">
                         <Label text="Alexandria" styleClass="title-label" />
-                        <Label text="Sistema de Biblioteca Moderno" styleClass="subtitle" />
+                        <Label text="Seu Sistema De Biblioteca Moderno" styleClass="subtitle" />
                         <VBox styleClass="welcome-info">
                             <Label text="Bem-vindo ao sistema Alexandria! Utilize o menu superior para acessar as funcionalidades disponíveis." styleClass="info-text" />
-                            <Label text="Para começar, instale plugins adicionais através do menu de configurações." styleClass="info-text" />
+                            <Label text="Para adicionar mais funções, instale plugins adicionais no sistema." styleClass="info-text" />
                             <Label text="Este sistema foi desenvolvido com arquitetura de microkernel para máxima flexibilidade." styleClass="info-text" />
                         </VBox>
                     </VBox>
