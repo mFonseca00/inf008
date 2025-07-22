@@ -40,7 +40,6 @@ public class LoanController {
     private TableView<Loan> tableLoans;
     private ComboBox<String> cmbSearchType;
     
-    // Listas completas para filtragem
     private ObservableList<User> allUsers = FXCollections.observableArrayList();
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
     
@@ -81,22 +80,18 @@ public class LoanController {
         this.tableLoans = tableLoans;
         this.cmbSearchType = cmbSearchType;
         
-        // Configurar filtros
         setupFilters();
         
-        // Carregar dados iniciais
         loadLoans();
         loadUsers();
         loadBooks();
     }
     
     private void setupFilters() {
-        // Configurar listener para filtro de usuários
         txtUserFilter.textProperty().addListener((observable, oldValue, newValue) -> {
             filterUsers(newValue);
         });
         
-        // Configurar listener para filtro de livros
         txtBookFilter.textProperty().addListener((observable, oldValue, newValue) -> {
             filterBooks(newValue);
         });
@@ -109,7 +104,6 @@ public class LoanController {
         if (txtBookFilter != null) {
             txtBookFilter.clear();
         }
-        // Resetar ComboBoxes para mostrar todos os itens
         if (cmbUser != null) {
             cmbUser.setItems(allUsers);
         }
@@ -186,18 +180,15 @@ public class LoanController {
             }
             
             if (currentLoan == null) {
-                // Verificar se o livro tem cópias disponíveis
                 if (selectedBook.getCopiesAvailable() <= 0) {
                     UserUIUtils.showMessage(lblMessage, "Não há cópias disponíveis do livro '" + selectedBook.getTitle() + "'", true);
                     return;
                 }
                 
-                // Criando um novo empréstimo
                 loanService.createLoan(selectedUser, selectedBook, loanDate);
                 UserUIUtils.showMessage(lblMessage, "Empréstimo cadastrado com sucesso!", false);
                 clearForm();
             } else {
-                // Atualizando um empréstimo existente
                 LocalDate returnDate = dtpReturnDate.getValue();
                 
                 currentLoan.setUser(selectedUser);
@@ -296,17 +287,14 @@ public class LoanController {
         
         currentLoan = selectedLoan;
         
-        // Preenche o formulário com os dados do empréstimo selecionado
         cmbUser.setValue(selectedLoan.getUser());
         cmbBook.setValue(selectedLoan.getBook());
         dtpLoanDate.setValue(selectedLoan.getLoanDate());
         dtpReturnDate.setValue(selectedLoan.getReturnDate());
         
-        // Torna visível o campo de data de devolução e seu rótulo
         dtpReturnDate.setVisible(true);
         lblReturnDate.setVisible(true);
         
-        // Altera o texto do botão para indicar que estamos editando
         btnSave.setText("Atualizar");
         btnCancel.setVisible(true);
         
@@ -354,7 +342,6 @@ public class LoanController {
     
     public void loadBooks() {
         try {
-            // Carregar apenas livros com cópias disponíveis
             List<Book> availableBooks = bookService.getAvailableBooks();
             if (availableBooks.isEmpty()) {
                 UserUIUtils.showMessage(lblMessage, "Não há livros disponíveis para empréstimo", true);
@@ -394,15 +381,12 @@ public class LoanController {
         }
         
         try {
-            // Set the return date to today
             selectedLoan.setReturnDate(LocalDate.now());
             
-            // Update the loan
             loanService.updateLoan(selectedLoan);
             
             UserUIUtils.showMessage(lblMessage, "Devolução registrada com sucesso!", false);
             
-            // Reload the loans list AND available books list
             loadLoans();
             loadBooks();
             loadUsers();

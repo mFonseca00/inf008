@@ -48,18 +48,14 @@ public class UIController extends Application implements IUIController
         try {
             primaryStage.setTitle("Alexandria");
 
-            // Carrega o FXML da tela principal
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
             
-            // Define este controlador como o controlador do FXML
             loader.setController(this);
             
-            // Carrega a raiz do FXML
             VBox root = loader.load();
             
             Scene scene = new Scene(root, 960, 600);
             
-            // Aplica estilos básicos diretamente
             applyThemeToScene(scene);
 
             primaryStage.setScene(scene);
@@ -67,18 +63,15 @@ public class UIController extends Application implements IUIController
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(500);
             
-            // Maximizar a janela
             primaryStage.setMaximized(true);
 
             primaryStage.show();
 
-            // Inicializa os plugins
             Core.getInstance().getPluginController().init();
         } catch (IOException e) {
             System.err.println("Erro ao carregar o FXML: " + e.getMessage());
             e.printStackTrace();
             
-            // Fallback para a interface programática original
             fallbackToOriginalUIWithCSS(primaryStage);
         }
     }
@@ -86,7 +79,6 @@ public class UIController extends Application implements IUIController
     private void fallbackToOriginalUIWithCSS(Stage primaryStage) {
         primaryStage.setTitle("Alexandria - Sistema de Biblioteca");
 
-        // Criar menu bar com menu Geral
         menuBar = new MenuBar();
         Menu geralMenu = new Menu("Geral");
         MenuItem sairItem = new MenuItem("Sair");
@@ -97,7 +89,6 @@ public class UIController extends Application implements IUIController
         tabPane = new TabPane();
         tabPane.setSide(Side.BOTTOM);
         
-        // Criar tab inicial
         Tab inicioTab = new Tab("Início");
         inicioTab.setClosable(false);
         VBox welcomeContent = new VBox();
@@ -128,13 +119,11 @@ public class UIController extends Application implements IUIController
         VBox vBox = new VBox(menuBar, tabPane);
         vBox.setStyle("-fx-background-color: #fafafa; -fx-font-family: 'Segoe UI', 'San Francisco', 'Helvetica Neue', sans-serif;");
         
-        // Aplica estilos minimalistas aos componentes
         menuBar.setStyle("-fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0; -fx-padding: 8 16;");
         tabPane.setStyle("-fx-background-color: #fafafa; -fx-tab-min-width: 100px; -fx-tab-max-width: 160px;");
 
         Scene scene = new Scene(vBox, 960, 600);
         
-        // Tentar aplicar o CSS mesmo no fallback
         try {
             scene.getStylesheets().add(getClass().getResource("/styles/alexandria-theme.css").toExternalForm());
         } catch (Exception cssError) {
@@ -145,7 +134,6 @@ public class UIController extends Application implements IUIController
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(500);
         
-        // Maximizar a janela
         primaryStage.setMaximized(true);
         
         primaryStage.show();
@@ -154,28 +142,23 @@ public class UIController extends Application implements IUIController
     }
     
     private void applyThemeToScene(Scene scene) {
-        // Tenta aplicar CSS do arquivo primeiro
         try {
             String cssPath = getClass().getResource("/styles/alexandria-theme.css").toExternalForm();
             scene.getStylesheets().add(cssPath);
         } catch (Exception e) {
             System.out.println("CSS arquivo não encontrado, aplicando estilos inline básicos");
-            // Aplica estilos básicos inline
             applyInlineStyles(scene);
         }
     }
     
     private void applyInlineStyles(Scene scene) {
-        // Aplica tema minimalista
         VBox root = (VBox) scene.getRoot();
         root.setStyle("-fx-background-color: #fafafa; -fx-font-family: 'Segoe UI', 'San Francisco', 'Helvetica Neue', sans-serif;");
         
-        // Aplica estilo minimalista ao MenuBar
         if (menuBar != null) {
             menuBar.setStyle("-fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0; -fx-padding: 8 16;");
         }
         
-        // Aplica estilo minimalista ao TabPane
         if (tabPane != null) {
             tabPane.setStyle("-fx-background-color: #fafafa; -fx-tab-min-width: 100px; -fx-tab-max-width: 160px;");
         }
@@ -183,7 +166,6 @@ public class UIController extends Application implements IUIController
 
     @Override
     public MenuItem createMenuItem(String menuText, String menuItemText) {
-        // Criar o menu caso ele não exista
         Menu newMenu = null;
         for (Menu menu : menuBar.getMenus()) {
             if (menu.getText().equals(menuText)) {
@@ -196,7 +178,6 @@ public class UIController extends Application implements IUIController
             menuBar.getMenus().add(newMenu);
         }
 
-        // Criar o menu item neste menu
         MenuItem menuItem = new MenuItem(menuItemText);
         newMenu.getItems().add(menuItem);
 

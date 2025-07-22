@@ -18,7 +18,6 @@ public class UserController {
     private final UserService userService;
     private Integer editingUserId = null;
     
-    // UI components references
     private TextField txtName;
     private TextField txtEmail;
     private Button btnSave;
@@ -128,11 +127,9 @@ public class UserController {
     public void handleDelete() {
         User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
-            // Verificar se há empréstimos ativos antes de confirmar a exclusão
             String warningMessage = userService.getActiveLoansWarning(selectedUser.getUserId());
             
             if (warningMessage != null) {
-                // Mostrar aviso sobre empréstimos ativos e pedir confirmação
                 boolean confirmed = UserMessageUtils.showConfirmation(
                     warningMessage + "\n\nDeseja continuar com a exclusão do usuário?"
                 );

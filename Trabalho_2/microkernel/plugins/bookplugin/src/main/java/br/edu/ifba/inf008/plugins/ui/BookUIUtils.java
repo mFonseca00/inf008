@@ -32,9 +32,7 @@ public class BookUIUtils {
     
     public static void showMessage(Label messageLabel, String message, boolean isError) {
         messageLabel.setText(message);
-        // Limpar classes anteriores
         messageLabel.getStyleClass().removeAll("message-error", "message-success");
-        // Adicionar classe apropriada
         messageLabel.getStyleClass().add(isError ? "message-error" : "message-success");
     }
     

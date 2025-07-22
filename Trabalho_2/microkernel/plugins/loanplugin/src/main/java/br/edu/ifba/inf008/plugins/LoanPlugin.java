@@ -125,7 +125,6 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
     }
 
     private void setupComboBoxes() {
-        // Configurar ComboBox de Usuários
         cmbUser.setConverter(new StringConverter<User>() {
             @Override
             public String toString(User user) {
@@ -138,7 +137,6 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
             }
         });
         
-        // Configurar ComboBox de Livros
         cmbBook.setConverter(new StringConverter<Book>() {
             @Override
             public String toString(Book book) {
@@ -151,7 +149,6 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
             }
         });
         
-        // Configurar o DatePicker com a data atual
         dtpLoanDate.setValue(LocalDate.now());
         
     }
@@ -168,13 +165,10 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         btnClear.setOnAction(event -> controller.handleClear());
         btnRefresh.setOnAction(event -> controller.handleRefresh());
         
-        // Configurar CheckBox para mostrar/ocultar filtros
         chkShowFilters.setOnAction(event -> {
             boolean showFilters = chkShowFilters.isSelected();
             filtersContainer.setVisible(showFilters);
-            filtersContainer.setManaged(showFilters); // Remove espaço quando oculto
-            
-            // Limpar filtros quando ocultar
+            filtersContainer.setManaged(showFilters);
             if (!showFilters) {
                 controller.clearFilters();
             }
@@ -182,7 +176,6 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         
         if (btnDelete != null) {
             btnDelete.setOnAction(event -> controller.handleDelete());
-            // Adiciona uma dica para explicar a restrição de exclusão
             javafx.scene.control.Tooltip tooltip = new javafx.scene.control.Tooltip(
                 "Somente empréstimos já devolvidos podem ser excluídos.\n" +
                 "Empréstimos ativos precisam ser devolvidos primeiro."

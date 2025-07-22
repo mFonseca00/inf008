@@ -170,10 +170,7 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    /**
-     * Encontra todos os empréstimos ativos (sem data de devolução) em ordem de data de empréstimo.
-     * @return Uma lista de empréstimos ativos.
-     */
+    @Override
     public List<Loan> findActiveLoans() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -187,10 +184,7 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    /**
-     * Retorna um ranking de livros mais emprestados.
-     * @return Uma lista de arrays de objetos, onde cada array contém: título, autor, ISBN e contagem de empréstimos.
-     */
+    @Override
     public List<Object[]> findBookLoanRanking() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -207,10 +201,7 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    /**
-     * Retorna um ranking de usuários com mais empréstimos.
-     * @return Uma lista de arrays de objetos, onde cada array contém: nome do usuário, email e contagem de empréstimos.
-     */
+    @Override
     public List<Object[]> findUserLoanRanking() {
         EntityManager em = emf.createEntityManager();
         try {

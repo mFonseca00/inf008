@@ -16,17 +16,14 @@ import br.edu.ifba.inf008.shell.Core;
 public class App {
     public static void main(String[] args) {
         try {
-            // Inicializa o Core
             Core.init();
             
-            // Testes para DAOs
             // FIXME: apagar no final
             // testUserDAO();
             // testBookDAO();
             // testLoanDAO();
             
         } finally {
-            // Fecha recursos do Hibernate
             JPAUtil.shutdown();
         }
     }

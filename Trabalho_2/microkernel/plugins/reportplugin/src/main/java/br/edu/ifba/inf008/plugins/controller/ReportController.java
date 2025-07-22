@@ -48,7 +48,6 @@ public class ReportController {
         this.btnRefreshActiveLoans = btnRefreshActiveLoans;
         this.btnExportActiveLoans = btnExportActiveLoans;
         
-        // Carrega dados iniciais
         loadUserRanking();
         loadBookRanking();
         loadActiveLoans();

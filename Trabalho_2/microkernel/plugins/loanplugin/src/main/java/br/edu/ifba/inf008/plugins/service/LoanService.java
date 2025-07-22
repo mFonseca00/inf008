@@ -32,7 +32,6 @@ public class LoanService {
     }
 
     public Loan createLoan(User user, Book book, LocalDate loanDate) {
-        // Verificar se há cópias disponíveis antes de criar o empréstimo
         if (book.getCopiesAvailable() <= 0) {
             throw new IllegalArgumentException("Não há cópias disponíveis deste livro para empréstimo");
         }
@@ -59,7 +58,6 @@ public class LoanService {
         Book originalBook = originalLoan.getBook();
         Book newBook = loan.getBook();
         
-        // Se a data de retorno está vazia (empréstimo ainda ativo) e houve troca de livro
         if (originalLoan.getReturnDate() == null && 
                 !originalBook.getBookId().equals(newBook.getBookId())) {
             
@@ -73,14 +71,12 @@ public class LoanService {
             ICore.getInstance().getBookDAO().update(newBook);
         }
         
-        // Se a data de retorno foi adicionada agora (devolução de livro)
         if (originalLoan.getReturnDate() == null && loan.getReturnDate() != null) {
             Book bookToReturn = newBook;
             bookToReturn.setCopiesAvailable(bookToReturn.getCopiesAvailable() + 1);
             ICore.getInstance().getBookDAO().update(bookToReturn);
         }
         
-        // Se a data de retorno foi removida (reativação de empréstimo)
         if (originalLoan.getReturnDate() != null && loan.getReturnDate() == null) {
             Book bookToReborrow = newBook;
             if (bookToReborrow.getCopiesAvailable() <= 0) {
@@ -100,7 +96,6 @@ public class LoanService {
             Loan loan = loanOpt.get();
             
             if (loan.getReturnDate() == null) {
-                // Impede a exclusão de empréstimos ativos como uma feature de segurança
                 throw new IllegalStateException("Não é permitido excluir empréstimos que ainda não foram devolvidos. Efetue a devolução antes de excluir.");
             }
             

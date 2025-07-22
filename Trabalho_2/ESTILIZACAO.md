@@ -81,20 +81,7 @@ Sistema: "Segoe UI", "San Francisco", "Helvetica Neue", "Arial"
 - **Tabs**: Fundo transparente, ativa com fundo branco
 - **Tab Selecionada**: Borda superior e laterais
 
-## 🚀 Benefícios do Tema Minimalista
-
-### Experiência do Usuário
-- **Foco**: Menos distrações, mais foco no conteúdo
-- **Legibilidade**: Textos mais fáceis de ler
-- **Profissional**: Aparência moderna e confiável
-- **Performance**: Menos elementos visuais = melhor desempenho
-
-### Manutenção
-- **Consistente**: Padrões claros e reutilizáveis
-- **Escalável**: Fácil de expandir para novos componentes
-- **Acessível**: Melhor contraste e navegação
-
-## � Estrutura de Arquivos
+## Estrutura de Arquivos
 
 ```
 microkernel/
@@ -132,7 +119,7 @@ microkernel/
 <TextField style="-fx-background-color: white; -fx-border-color: #d0d0d0; -fx-border-radius: 6; -fx-padding: 12;" />
 ```
 
-## � Personalização
+## Personalização
 
 Para ajustar o tema, modifique as variáveis no início do CSS:
 
@@ -144,29 +131,3 @@ Para ajustar o tema, modifique as variáveis no início do CSS:
     /* ... outras variáveis */
 }
 ```
-
-## � Comparação: Antes vs Depois
-
-### Antes (Tema Anterior)
-- Gradientes coloridos
-- Sombras pesadas
-- Cores saturadas
-- Layout mais denso
-
-### Depois (Tema Minimalista)
-- Cores planas
-- Sombras sutis ou ausentes
-- Cores neutras com acentos
-- Layout mais espaçoso
-
-## 🎨 Inspirações de Design
-
-Este tema foi inspirado por:
-- **Apple Human Interface Guidelines**
-- **Google Material Design** (versão minimalista)
-- **Microsoft Fluent Design** (elementos sutis)
-- **Sistemas de design de aplicações modernas**
-
----
-
-**Resultado**: Uma interface mais limpa, profissional e fácil de usar, mantendo toda a funcionalidade do sistema original.

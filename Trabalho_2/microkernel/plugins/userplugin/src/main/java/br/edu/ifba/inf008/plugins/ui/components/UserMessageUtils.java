@@ -34,11 +34,6 @@ public class UserMessageUtils {
         label.getStyleClass().removeAll("message-error", "message-success", "message-warning", "message-info");
     }
     
-    /**
-     * Mostra um dialog de confirmação para o usuário
-     * @param message Mensagem a ser exibida
-     * @return true se o usuário confirmar, false caso contrário
-     */
     public static boolean showConfirmation(String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmação");
