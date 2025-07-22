@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.interfaces.models.Loan;
 
 
 public class BookService {
@@ -55,5 +56,31 @@ public class BookService {
         List<Book> booksWithSameIsbn = findBookByIsbn(isbn);
         return booksWithSameIsbn.stream()
                 .anyMatch(book -> !book.getBookId().equals(bookId));
+    }
+
+    public String getActiveLoansWarning(Integer userId) {
+        List<Loan> activeLoans = ICore.getInstance().getLoanDAO().findByBookIdWithDetails(userId);
+        
+        List<Loan> unreturnedLoans = activeLoans.stream()
+            .filter(loan -> loan.getReturnDate() == null)
+            .toList();
+        
+        if (unreturnedLoans.isEmpty()) {
+            return null;
+        }
+        
+        StringBuilder warning = new StringBuilder();
+        warning.append("ATENÇÃO: O livro possui ").append(unreturnedLoans.size())
+               .append(" empréstimo(s) ativo(s):\n\n");
+        
+        for (Loan loan : unreturnedLoans) {
+            warning.append("• Emprestado para: ").append(loan.getUser().getName())
+                   .append(" - Empréstimo em: ").append(loan.getLoanDate())
+                   .append("\n");
+        }
+
+        warning.append("\nAo excluir o livro, estes empréstimos serão automaticamente finalizados.\n");
+        
+        return warning.toString();
     }
 }
