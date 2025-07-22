@@ -187,7 +187,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
                 "Somente empréstimos já devolvidos podem ser excluídos.\n" +
                 "Empréstimos ativos precisam ser devolvidos primeiro."
             );
-            tooltip.setStyle("-fx-font-size: 12px;");
+            tooltip.getStyleClass().add("tooltip");
             btnDelete.setTooltip(tooltip);
         }
         

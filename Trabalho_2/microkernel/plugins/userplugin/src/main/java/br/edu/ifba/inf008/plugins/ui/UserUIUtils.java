@@ -1,24 +1,20 @@
 package br.edu.ifba.inf008.plugins.ui;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class UserUIUtils {
     
     public static VBox createErrorContainer(String errorTitle, String errorMessage, String errorDetail) {
         VBox errorContainer = new VBox(15);
-        errorContainer.setPadding(new Insets(30));
-        errorContainer.setAlignment(Pos.CENTER);
+        errorContainer.getStyleClass().add("error-container");
         
         Label titleLabel = new Label(errorTitle);
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
+        titleLabel.getStyleClass().add("error-title");
         
         Label messageLabel = new Label(errorMessage);
         Label detailLabel = new Label("Detalhes: " + errorDetail);
-        detailLabel.setStyle("-fx-font-style: italic;");
+        detailLabel.getStyleClass().add("error-detail");
         
         Label contactAdmin = new Label("Entre em contato com o administrador do sistema.");
         
@@ -36,10 +32,15 @@ public class UserUIUtils {
     
     public static void showMessage(Label messageLabel, String message, boolean isError) {
         messageLabel.setText(message);
-        messageLabel.setTextFill(isError ? Color.RED : Color.GREEN);
+        // Limpar classes anteriores
+        messageLabel.getStyleClass().removeAll("message-error", "message-success");
+        // Adicionar classe apropriada
+        messageLabel.getStyleClass().add(isError ? "message-error" : "message-success");
     }
     
     public static void clearMessage(Label messageLabel) {
         messageLabel.setText("");
+        messageLabel.getStyleClass().removeAll("message-error", "message-success");
+        messageLabel.getStyleClass().add("message-info");
     }
 }

@@ -1,0 +1,138 @@
+/* Tema Minimalista Básico para Plugins */
+.root {
+    -fx-background-color: #fafafa;
+    -fx-font-family: "Segoe UI", "San Francisco", "Helvetica Neue", "Arial", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ===== BUTTONS ===== */
+.button {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 16;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #0056D6;
+}
+
+.button-success {
+    -fx-background-color: #34C759;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 16;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+.button-success:hover {
+    -fx-background-color: #2DB653;
+}
+
+/* ===== TEXT FIELDS ===== */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 12;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused {
+    -fx-border-color: #007AFF;
+    -fx-border-width: 2;
+}
+
+/* ===== TABLE VIEW ===== */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+
+/* ===== TITLED PANE ===== */
+.titled-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* ===== CONTAINERS ===== */
+.content-container {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+}
+
+.form-container {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+/* ===== LABELS ===== */
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 300;
+    -fx-text-fill: #333333;
+    -fx-padding: 0 0 8 0;
+}
+
+/* ===== MENSAGENS ===== */
+.message-error {
+    -fx-text-fill: #d31414;
+    -fx-font-size: 12px;
+}
+
+.message-success {
+    -fx-text-fill: #008800;
+    -fx-font-size: 12px;
+}
+
+.message-warning {
+    -fx-text-fill: #d1a000;
+    -fx-font-size: 12px;
+}
+
+.message-info {
+    -fx-text-fill: #8E8E93;
+    -fx-font-size: 12px;
+}
+
+/* ===== ERROR CONTAINERS ===== */
+.error-container {
+    -fx-padding: 20;
+    -fx-spacing: 10;
+}
+
+.error-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #d32f2f;
+}
+
+.error-message {
+    -fx-text-fill: #666666;
+    -fx-wrap-text: true;
+}
+
+.error-detail {
+    -fx-text-fill: #999999;
+    -fx-font-size: 11px;
+    -fx-wrap-text: true;
+}

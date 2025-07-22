@@ -14,41 +14,39 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
 
-<VBox minHeight="400.0" minWidth="480.0" prefHeight="600.0" prefWidth="960.0" spacing="15.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<VBox minHeight="600.0" minWidth="800.0" prefHeight="800.0" prefWidth="1400.0" spacing="15.0" styleClass="content-container" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <String fx:value="@../styles/plugin-theme.css"/>
+   </stylesheets>
+   
    <children>
-      <Label text="Gerenciamento de Empéstimos">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <TitledPane animated="false" text="Cadastro de Empréstimos" VBox.vgrow="NEVER">
+      <Label styleClass="section-title" text="Gerenciamento de Empréstimos" />
+      
+      <TitledPane animated="true" text="Cadastro de Empréstimos" VBox.vgrow="NEVER" expanded="false">
          <content>
-            <VBox spacing="10.0">
+            <VBox spacing="15.0" styleClass="form-container">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" spacing="8.0">
                      <children>
-                        <CheckBox fx:id="chkShowFilters" mnemonicParsing="false" selected="false" text="Filtros Avançados" />
+                        <CheckBox fx:id="chkShowFilters" mnemonicParsing="false" selected="false" text="Filtros Avançados" styleClass="checkbox-compact" />
                      </children>
                   </HBox>
-                  <VBox fx:id="filtersContainer" spacing="10.0" visible="false">
+                  <VBox fx:id="filtersContainer" spacing="8.0" visible="false">
                      <children>
-                        <GridPane hgap="10.0" vgap="10.0">
+                        <GridPane hgap="8.0" vgap="8.0" styleClass="grid-pane">
                            <children>
-                              <Label text="Filtro de Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                              <TextField fx:id="txtUserFilter" promptText="Digite para filtrar usuários..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                              <Label text="Filtro de Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                              <TextField fx:id="txtBookFilter" promptText="Digite para filtrar livros..." GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                              <Label text="Filtrar Usuários:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="field-label" />
+                              <TextField fx:id="txtUserFilter" promptText="Filtrar usuários..." GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="160.0" />
+                              <Label text="Filtrar Livros:" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="field-label" />
+                              <TextField fx:id="txtBookFilter" promptText="Filtrar livros..." GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="160.0" />
                            </children>
                            <columnConstraints>
-                              <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
-                              <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
-                              <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
-                              <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                              <ColumnConstraints minWidth="130.0" prefWidth="130.0" />
+                              <ColumnConstraints minWidth="160.0" prefWidth="160.0" />
+                              <ColumnConstraints minWidth="130.0" prefWidth="130.0" />
+                              <ColumnConstraints minWidth="160.0" prefWidth="160.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints />
@@ -56,68 +54,62 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <GridPane hgap="10.0" vgap="10.0">
+                  <GridPane hgap="8.0" vgap="8.0" styleClass="grid-pane">
                      <children>
-                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <ComboBox fx:id="cmbUser" prefHeight="25.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label prefHeight="17.0" prefWidth="57.0" text="Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                        <ComboBox fx:id="cmbBook" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                        <Label text="Data de Empréstimo: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <DatePicker fx:id="dtpLoanDate" prefHeight="25.0" prefWidth="138.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="lblReturnDate" text="Data de Devolução:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <DatePicker fx:id="dtpReturnDate" prefHeight="25.0" prefWidth="138.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="Usuário:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="field-label" />
+                        <ComboBox fx:id="cmbUser" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Livro:" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="field-label" />
+                        <ComboBox fx:id="cmbBook" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Label text="Data Empréstimo:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="field-label" />
+                        <DatePicker fx:id="dtpLoanDate" prefWidth="140.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblReturnDate" text="Data Devolução:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="field-label" />
+                        <DatePicker fx:id="dtpReturnDate" prefWidth="140.0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                      <columnConstraints>
-                        <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
-                        <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
-                        <ColumnConstraints maxWidth="150.0" minWidth="100.0" prefWidth="120.0" />
-                        <ColumnConstraints maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                        <ColumnConstraints minWidth="130.0" prefWidth="130.0" />
+                        <ColumnConstraints minWidth="160.0" prefWidth="160.0" />
+                        <ColumnConstraints minWidth="130.0" prefWidth="130.0" />
+                        <ColumnConstraints minWidth="160.0" prefWidth="160.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
-                        <RowConstraints />
                      </rowConstraints>
                   </GridPane>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <HBox spacing="10.0" alignment="CENTER_LEFT">
                      <children>
-                        <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Cadastrar" />
-                        <Button fx:id="btnCancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Cancelar" textFill="#da0808" visible="false" />
+                        <Button fx:id="btnSave" mnemonicParsing="false" text="Emprestar" styleClass="button-success" prefWidth="100.0" />
+                        <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancelar" styleClass="button-warning" visible="false" prefWidth="100.0" />
                      </children>
                   </HBox>
-                  <Label fx:id="lblMessage" textFill="#d31414" />
+                  <Label fx:id="lblMessage" styleClass="subtitle" />
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </VBox>
          </content>
       </TitledPane>
-      <TitledPane animated="false" text="Buscar Empréstimos" VBox.vgrow="ALWAYS">
+      
+      <TitledPane animated="true" expanded="false" text="Buscar Empréstimos" VBox.vgrow="ALWAYS" styleClass="titled-pane">
          <content>
-            <VBox spacing="10.0">
+            <VBox spacing="15.0" styleClass="form-container">
                <children>
-                  <HBox spacing="10.0">
+                  <HBox spacing="8.0" alignment="CENTER_LEFT">
                      <children>
-                        <ComboBox fx:id="cmbSearchType" prefHeight="25.0" prefWidth="101.0" promptText="Buscar por:" />
-                        <TextField fx:id="txtSearch" promptText="Digite sua busca..." HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnClear" mnemonicParsing="false" text="Limpar" />
-                        <Button fx:id="btnSearch" mnemonicParsing="false" text="Buscar" />
+                        <ComboBox fx:id="cmbSearchType" prefWidth="130.0" promptText="Buscar por:" />
+                        <TextField fx:id="txtSearch" promptText="Busca..." HBox.hgrow="ALWAYS" prefWidth="150.0" />
+                        <Button fx:id="btnClear" mnemonicParsing="false" text="Limpar" styleClass="button-warning" prefWidth="80.0" />
+                        <Button fx:id="btnSearch" mnemonicParsing="false" text="Buscar" styleClass="button-primary" prefWidth="80.0" />
                      </children>
                   </HBox>
                   <TableView fx:id="tableLoans" VBox.vgrow="ALWAYS" />
-                  <HBox spacing="10.0">
+                  <HBox spacing="8.0" alignment="CENTER_LEFT">
                      <children>
-                        <Button fx:id="btnRefresh" mnemonicParsing="false" text="Atualizar" />
-                        <Button fx:id="btnEdit" mnemonicParsing="false" text="Editar" />
-                        <Button fx:id="btnReturn" mnemonicParsing="false" text="Efetuar Devolução" />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" text="Excluir" />
+                        <Button fx:id="btnRefresh" mnemonicParsing="false" text="Atualizar" styleClass="button-primary" prefWidth="85.0" />
+                        <Button fx:id="btnEdit" mnemonicParsing="false" text="Editar" styleClass="button-warning" prefWidth="75.0" />
+                        <Button fx:id="btnReturn" mnemonicParsing="false" text="Devolver" styleClass="button-success" prefWidth="85.0" />
+                        <Button fx:id="btnDelete" mnemonicParsing="false" text="Excluir" styleClass="button-danger" prefWidth="75.0" />
                      </children>
                   </HBox>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </VBox>
          </content>
       </TitledPane>

@@ -1,10 +1,8 @@
 package br.edu.ifba.inf008.plugins.ui;
 
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 public class ReportUIUtils {
     
@@ -13,22 +11,19 @@ public class ReportUIUtils {
      */
     public static Node createErrorContainer(String title, String message, String details) {
         VBox container = new VBox(10);
-        container.setPadding(new Insets(20));
+        container.getStyleClass().add("error-container");
         
         Label titleLabel = new Label(title);
-        titleLabel.setFont(Font.font("System Bold", 16));
-        titleLabel.setStyle("-fx-text-fill: #d32f2f;");
+        titleLabel.getStyleClass().add("error-title");
         
         Label messageLabel = new Label(message);
-        messageLabel.setWrapText(true);
-        messageLabel.setStyle("-fx-text-fill: #666666;");
+        messageLabel.getStyleClass().add("error-message");
         
         container.getChildren().addAll(titleLabel, messageLabel);
         
         if (details != null && !details.trim().isEmpty()) {
             Label detailsLabel = new Label("Detalhes: " + details);
-            detailsLabel.setWrapText(true);
-            detailsLabel.setStyle("-fx-text-fill: #999999; -fx-font-size: 11px;");
+            detailsLabel.getStyleClass().add("error-detail");
             container.getChildren().add(detailsLabel);
         }
         
