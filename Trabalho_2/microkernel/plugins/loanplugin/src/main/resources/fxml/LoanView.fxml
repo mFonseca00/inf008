@@ -78,7 +78,7 @@
                   </GridPane>
                   <HBox spacing="10.0" alignment="CENTER_LEFT">
                      <children>
-                        <Button fx:id="btnSave" mnemonicParsing="false" text="Emprestar" styleClass="button-success" prefWidth="100.0" />
+                        <Button fx:id="btnSave" mnemonicParsing="false" text="Cadastro" styleClass="button-success" prefWidth="100.0" />
                         <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancelar" styleClass="button-warning" visible="false" prefWidth="100.0" />
                      </children>
                   </HBox>

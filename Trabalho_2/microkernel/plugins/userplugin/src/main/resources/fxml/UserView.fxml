@@ -45,8 +45,8 @@
                   </GridPane>
                   <HBox spacing="10.0" alignment="CENTER_LEFT">
                      <children>
-                        <Button fx:id="btnSave" mnemonicParsing="false" text="Salvar" styleClass="button-success" prefWidth="80.0" />
-                        <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancelar" visible="false" styleClass="button-warning" prefWidth="80.0" />
+                        <Button fx:id="btnSave" mnemonicParsing="false" text="Cadastrar" styleClass="button-success" prefWidth="100.0" />
+                        <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancelar" visible="false" styleClass="button-warning" prefWidth="100.0" />
                      </children>
                   </HBox>
                   <Label fx:id="lblMessage" styleClass="subtitle" />
