@@ -160,64 +160,66 @@ public class LoanController {
             LocalDate loanDate = dtpLoanDate.getValue();
             
             if (selectedUser == null) {
-                LoanUIUtils.showMessage(lblMessage, "Selecione um usuário", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um usuário");
                 return;
             }
             
             if (selectedBook == null) {
-                LoanUIUtils.showMessage(lblMessage, "Selecione um livro", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um livro");
                 return;
             }
             
             if (loanDate == null) {
-                LoanUIUtils.showMessage(lblMessage, "Selecione a data de empréstimo", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "Selecione a data de empréstimo");
                 return;
             }
 
             if (loanDate.isAfter(LocalDate.now())) {
-                LoanUIUtils.showMessage(lblMessage, "A data de empréstimo não pode ser futura", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "A data de empréstimo não pode ser futura");
                 return;
             }
             
             if (currentLoan == null) {
                 if (selectedBook.getCopiesAvailable() <= 0) {
-                    LoanUIUtils.showMessage(lblMessage, "Não há cópias disponíveis do livro '" + selectedBook.getTitle() + "'", true);
+                    LoanUIUtils.displayErrorMessage(lblMessage, "Não há cópias disponíveis do livro '" + selectedBook.getTitle() + "'");
                     return;
                 }
                 
                 loanService.createLoan(selectedUser, selectedBook, loanDate);
-                LoanUIUtils.showMessage(lblMessage, "Empréstimo cadastrado com sucesso!", false);
                 clearForm();
+                LoanUIUtils.displaySuccessMessage(lblMessage, "Empréstimo cadastrado com sucesso!");
             } else {
                 LocalDate returnDate = dtpReturnDate.getValue();
                 
                 currentLoan.setUser(selectedUser);
                 currentLoan.setBook(selectedBook);
                 currentLoan.setLoanDate(loanDate);
-                if (returnDate != null && !returnDate.isBefore(loanDate)) {
-                    currentLoan.setReturnDate(returnDate);
-                } else {
+                if (returnDate == null) {
                     currentLoan.setReturnDate(null);
-                    LoanUIUtils.showMessage(lblMessage, "Data de devolução inválida. Deve ser posterior à data de empréstimo.", true);
+                } else if (!returnDate.isBefore(loanDate)) {
+                    currentLoan.setReturnDate(returnDate);
+                } else{
+                    currentLoan.setReturnDate(null);
+                    LoanUIUtils.displayErrorMessage(lblMessage, "Data de devolução inválida. Deve ser posterior à data de empréstimo.");
                     return;
                 }
 
                 loanService.updateLoan(currentLoan);
-                LoanUIUtils.showMessage(lblMessage, "Empréstimo atualizado com sucesso!", false);
                 clearForm();
+                LoanUIUtils.displaySuccessMessage(lblMessage, "Empréstimo atualizado com sucesso!");
             }
             
             loadLoans();
             loadBooks();
             loadUsers();
         } catch (Exception e) {
-            LoanUIUtils.showMessage(lblMessage, "Erro ao salvar empréstimo: " + e.getMessage(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao salvar empréstimo: " + e.getMessage());
         }
     }
     
     public void handleCancel() {
         clearForm();
-        LoanUIUtils.clearMessage(lblMessage);
+        LoanUIUtils.displayConfirmationMessage(lblMessage, "Edição cancelada");
     }
     
     public void handleSearch() {
@@ -281,7 +283,7 @@ public class LoanController {
         Loan selectedLoan = tableLoans.getSelectionModel().getSelectedItem();
         
         if (selectedLoan == null) {
-            LoanUIUtils.showMessage(lblMessage, "Selecione um empréstimo para editar", true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um empréstimo para editar");
             return;
         }
         
@@ -298,19 +300,20 @@ public class LoanController {
         btnSave.setText("Atualizar");
         btnCancel.setVisible(true);
         
-        LoanUIUtils.clearMessage(lblMessage);
+        LoanUIUtils.displayConfirmationMessage(lblMessage, "Editando empréstimo do livro \"" + 
+            selectedLoan.getBook().getTitle() + "\" para \"" + selectedLoan.getUser().getName() + "\"");
     }
     
     public void handleDelete() {
         Loan selectedLoan = tableLoans.getSelectionModel().getSelectedItem();
         
         if (selectedLoan == null) {
-            LoanUIUtils.showMessage(lblMessage, "Selecione um empréstimo para excluir", true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um empréstimo para excluir");
             return;
         }
         
         if (selectedLoan.getReturnDate() == null) {
-            LoanUIUtils.showMessage(lblMessage, "ATENÇÃO: Não é permitido excluir empréstimos ativos. Efetue a devolução antes de excluir.", true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "ATENÇÃO: Não é permitido excluir empréstimos ativos. Efetue a devolução antes de excluir.");
             return;
         }
         
@@ -320,7 +323,7 @@ public class LoanController {
         boolean confirmed = LoanUIUtils.showConfirmation(confirmationMessage);
         
         if (!confirmed) {
-            LoanUIUtils.showMessage(lblMessage, "Exclusão cancelada pelo usuário", false);
+            LoanUIUtils.displayConfirmationMessage(lblMessage, "Exclusão cancelada pelo usuário");
             return;
         }
         
@@ -329,15 +332,15 @@ public class LoanController {
             
             if (deleted) {
                 tableLoans.getItems().remove(selectedLoan);
-                LoanUIUtils.showMessage(lblMessage, "Empréstimo excluído com sucesso!", false);
+                LoanUIUtils.displaySuccessMessage(lblMessage, "Empréstimo excluído com sucesso!");
                 loadLoans();
                 loadBooks();
                 loadUsers();
             } else {
-                LoanUIUtils.showMessage(lblMessage, "Erro ao excluir o empréstimo", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao excluir o empréstimo");
             }
         } catch (Exception e) {
-            LoanUIUtils.showMessage(lblMessage, "Erro ao excluir empréstimo: " + e.getMessage(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao excluir empréstimo: " + e.getMessage());
         }
     }
     
@@ -347,7 +350,7 @@ public class LoanController {
             allUsers.setAll(users);
             cmbUser.setItems(allUsers);
         } catch (Exception e) {
-            LoanUIUtils.showMessage(lblMessage, "Erro ao carregar usuários: " + e.getMessage(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao carregar usuários: " + e.getMessage());
         }
     }
     
@@ -355,12 +358,12 @@ public class LoanController {
         try {
             List<Book> availableBooks = bookService.getAvailableBooks();
             if (availableBooks.isEmpty()) {
-                LoanUIUtils.showMessage(lblMessage, "Não há livros disponíveis para empréstimo", true);
+                LoanUIUtils.displayErrorMessage(lblMessage, "Não há livros disponíveis para empréstimo");
             }
             allBooks.setAll(availableBooks);
             cmbBook.setItems(allBooks);
         } catch (Exception e) {
-            LoanUIUtils.showMessage(lblMessage, "Erro ao carregar livros: " + e.getMessage(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao carregar livros: " + e.getMessage());
         }
     }
     
@@ -369,25 +372,24 @@ public class LoanController {
         cmbBook.setValue(null);
         dtpLoanDate.setValue(LocalDate.now());
         dtpReturnDate.setValue(null);
-        
-        btnSave.setText("Cadastrar");
-        btnCancel.setVisible(false);
         dtpReturnDate.setVisible(false);
         lblReturnDate.setVisible(false);
-        
+        btnSave.setText("Cadastrar");
+        btnCancel.setVisible(false);
         currentLoan = null;
+        LoanUIUtils.clearMessage(lblMessage);
     }
     
     public void handleReturn() {
         Loan selectedLoan = tableLoans.getSelectionModel().getSelectedItem();
         
         if (selectedLoan == null) {
-            LoanUIUtils.showMessage(lblMessage, "Selecione um empréstimo para efetuar a devolução", true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um empréstimo para efetuar a devolução");
             return;
         }
         
         if (selectedLoan.getReturnDate() != null) {
-            LoanUIUtils.showMessage(lblMessage, "Este empréstimo já foi devolvido em " + selectedLoan.getReturnDate(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Este empréstimo já foi devolvido em " + selectedLoan.getReturnDate());
             return;
         }
         
@@ -396,13 +398,13 @@ public class LoanController {
             
             loanService.updateLoan(selectedLoan);
             
-            LoanUIUtils.showMessage(lblMessage, "Devolução registrada com sucesso!", false);
+            LoanUIUtils.displaySuccessMessage(lblMessage, "Devolução registrada com sucesso!");
             
             loadLoans();
             loadBooks();
             loadUsers();
         } catch (Exception e) {
-            LoanUIUtils.showMessage(lblMessage, "Erro ao registrar devolução: " + e.getMessage(), true);
+            LoanUIUtils.displayErrorMessage(lblMessage, "Erro ao registrar devolução: " + e.getMessage());
         }
     }
 }

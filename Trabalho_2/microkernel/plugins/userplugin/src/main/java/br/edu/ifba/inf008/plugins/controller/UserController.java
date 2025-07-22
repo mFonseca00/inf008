@@ -113,12 +113,11 @@ public class UserController {
         if (selectedUser != null) {
             txtName.setText(selectedUser.getName());
             txtEmail.setText(selectedUser.getEmail());
-            
-            editingUserId = selectedUser.getUserId();
-            
+                        
             btnSave.setText("Atualizar");
             btnCancel.setVisible(true);
-            displayConfirmationMessage("Editando usuário #" + editingUserId);
+            displayConfirmationMessage("Editando " + selectedUser.getName() + " (" + selectedUser.getEmail() + ")");
+            editingUserId = selectedUser.getUserId();
         } else {
             displayErrorMessage("Selecione um usuário para editar");
         }
@@ -209,8 +208,9 @@ public class UserController {
                 displayErrorMessage("Erro ao atualizar usuário");
             }
         } else {
-            displayErrorMessage("Usuário não encontrado. ID: " + editingUserId);
             resetForm();
+            displayErrorMessage("Usuário não encontrado. ID: " + editingUserId);
+
         }
     }
     

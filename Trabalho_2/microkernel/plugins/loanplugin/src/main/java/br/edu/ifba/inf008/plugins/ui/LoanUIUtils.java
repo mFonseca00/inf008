@@ -58,4 +58,26 @@ public class LoanUIUtils {
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         return result == ButtonType.OK;
     }
+
+    public static void displayErrorMessage(Label label, String message) {
+        clearMessageStyles(label);
+        label.getStyleClass().add("message-error");
+        label.setText(message);
+    }
+    
+    public static void displaySuccessMessage(Label label, String message) {
+        clearMessageStyles(label);
+        label.getStyleClass().add("message-success");
+        label.setText(message);
+    }
+    
+    public static void displayConfirmationMessage(Label label, String message) {
+        clearMessageStyles(label);
+        label.getStyleClass().add("message-warning");
+        label.setText(message);
+    }
+    
+    private static void clearMessageStyles(Label label) {
+        label.getStyleClass().removeAll("message-error", "message-success", "message-warning", "message-info");
+    }
 }
