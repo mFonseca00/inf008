@@ -66,6 +66,9 @@ public class UIController extends Application implements IUIController
 
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(500);
+            
+            // Maximizar a janela
+            primaryStage.setMaximized(true);
 
             primaryStage.show();
 
@@ -141,6 +144,10 @@ public class UIController extends Application implements IUIController
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(500);
+        
+        // Maximizar a janela
+        primaryStage.setMaximized(true);
+        
         primaryStage.show();
 
         Core.getInstance().getPluginController().init();
