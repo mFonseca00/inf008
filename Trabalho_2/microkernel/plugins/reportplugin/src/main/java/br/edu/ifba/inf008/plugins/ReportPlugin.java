@@ -44,7 +44,7 @@ public class ReportPlugin implements IPluginUI, ILibraryPlugin {
 
     @Override
     public String getMenuCategory() {
-        return "Relatórios";
+        return "Geral";
     }
 
     @Override

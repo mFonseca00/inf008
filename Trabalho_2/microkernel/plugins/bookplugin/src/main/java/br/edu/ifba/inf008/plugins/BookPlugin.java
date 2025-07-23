@@ -54,7 +54,7 @@ public class BookPlugin implements IPluginUI, ILibraryPlugin
 
     @Override
     public String getMenuCategory() {
-        return "Livros";
+        return "Gerenciamento";
     }
 
     @Override

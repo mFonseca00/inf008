@@ -1,6 +1,5 @@
 /* ===== ALEXANDRIA MINIMAL THEME ===== */
 
-/* Cores minimalistas */
 :root {
     -fx-primary-color: #007AFF;
     -fx-secondary-color: #FF9500;
@@ -269,8 +268,8 @@
 }
 
 .table-view .table-row-cell:selected {
-    -fx-background-color: #E3F2FD;
-    -fx-text-fill: #333333;
+    -fx-background-color: #007AFF;
+    -fx-text-fill: #ffffff;
 }
 
 /* ===== TITLED PANE ===== */

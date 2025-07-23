@@ -51,7 +51,7 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
 
     @Override
     public String getMenuCategory() {
-        return "Usuários";
+        return "Gerenciamento";
     }
 
     @Override

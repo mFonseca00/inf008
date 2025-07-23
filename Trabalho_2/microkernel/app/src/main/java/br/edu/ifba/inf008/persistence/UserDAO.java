@@ -1,15 +1,15 @@
 package br.edu.ifba.inf008.persistence;
 
+import java.util.List;
+import java.util.Optional;
+
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.NoResultException;
-
-import java.util.List;
-import java.util.Optional;
+import jakarta.persistence.TypedQuery;
 
 public class UserDAO implements IUserDAO {
 
@@ -80,10 +80,10 @@ public class UserDAO implements IUserDAO {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE u.email = :email", 
+                "SELECT u FROM User u WHERE LOWER(u.email) LIKE LOWER(:email)", 
                 User.class
             );
-            query.setParameter("email", email);
+            query.setParameter("email", "%" + email + "%");
             try {
                 User user = query.getSingleResult();
                 return Optional.of(user);
