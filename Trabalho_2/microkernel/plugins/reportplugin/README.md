@@ -2,149 +2,196 @@
 
 Este documento descreve o plugin de relatórios (`ReportPlugin`) que faz parte do sistema baseado em microkernel para bibliotecas.
 
-## Visão Geral
+## 📊 Visão Geral
 
-O `ReportPlugin` é um componente plugável que implementa funcionalidades de geração de relatórios para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica para:
+O `ReportPlugin` é um componente plugável que implementa funcionalidades de geração de relatórios para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica completa para:
 
-- Visualizar ranking de usuários com mais empréstimos
-- Consultar ranking de livros mais emprestados
-- Listar empréstimos ativos (não devolvidos)
-- Exportar relatórios para CSV
-- Atualizar dados dos relatórios em tempo real
+- 📈 Visualizar ranking de usuários com mais empréstimos
+- 📚 Consultar ranking de livros mais emprestados
+- 📋 Listar empréstimos ativos (não devolvidos)
+- 💾 Exportar relatórios para CSV
+- 🔄 Atualizar dados dos relatórios em 1 clique
 
-## Estrutura do Plugin
+## 🏗️ Estrutura do Plugin
 
 ```
 reportplugin/
 ├── pom.xml                           # Configuração Maven
+├── README.md                         # Esta documentação
 └── src/main/
     ├── java/br/edu/ifba/inf008/plugins/
     │   ├── ReportPlugin.java         # Classe principal do plugin
     │   ├── controller/
-    │   │   └── ReportController.java # Controlador de ações do usuário
+    │   │   └── ReportController.java # Controlador MVC
     │   ├── service/
     │   │   └── ReportService.java    # Serviço de acesso aos dados de relatórios
-    │   ├── ui/
-    │   │   ├── ReportUIUtils.java    # Utilitários de UI
-    │   │   └── components/
-    │   │       ├── ReportTableFactory.java    # Fábrica para tabelas de relatórios
-    │   │       ├── ReportMessageUtils.java    # Utilitários para exibição de mensagens
-    │   │       └── ReportExporter.java        # Utilitários para exportação de dados
+    │   └── ui/
+    │       ├── ReportUIUtils.java    # Utilitários de UI
+    │       └── components/
+    │           ├── ReportTableFactory.java    # Fábrica para tabelas de relatórios
+    │           └── ReportMessageUtils.java    # Utilitários de mensagens
+    │           └── ReportExporter.java        # Classe que realiza exportação de relatórios
     └── resources/
-        └── fxml/
-            └── ReportView.fxml       # Layout da interface gráfica
+        ├── fxml/
+        │   └── ReportView.fxml       # Interface FXML
+        └── styles/
+            └── report-theme.css      # Estilos específicos do plugin
 ```
 
-## Componentes Principais
+## ⚙️ Funcionalidades Detalhadas
 
-### 1. ReportPlugin
+### 📈 Ranking de Usuários
 
-A classe `ReportPlugin` é o ponto de entrada do plugin, implementando as interfaces `IPluginUI` e `ILibraryPlugin` definidas pelo núcleo da aplicação. Esta classe:
+**Informações exibidas:**
+- **Posição no ranking** (listado do maior para o menor)
+- **Nome do usuário**
+- **Email do usuário**
+- **Total de empréstimos realizados**
 
-- Inicializa o plugin
-- Define metadados (nome, categoria, etc.)
-- Carrega a interface FXML
-- Conecta os componentes da UI ao controlador
+**Características:**
+- Ordenação decrescente por número de empréstimos
+- Inclui usuários com pelo menos 1 empréstimo
+- Atualização em tempo em 1 passo
+- Possibilidade de exportação para CSV
 
-### 2. ReportController
+**Consulta SQL subjacente:**
+```sql
+SELECT u.name, u.email, COUNT(l.loan_id) as total_loans
+FROM User u 
+INNER JOIN Loan l ON u.user_id = l.user_id
+GROUP BY u.name, u.email
+ORDER BY total_loans DESC
+```
 
-A classe `ReportController` é responsável por:
+### 📚 Ranking de Livros
 
-- Gerenciar as interações do usuário
-- Coordenar as operações de busca de dados através do ReportService
-- Controlar as funcionalidades de atualização e exportação
-- Atualizar as tabelas de relatórios conforme necessário
+**Informações exibidas:**
+- **Posição no ranking** (listado do maior para o menor)
+- **Título do livro**
+- **Autor**
+- **ISBN**
+- **Total de empréstimos** históricos
 
-### 3. ReportService
+**Características:**
+- Ordenação decrescente por número de empréstimos
+- Inclui livros com pelo menos 1 empréstimo
+- Dados úteis para aquisição de novos exemplares
 
-A classe `ReportService` serve como camada de serviço que:
+**Consulta SQL subjacente:**
+```sql
+SELECT b.title, b.author, b.isbn, COUNT(l.loan_id) as total_loans
+FROM Book b 
+INNER JOIN Loan l ON b.book_id = l.book_id
+GROUP BY b.title, b.author, b.isbn
+ORDER BY total_loans DESC
+```
 
-- Encapsula o acesso aos dados de empréstimos
-- Acessa o LoanDAO do núcleo da aplicação através da interface `ICore`
-- Implementa operações de busca para relatórios estatísticos
+### 📋 Empréstimos Ativos
 
-### 4. ReportTableFactory
+**Informações exibidas:**
+- **ID do empréstimo**
+- **Nome do usuário**
+- **Título do livro**
+- **Autor do livro**
+- **Data de empréstimo**
+- **Dias em aberto** (calculado automaticamente)
 
-A classe `ReportTableFactory` é uma fábrica para criar e configurar tabelas de visualização dos diferentes tipos de relatórios:
+**Características:**
+- Lista apenas empréstimos não devolvidos (`l.returnDate IS NULL`)
+- Cálculo automático de dias decorridos
+- Ordenação por data de empréstimo (mais antigos primeiro)
 
-- **Ranking de Usuários**: Tabela com nome, email e quantidade de empréstimos
-- **Ranking de Livros**: Tabela com título, autor, ISBN e quantidade de empréstimos
-- **Empréstimos Ativos**: Tabela com ID, usuário, livro, autor, data do empréstimo e dias em aberto
+**Consulta SQL subjacente:**
+```sql
+SELECT l FROM Loan l
+JOIN FETCH l.book
+JOIN FETCH l.user
+WHERE l.returnDate IS NULL
+ORDER BY l.loanDate ASC
+```
 
-### 5. ReportExporter
+### 💾 Exportação para CSV
 
-A classe `ReportExporter` fornece funcionalidades para:
+**Funcionalidades de exportação:**
+- **Botão dedicado** para cada tipo de relatório
+- **Seletor de arquivo** para escolher local de salvamento
+- **Formato padrão CSV** com separador vírgula
+- **Cabeçalhos descritivos** em português
+- **Encoding UTF-8** para suporte a acentos
 
-- Exportar dados dos relatórios para arquivos CSV
-- Gerar nomes de arquivos únicos com timestamp
-- Formatar dados adequadamente para exportação
+**Exemplo de arquivo CSV gerado:**
+```csv
+"Posição","Nome","Email","Total de Empréstimos","Porcentagem"
+"1","João Silva","joao@email.com","15","23.08%"
+"2","Maria Santos","maria@email.com","12","18.46%"
+"3","Pedro Lima","pedro@email.com","8","12.31%"
+```
 
-### 6. ReportMessageUtils
+## 🎨 Interface do Usuário
 
-A classe `ReportMessageUtils` fornece métodos utilitários para exibição de mensagens na interface gráfica, com estilos visuais distintos para diferentes tipos de mensagens (erro, sucesso, confirmação).
+### Sistema de Abas
 
-## Integração com o Sistema
+A interface é organizada em **três abas principais**:
 
-O `ReportPlugin` se integra ao sistema central Alexandria através de:
+1. **📈 Usuários Mais Ativos**
+   - Tabela com ranking de usuários
+   - Botão de exportação específico
+   - Botão de atualização
 
-1. **Interfaces do Microkernel**: Implementa as interfaces `IPluginUI` e `ILibraryPlugin` definidas no módulo `interfaces`
-2. **Carregamento Dinâmico**: É carregado dinamicamente pelo `PluginController` do núcleo
-3. **Serviços do Núcleo**: Utiliza o `ICore` para acessar o `LoanDAO` e seus métodos de relatórios
-4. **Interface Gráfica**: Fornece sua própria UI através do método `createTabContent()`
+2. **📚 Livros Mais Emprestados**
+   - Tabela com ranking de livros
+   - Botão de exportação específico
+   - Botão de atualização
 
-## Ciclo de Vida
+3. **📋 Empréstimos Ativos**
+   - Lista de empréstimos não devolvidos
+   - Cálculo de dias em aberto
+   - Identificação de atrasos
+   - Botão de exportação específico
+   - Botão de atualização
 
-1. O plugin é compilado e empacotado como um JAR
-2. O JAR é colocado na pasta `plugins/` do sistema principal
-3. Durante a inicialização, o `PluginController` carrega o plugin
-4. O método `init()` do plugin é chamado
-5. Um item de menu é adicionado à interface principal
-6. Quando o usuário seleciona o item de menu, a UI do plugin é carregada como uma nova aba
+### Sistema de Mensagens
 
-## Funcionalidades
+```java
+// Mensagens de sucesso (verde)
+ReportUIUtils.displaySuccessMessage(lblMessage, "Relatório exportado com sucesso!");
 
-### Ranking de Usuários com Mais Empréstimos
-- Lista os usuários ordenados por quantidade de empréstimos realizados
-- Exibe nome, email e contagem total de empréstimos
-- Permite atualização e exportação dos dados
+// Mensagens de erro (vermelho)  
+ReportUIUtils.displayErrorMessage(lblMessage, "Erro ao gerar relatório");
 
-### Ranking de Livros Mais Emprestados
-- Lista os livros ordenados por quantidade de empréstimos
-- Exibe título, autor, ISBN e contagem total de empréstimos
-- Permite atualização e exportação dos dados
+// Mensagens de informação (azul)
+ReportUIUtils.displayInfoMessage(lblMessage, "Carregando dados...");
 
-### Empréstimos Ativos
-- Lista todos os empréstimos que ainda não foram devolvidos
-- Exibe ID, usuário, livro, autor, data do empréstimo e dias em aberto
-- Calcula automaticamente os dias desde o empréstimo
-- Permite atualização e exportação dos dados
+// Limpar mensagens
+ReportUIUtils.clearMessage(lblMessage);
+```
 
-### Funcionalidades Gerais
-- **Atualização em Tempo Real**: Botões de refresh para cada relatório
-- **Exportação para CSV**: Todos os relatórios podem ser exportados
-- **Interface Responsiva**: Layout organizado em containers colapsáveis
-- **Feedback Visual**: Mensagens de erro e sucesso para o usuário
+## 🚀 Uso
 
-## Tecnologias Utilizadas
+1. **Garantir dados existem**:
+   - Cadastrar usuários (UserPlugin)
+   - Cadastrar livros (BookPlugin)  
+   - Registrar empréstimos (LoanPlugin)
 
-- JavaFX para interface gráfica
-- FXML para definição de layout
-- Padrão MVC para organização do código
-- CSV para exportação de dados
-- JPA/JPQL para consultas de relatórios
+2. **Acessar relatórios**:
+   - Clicar na aba "Geral" e "Visualizar Relatórios"
+   - Navegar entre as sub-abas
+   - Usar botões de atualização e exportação
 
-## Dependências
+3. **Interpretar dados**:
+   - Rankings mostram tendências de uso
+   - Empréstimos ativos indicam gestão necessária
 
-- Módulo `interfaces` do sistema principal
-- JavaFX (controles e FXML)
-- API JPA (indiretamente através das interfaces)
+## 📚 Links Relacionados
 
-## Consultas Utilizadas
+- [📖 README Principal](../../../README.md)
+- [🏗️ README do Microkernel](../../README.md)
+- [📚 Plugin de Livros](../bookplugin/README.md)
+- [👥 Plugin de Usuários](../userplugin/README.md)
+- [📋 Plugin de Empréstimos](../loanplugin/README.md)
 
-O plugin utiliza métodos específicos do `LoanDAO` para gerar os relatórios:
+---
 
-- `findUserLoanRanking()`: Consulta agregada que conta empréstimos por usuário
-- `findBookLoanRanking()`: Consulta agregada que conta empréstimos por livro
-- `findActiveLoans()`: Consulta que busca empréstimos sem data de devolução
-
-Este plugin serve como exemplo de como funcionalidades analíticas podem ser adicionadas ao sistema Alexandria através da arquitetura de microkernel, fornecendo insights valiosos sobre o uso da biblioteca.
+**Desenvolvido por:** Marcus Vinicius Silva da Fonseca
+**Disciplina:** INF008 - POO
+**Instituição:** IFBA

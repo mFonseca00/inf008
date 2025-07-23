@@ -2,118 +2,166 @@
 
 Este documento descreve o plugin de gerenciamento de livros (`BookPlugin`) que faz parte do sistema baseado em microkernel para bibliotecas.
 
-## Visão Geral
+## 📖 Visão Geral
 
-O `BookPlugin` é um componente plugável que implementa funcionalidades de gestão de livros para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica para:
+O `BookPlugin` é um componente plugável que implementa funcionalidades de gestão de livros para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica completa para:
 
-- Cadastrar novos livros
-- Buscar livros existentes (por título, autor, ISBN ou ano de publicação)
-- Visualizar detalhes dos livros
-- Editar informações dos livros
-- Excluir livros
+- ✅ Cadastrar novos livros
+- 🔍 Buscar livros existentes (por título, autor, ISBN ou ano de publicação)
+- 👁️ Visualizar detalhes dos livros
+- ✏️ Editar informações dos livros
+- 🗑️ Excluir livros (com confirmação)
+- 📊 Controlar cópias disponíveis
 
-## Estrutura do Plugin
+## 🏗️ Estrutura do Plugin
 
 ```
 bookplugin/
 ├── pom.xml                           # Configuração Maven
+├── README.md                         # Esta documentação
 └── src/main/
     ├── java/br/edu/ifba/inf008/plugins/
     │   ├── BookPlugin.java           # Classe principal do plugin
     │   ├── controller/
-    │   │   └── BookController.java   # Controlador de ações do usuário
+    │   │   └── BookController.java   # Controlador MVC
     │   ├── service/
-    │   │   └── BookService.java      # Serviço de acesso a dados
-    │   ├── ui/
-    │   │   ├── UIUtils.java          # Utilitários de UI
-    │   │   └── components/
-    │   │       └── BookTableFactory.java  # Fábrica para tabela de livros
-    │   |       └── MessageUtils.java      # Utilitários para exibição de mensagens
-    │   └── util/
-    │       └── ValidationService.java     # Validação de dados
+    │   │   ├── BookService.java      # Serviço de acesso a dados
+    │   │   └── BookValidationService.java # Validação de dados
+    │   └── ui/
+    │       ├── BookUIUtils.java      # Utilitários de UI
+    │       └── components/
+    │           ├── BookTableFactory.java    # Fábrica para tabela de livros
+    │           └── BookMessageUtils.java    # Utilitários de mensagens
     └── resources/
-        └── fxml/
-            └── BookView.fxml         # Layout da interface gráfica
+        ├── fxml/
+        │   └── BookView.fxml         # Interface FXML
+        └── styles/
+            └── book-theme.css        # Estilos específicos do plugin
 ```
 
-## Componentes Principais
+## ⚙️ Funcionalidades Detalhadas
 
-### 1. BookPlugin
+### 📝 Cadastro de Livros
 
-A classe `BookPlugin` é o ponto de entrada do plugin, implementando as interfaces `IPluginUI` e `ILibraryPlugin` definidas pelo núcleo da aplicação. Esta classe:
+**Campos disponíveis:**
+- **Título**: Nome do livro (obrigatório)
+- **Autor**: Nome do autor (obrigatório) 
+- **ISBN**: Código ISBN único (opcional, validado quando preenchido)
+- **Ano de Publicação**: Ano entre 1500 e ano atual
+- **Cópias Disponíveis**: Quantidade de exemplares
 
-- Inicializa o plugin
-- Define metadados (nome, categoria, etc.)
-- Carrega a interface FXML
-- Conecta os componentes da UI ao controlador
+**Validações implementadas:**
+- Campos obrigatórios não podem estar vazios
+- ISBN deve ter formato válido (10 ou 13 dígitos)
+- Ano deve estar em faixa válida
+- Título e autor devem ter pelo menos 2 caracteres
+- Cópias devem ser número positivo
 
-### 2. BookController
+### 🔍 Sistema de Busca
 
-A classe `BookController` é responsável por:
+**Tipos de busca disponíveis:**
+- **Por Título**: Busca parcial case-insensitive
+- **Por Autor**: Busca parcial case-insensitive  
+- **Por ISBN**: Busca parcial case-insensitive
+- **Por Ano**: Busca exata por ano de publicação
 
-- Gerenciar as interações do usuário
-- Validar dados de entrada
-- Coordenar as operações de CRUD através do BookService
-- Atualizar a interface gráfica conforme necessário
+**Características:**
+- Busca em dois passos com confirmação após a digitação
+- Resultados exibidos na tabela após confirmação
+- Busca funciona em qualquer parte do texto
 
-### 3. BookService
+### ✏️ Edição de Livros
 
-A classe `BookService` serve como camada de serviço que:
+**Processo de edição:**
+1. Selecionar livro na tabela
+2. Clicar em "Editar"
+3. Formulário é preenchido com dados atuais
+4. Modificar campos desejados
+5. Salvar alterações ou cancelar
 
-- Encapsula o acesso aos dados de livros
-- Acessa o DAO de livros do núcleo da aplicação através da interface `ICore`
-- Implementa operações de negócio relacionadas aos livros
+**Feedback visual:**
+- Mensagem de confirmação "Editando livro [título]"
+- Botão muda de "Cadastrar" para "Atualizar"
+- Botão "Cancelar" fica visível
 
-### 4. BookTableFactory
+### 🗑️ Exclusão de Livros
 
-A classe `BookTableFactory` é uma fábrica para criar e configurar tabelas de visualização de livros com as colunas e formatos apropriados.
+**Processo de exclusão:**
+1. Selecionar livro na tabela
+2. Clicar em "Excluir"
+3. **Pop-up de confirmação** aparece com:
+   - Título do livro
+   - Nome do autor
+   - Pergunta de confirmação
+4. Confirmar ou cancelar a exclusão
 
-### 5. ValidationService
+**Regras de negócio:**
+- Não permite excluir livros com empréstimos ativos sem confirmação
+- Confirmação obrigatória para evitar exclusões acidentais
+- Mensagem de sucesso/erro após operação
 
-A classe `ValidationService` fornece métodos de validação para dados de livros, como validação de ano de publicação e número de cópias disponíveis.
+## 🎨 Interface do Usuário
 
-### 6. MessageUtils
+### Sistema de Mensagens
 
-A classe `MessageUtils` fornece métodos utilitários para exibição de mensagens na interface gráfica, com estilos visuais distintos para diferentes tipos de mensagens (erro, sucesso, confirmação).
+O plugin implementa um sistema consistente de feedback visual:
 
-## Integração com o Sistema
+```java
+// Mensagens de erro (vermelho)
+BookMessageUtils.displayErrorMessage(lblMessage, "Título é obrigatório");
 
-O `BookPlugin` se integra ao sistema central Alexandria através de:
+// Mensagens de sucesso (verde)  
+BookMessageUtils.displaySuccessMessage(lblMessage, "Livro cadastrado com sucesso!");
 
-1. **Interfaces do Microkernel**: Implementa as interfaces `IPluginUI` e `ILibraryPlugin` definidas no módulo `interfaces`
-2. **Carregamento Dinâmico**: É carregado dinamicamente pelo `PluginController` do núcleo
-3. **Serviços do Núcleo**: Utiliza o `ICore` para acessar serviços como o `BookDAO`
-4. **Interface Gráfica**: Fornece sua própria UI através do método `createTabContent()`
+// Mensagens de confirmação/aviso (amarelo)
+BookMessageUtils.displayConfirmationMessage(lblMessage, "Editando livro...");
 
-## Ciclo de Vida
+// Limpar mensagens
+BookMessageUtils.clearMessage(lblMessage);
+```
 
-1. O plugin é compilado e empacotado como um JAR
-2. O JAR é colocado na pasta `plugins/` do sistema principal
-3. Durante a inicialização, o `PluginController` carrega o plugin
-4. O método `init()` do plugin é chamado
-5. Um item de menu é adicionado à interface principal
-6. Quando o usuário seleciona o item de menu, a UI do plugin é carregada como uma nova aba
+**Classes CSS aplicadas:**
+- `.message-error`: Texto vermelho para erros
+- `.message-success`: Texto verde para sucesso
+- `.message-warning`: Texto amarelo para avisos
+- `.message-info`: Texto azul para informações
 
-## Funcionalidades
+## 🚀 Uso
 
-- **Cadastro de Livros**: Formulário para criar novos livros com título, autor, ISBN, ano de publicação e cópias disponíveis
-- **Busca Avançada**: Filtro por título, autor, ISBN ou ano de publicação
-- **Gestão de Dados**: Visualização em tabela com opções para editar e excluir
-- **Validação**: Verificação de campos obrigatórios e formatos válidos
-- **Feedback Visual**: Mensagens de erro, sucesso e confirmação para o usuário
-- **Confirmação de Exclusão**: Solicita confirmação antes de excluir um livro
+- Plugin aparece na aba "Gerenciamento" como "Gerenciar Usuários"
+- Interface carrega automaticamente
+- Pronto para cadastrar livros!
 
-## Tecnologias Utilizadas
+## 🔄 Ciclo de Vida do Plugin
 
-- JavaFX para interface gráfica
-- FXML para definição de layout
-- Padrão MVC para organização do código
-- Injeção de dependências simples
+### Inicialização
+1. **Descoberta**: Core encontra JAR na pasta plugins
+2. **Carregamento**: ClassLoader carrega classes do plugin  
+3. **Instanciação**: Cria instância da classe principal
+4. **Inicialização**: Chama método `initialize()`
+5. **Integração**: Adiciona aba na interface principal
 
-## Dependências
+### Durante Execução
+1. **Eventos**: Plugin processa cliques e interações
+2. **Validação**: Dados são validados antes de persistir
+3. **Persistência**: Operações são salvas no banco
+4. **Feedback**: Mensagens informam resultado das operações
 
-- Módulo `interfaces` do sistema principal
-- JavaFX (controles e FXML)
-- API JPA (indiretamente através das interfaces)
+### Finalização
+1. **Shutdown**: Método `shutdown()` é chamado
+2. **Limpeza**: Recursos são liberados
+3. **Persistência**: Estado final é salvo
 
-Este plugin serve como exemplo de extensibilidade do sistema Alexandria, demonstrando como funcionalidades podem ser adicionadas ao núcleo sem modificar seu código base.
+## 📚 Links Relacionados
+
+- [📖 README Principal](../../../README.md)
+- [🏗️ README do Microkernel](../../README.md)
+- [👥 Plugin de Usuários](../userplugin/README.md)
+- [📋 Plugin de Empréstimos](../loanplugin/README.md)
+- [📊 Plugin de Relatórios](../reportplugin/README.md)
+
+---
+
+**Desenvolvido por:** Marcus Vinicius Silva da Fonseca
+**Disciplina:** INF008 - POO
+**Instituição:** IFBA
