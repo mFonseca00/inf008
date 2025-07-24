@@ -1,8 +1,12 @@
 package br.edu.ifba.inf008.shell;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.edu.ifba.inf008.interfaces.ICore;
+import br.edu.ifba.inf008.interfaces.IPluginUI;
+import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 import br.edu.ifba.inf008.interfaces.IUIController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -30,6 +34,7 @@ public class UIController extends Application implements IUIController
     
     @FXML
     private TabPane tabPane;
+    private Map<Tab, IPluginUI> tabPluginMap = new HashMap<>();
 
     public UIController() {
     }
@@ -41,6 +46,13 @@ public class UIController extends Application implements IUIController
 
     public static UIController getInstance() {
         return uiController;
+    }
+
+    public void createTab(String title, Node content, IPluginUI plugin) {
+        Tab tab = new Tab(title, content);
+        tabPane.getTabs().add(tab);
+        tabPluginMap.put(tab, plugin);
+        tabPane.getSelectionModel().select(tab);
     }
 
     @Override
@@ -74,6 +86,15 @@ public class UIController extends Application implements IUIController
             
             fallbackToOriginalUIWithCSS(primaryStage);
         }
+        
+        tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+            if (newTab != null && tabPluginMap.containsKey(newTab)) {
+                IPluginUI plugin = tabPluginMap.get(newTab);
+                if (plugin instanceof ITabRefreshable) {
+                    ((ITabRefreshable) plugin).refreshTab();
+                }
+            }
+        });
     }
     
     private void fallbackToOriginalUIWithCSS(Stage primaryStage) {

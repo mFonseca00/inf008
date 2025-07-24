@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
+import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.controller.UserController;
 import br.edu.ifba.inf008.plugins.service.UserService;
@@ -18,7 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class UserPlugin implements IPluginUI, ILibraryPlugin
+public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
 {
     @FXML private TextField txtName;
     @FXML private TextField txtEmail;
@@ -123,6 +124,13 @@ public class UserPlugin implements IPluginUI, ILibraryPlugin
         
         if (btnEdit != null) {
             btnEdit.setOnAction(event -> controller.handleEdit());
+        }
+    }
+
+    @Override
+    public void refreshTab() {
+        if (controller != null) {
+            controller.loadInitialData();
         }
     }
 }

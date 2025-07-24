@@ -234,7 +234,7 @@ public class UserController {
         UserMessageUtils.clearMessage(lblMessage);
     }
     
-    private void loadInitialData() {
+    public void loadInitialData() {
         List<User> users = userService.getAllUsers();
         tableUsers.getItems().clear();
         tableUsers.getItems().addAll(users);

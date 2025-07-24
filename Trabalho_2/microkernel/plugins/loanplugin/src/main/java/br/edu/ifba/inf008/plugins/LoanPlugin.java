@@ -27,8 +27,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.scene.control.Tooltip;
+import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 
-public class LoanPlugin implements IPluginUI, ILibraryPlugin
+public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
 {
     @FXML private ComboBox<User> cmbUser;
     @FXML private ComboBox<Book> cmbBook;
@@ -191,6 +192,15 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
         
         if (btnReturn != null) {
             btnReturn.setOnAction(event -> controller.handleReturn());
+        }
+    }
+
+    @Override
+    public void refreshTab() {
+        if (controller != null) {
+            controller.loadUsers();
+            controller.loadBooks();
+            controller.handleRefresh(); // Se desejar atualizar a tabela de empréstimos também
         }
     }
 }

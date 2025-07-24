@@ -127,4 +127,10 @@ public class ReportController {
             ReportMessageUtils.showError("Erro ao carregar empréstimos ativos: " + e.getMessage());
         }
     }
+
+    public void refreshReports() {
+        loadUserRanking();
+        loadBookRanking();
+        loadActiveLoans();
+    }
 }

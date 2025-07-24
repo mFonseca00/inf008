@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
+import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 import br.edu.ifba.inf008.interfaces.models.Loan;
 import br.edu.ifba.inf008.plugins.controller.ReportController;
 import br.edu.ifba.inf008.plugins.service.ReportService;
@@ -15,7 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
-public class ReportPlugin implements IPluginUI, ILibraryPlugin {
+public class ReportPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin {
     
     @FXML private TableView<Object[]> tableUserRanking;
     @FXML private TableView<Object[]> tableBookRanking;
@@ -109,5 +110,12 @@ public class ReportPlugin implements IPluginUI, ILibraryPlugin {
         
         btnRefreshActiveLoans.setOnAction(event -> controller.handleRefreshActiveLoans());
         btnExportActiveLoans.setOnAction(event -> controller.handleExportActiveLoans());
+    }
+
+    @Override
+    public void refreshTab() {
+        if (controller != null) {
+            controller.refreshReports();
+        }
     }
 }

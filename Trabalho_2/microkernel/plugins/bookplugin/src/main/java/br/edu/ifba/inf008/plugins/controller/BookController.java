@@ -285,7 +285,7 @@ public class BookController {
         BookMessageUtils.clearMessage(lblMessage);
     }
 
-    private void loadInitialData() {
+    public void loadInitialData() {
         List<Book> books = bookService.getAllBooks();
         tableBooks.getItems().clear();
         tableBooks.getItems().addAll(books);

@@ -11,8 +11,6 @@ import br.edu.ifba.inf008.App;
 import br.edu.ifba.inf008.interfaces.IPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginController;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
 
 public class PluginController implements IPluginController
@@ -81,16 +79,13 @@ public class PluginController implements IPluginController
     
     private void setupPluginUI(IPluginUI plugin) {
         UIController uiController = UIController.getInstance();
-        
+
         if (plugin.getMenuCategory() != null && plugin.getMenuItemName() != null) {
             MenuItem menuItem = uiController.createMenuItem(plugin.getMenuCategory(), plugin.getMenuItemName());
-            
-            menuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    if (plugin.getTabTitle() != null) {
-                        uiController.createTab(plugin.getTabTitle(), plugin.createTabContent());
-                    }
+
+            menuItem.setOnAction(event -> {
+                if (plugin.getTabTitle() != null) {
+                    uiController.createTab(plugin.getTabTitle(), plugin.createTabContent(), plugin);
                 }
             });
         }
