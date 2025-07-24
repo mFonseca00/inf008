@@ -27,8 +27,12 @@ public class LoanService {
         return ICore.getInstance().getLoanDAO().findByBookTitle(bookTitle);
     }
 
-    public List<Loan> findLoansByDate(LocalDate date) {
+    public List<Loan> findLoansByLoanDate(LocalDate date) {
         return ICore.getInstance().getLoanDAO().findByLoanDate(date);
+    }
+
+    public List<Loan> findLoansByReturnDate(LocalDate date) {
+        return ICore.getInstance().getLoanDAO().findByReturnDate(date);
     }
 
     public Loan createLoan(User user, Book book, LocalDate loanDate) {

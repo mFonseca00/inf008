@@ -114,7 +114,7 @@ public class LoanDAO implements ILoanDAO {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.loanDate = :loanDate", 
+                "SELECT l FROM Loan l LEFT JOIN FETCH l.user LEFT JOIN FETCH l.book WHERE l.loanDate = :loanDate", 
                 Loan.class
             );
             query.setParameter("loanDate", loanDate);
@@ -129,7 +129,7 @@ public class LoanDAO implements ILoanDAO {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.returnDate = :returnDate", 
+                "SELECT l FROM Loan l LEFT JOIN FETCH l.user LEFT JOIN FETCH l.book WHERE l.returnDate = :returnDate", 
                 Loan.class
             );
             query.setParameter("returnDate", returnDate);

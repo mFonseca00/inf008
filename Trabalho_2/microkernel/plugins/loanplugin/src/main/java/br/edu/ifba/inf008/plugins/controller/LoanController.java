@@ -11,6 +11,7 @@ import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
 import br.edu.ifba.inf008.plugins.ui.LoanUIUtils;
+import br.edu.ifba.inf008.plugins.util.DateUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -243,12 +244,21 @@ public class LoanController {
                 case "Livro":
                     results = loanService.findLoansByBookTitle(searchText);
                     break;
-                case "Data":
+                case "Data de empréstimo":
                     try {
-                        LocalDate date = LocalDate.parse(searchText);
-                        results = loanService.findLoansByDate(date);
+                        LocalDate date = DateUtils.parseFlexibleDate(searchText);
+                        results = loanService.findLoansByLoanDate(date);
                     } catch (Exception e) {
-                        LoanUIUtils.showMessage(lblMessage, "Formato de data inválido. Use o formato YYYY-MM-DD", true);
+                        LoanUIUtils.showMessage(lblMessage, "Formato de data inválido. Use DD/MM/AAAA (ex: 12/09/2025) ou AAAA-MM-DD", true);
+                        return;
+                    }
+                    break;
+                case "Data de devolução":
+                    try {
+                        LocalDate date = DateUtils.parseFlexibleDate(searchText);
+                        results = loanService.findLoansByReturnDate(date);
+                    } catch (Exception e) {
+                        LoanUIUtils.showMessage(lblMessage, "Formato de data inválido. Use DD/MM/AAAA (ex: 12/09/2025) ou AAAA-MM-DD", true);
                         return;
                     }
                     break;

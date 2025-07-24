@@ -155,7 +155,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin
     }
     
     private void setupSearchOptions() {
-        cmbSearchType.getItems().addAll("Usuário", "Livro", "Data");
+        cmbSearchType.getItems().addAll("Usuário", "Livro", "Data de empréstimo", "Data de devolução");
         cmbSearchType.setValue("Usuário");
     }
     
