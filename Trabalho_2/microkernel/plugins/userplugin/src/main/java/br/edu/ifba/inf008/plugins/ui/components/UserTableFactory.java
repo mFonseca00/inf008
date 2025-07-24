@@ -1,11 +1,12 @@
 package br.edu.ifba.inf008.plugins.ui.components;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import br.edu.ifba.inf008.interfaces.models.User;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.time.LocalDateTime;
 
 public class UserTableFactory {
     
@@ -41,8 +42,20 @@ public class UserTableFactory {
     
     private static TableColumn<User, LocalDateTime> createDateColumn() {
         TableColumn<User, LocalDateTime> column = new TableColumn<>("Data de Registro");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         column.setCellValueFactory(new PropertyValueFactory<>("registeredAt"));
         column.setPrefWidth(325);
+        column.setCellFactory(col -> new javafx.scene.control.TableCell<User, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("");
+                } else {
+                    setText(item.format(formatter));
+                }
+            }
+        });
         return column;
     }
 }
