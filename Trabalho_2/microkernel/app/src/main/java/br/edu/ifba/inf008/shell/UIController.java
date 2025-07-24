@@ -49,6 +49,12 @@ public class UIController extends Application implements IUIController
     }
 
     public void createTab(String title, Node content, IPluginUI plugin) {
+        for (Tab tab : tabPane.getTabs()) {
+            if (tab.getText().equals(title)) {
+                tabPane.getSelectionModel().select(tab);
+                return;
+            }
+        }
         Tab tab = new Tab(title, content);
         tabPane.getTabs().add(tab);
         tabPluginMap.put(tab, plugin);
