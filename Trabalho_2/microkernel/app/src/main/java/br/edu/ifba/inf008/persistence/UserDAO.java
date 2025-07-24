@@ -95,6 +95,19 @@ public class UserDAO implements IUserDAO {
         }
     }
 
+    public List<User> findByEmailLike(String email) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery(
+                "SELECT u FROM User u WHERE lower(u.email) LIKE lower(:email)", User.class
+            );
+            query.setParameter("email", "%" + email + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public User update(User user) {
         EntityManager em = emf.createEntityManager();

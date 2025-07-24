@@ -30,6 +30,9 @@ public class UserService {
         return ICore.getInstance().getUserDAO().findByName(name);
     }
     
+    public List<User> findUsersByEmail(String email) {
+        return ICore.getInstance().getUserDAO().findByEmailLike(email);
+    }
 
     public User createUser(String name, String email) {
         User newUser = new User(name, email);

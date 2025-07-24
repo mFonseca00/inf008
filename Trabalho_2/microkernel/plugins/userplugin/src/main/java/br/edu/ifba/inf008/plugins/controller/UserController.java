@@ -80,16 +80,15 @@ public class UserController {
         String query = txtSearch.getText();
         String searchType = cmbSearchType.getValue();
         List<User> users;
-        
+
         if (query.isEmpty()) {
             users = userService.getAllUsers();
         } else if ("Email".equals(searchType)) {
-            Optional<User> userOpt = userService.findUserByEmail(query);
-            users = userOpt.isPresent() ? List.of(userOpt.get()) : List.of();
+            users = userService.findUsersByEmail(query);
         } else {
             users = userService.findUsersByName(query);
         }
-        
+
         tableUsers.getItems().clear();
         tableUsers.getItems().addAll(users);
     }
