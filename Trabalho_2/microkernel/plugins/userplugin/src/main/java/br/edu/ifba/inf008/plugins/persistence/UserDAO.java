@@ -1,17 +1,16 @@
-package br.edu.ifba.inf008.persistence;
+package br.edu.ifba.inf008.plugins.persistence;
 
 import java.util.List;
 import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.models.User;
-import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
-public class UserDAO implements IUserDAO {
+public class UserDAO {
 
     private EntityManagerFactory emf;
 
@@ -19,7 +18,6 @@ public class UserDAO implements IUserDAO {
         this.emf = JPAUtil.getEntityManagerFactory();
     }
 
-    @Override
     public User save(User user) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -38,7 +36,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public Optional<User> findById(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -49,7 +46,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public List<User> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -60,7 +56,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public List<User> findByName(String name) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -75,7 +70,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public Optional<User> findByEmail(String email) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -108,7 +102,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public User update(User user) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -127,7 +120,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    @Override
     public boolean delete(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {

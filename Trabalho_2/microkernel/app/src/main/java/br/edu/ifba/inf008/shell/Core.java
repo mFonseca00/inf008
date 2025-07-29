@@ -1,27 +1,25 @@
 package br.edu.ifba.inf008.shell;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import br.edu.ifba.inf008.interfaces.IAuthenticationController;
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.IIOController;
 import br.edu.ifba.inf008.interfaces.IPluginController;
 import br.edu.ifba.inf008.interfaces.IUIController;
-import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
-import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
-import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
-import br.edu.ifba.inf008.persistence.BookDAO;
-import br.edu.ifba.inf008.persistence.LoanDAO;
-import br.edu.ifba.inf008.persistence.UserDAO;
 
 public class Core extends ICore
 {
+    private IAuthenticationController authenticationController = new AuthenticationController();
+    private IIOController ioController = new IOController();
+    private IPluginController pluginController = new PluginController();
+    private Map<Class<?>, Object> daoRegistry = new HashMap<>();
+
     private Core() {
         authenticationController = new AuthenticationController();
         ioController = new IOController();
         pluginController = new PluginController();
-        
-        userDAO = new UserDAO();
-        bookDAO = new BookDAO();
-        loanDAO = new LoanDAO();
     }
 
     public static boolean init() {
@@ -35,6 +33,20 @@ public class Core extends ICore
 
         return true;
     }
+
+    @Override
+    public <T> void registerDAO(Class<T> daoInterface, T daoImpl) {
+        daoRegistry.put(daoInterface, daoImpl);
+    }
+
+    @Override
+    public <T> T getDAO(Class<T> daoType) {
+        Object dao = daoRegistry.get(daoType);
+        if (dao == null)
+            throw new IllegalArgumentException("DAO não registrado: " + daoType);
+        return daoType.cast(dao);
+    }
+
     @Override
     public IUIController getUIController() {
         return UIController.getInstance();
@@ -51,26 +63,4 @@ public class Core extends ICore
     public IPluginController getPluginController() {
         return pluginController;
     }
-
-    @Override
-    public IUserDAO getUserDAO() {
-        return userDAO;
-    }
-
-    @Override
-    public IBookDAO getBookDAO() {
-        return bookDAO;
-    }
-
-    @Override
-    public ILoanDAO getLoanDAO() {
-        return loanDAO;
-    }
-
-    private IAuthenticationController authenticationController = new AuthenticationController();
-    private IIOController ioController = new IOController();
-    private IPluginController pluginController = new PluginController();
-    private IUserDAO userDAO;
-    private IBookDAO bookDAO;
-    private ILoanDAO loanDAO;
 }

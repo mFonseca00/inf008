@@ -3,7 +3,7 @@ package br.edu.ifba.inf008.plugins.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.models.Book;
 import br.edu.ifba.inf008.plugins.service.BookService;
 import br.edu.ifba.inf008.plugins.service.BookValidationService;
 import br.edu.ifba.inf008.plugins.ui.components.BookMessageUtils;

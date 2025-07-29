@@ -1,17 +1,16 @@
-package br.edu.ifba.inf008.persistence;
+package br.edu.ifba.inf008.plugins.persistence;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.models.Loan;
-import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
-public class LoanDAO implements ILoanDAO {
+public class LoanDAO {
 
     private EntityManagerFactory emf;
 
@@ -19,7 +18,6 @@ public class LoanDAO implements ILoanDAO {
         this.emf = JPAUtil.getEntityManagerFactory();
     }
 
-    @Override
     public Loan save(Loan loan) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -38,7 +36,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public Optional<Loan> findById(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -49,7 +46,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByBookId(Integer bookId) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -64,7 +60,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByUserId(Integer userId) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -79,7 +74,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByUserIdWithDetails(Integer userId) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -94,7 +88,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByBookIdWithDetails(Integer bookId) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -109,7 +102,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByLoanDate(LocalDate loanDate) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -124,7 +116,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findByReturnDate(LocalDate returnDate) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -139,7 +130,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
     
-    @Override
     public List<Loan> findByUserName(String userName) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -155,7 +145,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
     
-    @Override
     public List<Loan> findByBookTitle(String bookTitle) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -171,7 +160,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -185,7 +173,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Loan> findActiveLoans() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -199,7 +186,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Object[]> findBookLoanRanking() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -216,7 +202,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public List<Object[]> findUserLoanRanking() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -233,7 +218,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public Loan update(Loan loan) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -252,7 +236,6 @@ public class LoanDAO implements ILoanDAO {
         }
     }
 
-    @Override
     public boolean delete(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {

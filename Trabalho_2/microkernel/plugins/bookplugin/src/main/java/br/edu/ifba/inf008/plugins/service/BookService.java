@@ -4,47 +4,51 @@ import java.util.List;
 import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.ICore;
-import br.edu.ifba.inf008.interfaces.models.Book;
-import br.edu.ifba.inf008.interfaces.models.Loan;
-
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
 
 public class BookService {
 
+    private IBookDAO getBookDAO() {
+        return ICore.getInstance().getDAO(IBookDAO.class);
+    }
+
     public List<Book> getAllBooks() {
-        return ICore.getInstance().getBookDAO().findAll();
+        return getBookDAO().findAll();
     }
 
     public Optional<Book> findBookById(Integer bookId) {
-        return ICore.getInstance().getBookDAO().findById(bookId);
+        return getBookDAO().findById(bookId);
     }
 
     public List<Book> findBookByIsbn(String isbn) {
-        return ICore.getInstance().getBookDAO().findByIsbn(isbn);
+        return getBookDAO().findByIsbn(isbn);
     }
 
     public List<Book> findBooksByTitle(String title) {
-        return ICore.getInstance().getBookDAO().findByTitle(title);
+        return getBookDAO().findByTitle(title);
     }
 
     public List<Book> findBooksByAuthor(String author) {
-        return ICore.getInstance().getBookDAO().findByAuthor(author);
+        return getBookDAO().findByAuthor(author);
     }
 
     public List<Book> findBooksByPublishedYear(int publishedYear) {
-        return ICore.getInstance().getBookDAO().findByPublishedYear(publishedYear);
+        return getBookDAO().findByPublishedYear(publishedYear);
     }
 
     public Book createBook(String title, String author, String isbn, int publicationYear, int availableCopies) {
         Book newBook = new Book(title, author, isbn, publicationYear, availableCopies);
-        return ICore.getInstance().getBookDAO().save(newBook);
+        return getBookDAO().save(newBook);
     }
 
     public Book updateBook(Book book) {
-        return ICore.getInstance().getBookDAO().update(book);
+        return getBookDAO().update(book);
     }
 
     public boolean deleteBook(Integer bookId) {
-        return ICore.getInstance().getBookDAO().delete(bookId);
+        return getBookDAO().delete(bookId);
     }
     
     public boolean isbnExists(String isbn) {
@@ -58,9 +62,9 @@ public class BookService {
                 .anyMatch(book -> !book.getBookId().equals(bookId));
     }
 
-    public String getActiveLoansWarning(Integer userId) {
-        List<Loan> activeLoans = ICore.getInstance().getLoanDAO().findByBookIdWithDetails(userId);
-        
+    public String getActiveLoansWarning(Integer bookId) {
+        List<Loan> activeLoans = ICore.getInstance().getDAO(IBookDAO.class).findLoansByBookIdWithDetails(bookId);
+
         List<Loan> unreturnedLoans = activeLoans.stream()
             .filter(loan -> loan.getReturnDate() == null)
             .toList();
