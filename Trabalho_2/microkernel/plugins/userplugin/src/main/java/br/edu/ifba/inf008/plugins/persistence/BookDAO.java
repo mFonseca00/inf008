@@ -3,30 +3,31 @@ package br.edu.ifba.inf008.plugins.persistence;
 import java.util.List;
 import java.util.Optional;
 
-import br.edu.ifba.inf008.models.User;
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
-public class UserDAO implements IUserDAO {
+
+public class BookDAO implements IBookDAO {
 
     private EntityManagerFactory emf;
 
-    public UserDAO() {
+    public BookDAO() {
         this.emf = JPAUtil.getEntityManagerFactory();
     }
 
     @Override
-    public User save(User user) {
+    public Book save(Book book) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(user);
+            em.persist(book);
             em.getTransaction().commit();
-            return user;
+            return book;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -39,21 +40,25 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
+    public Optional<Book> findById(Integer id) {
         EntityManager em = emf.createEntityManager();
         try {
-            User user = em.find(User.class, id);
-            return Optional.ofNullable(user);
+            Book book = em.find(Book.class, id);
+            return Optional.ofNullable(book);
         } finally {
             em.close();
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Book> findByIsbn(String isbn) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.isbn) LIKE LOWER(:isbnPattern)", 
+                Book.class
+            );
+            query.setParameter("isbnPattern", isbn + "%");
             return query.getResultList();
         } finally {
             em.close();
@@ -61,14 +66,14 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public List<User> findByName(String name) {
+    public List<Book> findByTitle(String title) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(:name)", 
-                User.class
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(:title)", 
+                Book.class
             );
-            query.setParameter("name", "%" + name + "%");
+            query.setParameter("title", "%" + title + "%");
             return query.getResultList();
         } finally {
             em.close();
@@ -76,33 +81,14 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public List<Book> findByAuthor(String author) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE LOWER(u.email) LIKE LOWER(:email)", 
-                User.class
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE LOWER(b.author) LIKE LOWER(:author)", 
+                Book.class
             );
-            query.setParameter("email", "%" + email + "%");
-            try {
-                User user = query.getSingleResult();
-                return Optional.of(user);
-            } catch (NoResultException e) {
-                return Optional.empty();
-            }
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<User> findByEmailLike(String email) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT u FROM User u WHERE lower(u.email) LIKE lower(:email)", User.class
-            );
-            query.setParameter("email", "%" + email + "%");
+            query.setParameter("author", "%" + author + "%");
             return query.getResultList();
         } finally {
             em.close();
@@ -110,13 +96,39 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public User update(User user) {
+    public List<Book> findByPublishedYear(int year) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery(
+                "SELECT b FROM Book b WHERE b.publishedYear = :year", 
+                Book.class
+            );
+            query.setParameter("year", year);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Book update(Book book) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            User updatedUser = em.merge(user);
+            Book updatedBook = em.merge(book);
             em.getTransaction().commit();
-            return updatedUser;
+            return updatedBook;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -133,9 +145,9 @@ public class UserDAO implements IUserDAO {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            User user = em.find(User.class, id);
-            if (user != null) {
-                em.remove(user);
+            Book book = em.find(Book.class, id);
+            if (book != null) {
+                em.remove(book);
                 em.getTransaction().commit();
                 return true;
             } else {
@@ -148,6 +160,21 @@ public class UserDAO implements IUserDAO {
             }
             e.printStackTrace();
             return false;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Loan> findLoansByBookIdWithDetails(Integer bookId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT u FROM Loan u JOIN FETCH u.user JOIN FETCH u.book WHERE u.book.bookId = :bookId", 
+                Loan.class
+            );
+            query.setParameter("bookId", bookId);
+            return query.getResultList();
         } finally {
             em.close();
         }

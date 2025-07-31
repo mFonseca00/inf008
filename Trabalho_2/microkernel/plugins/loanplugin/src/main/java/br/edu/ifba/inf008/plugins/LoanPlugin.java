@@ -3,12 +3,17 @@ package br.edu.ifba.inf008.plugins;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
+import br.edu.ifba.inf008.models.User;
+import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
-import br.edu.ifba.inf008.interfaces.models.Book;
-import br.edu.ifba.inf008.interfaces.models.Loan;
-import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.controller.LoanController;
+import br.edu.ifba.inf008.plugins.persistence.BookDAO;
+import br.edu.ifba.inf008.plugins.persistence.LoanDAO;
+import br.edu.ifba.inf008.plugins.persistence.UserDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
 import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
@@ -28,6 +33,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.scene.control.Tooltip;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
 
 public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
 {
@@ -60,6 +67,9 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
     
     @Override
     public boolean init() {
+        ICore.getInstance().registerDAO(IBookDAO.class, new BookDAO());
+        ICore.getInstance().registerDAO(IUserDAO.class, new UserDAO());
+        ICore.getInstance().registerDAO(ILoanDAO.class, new LoanDAO());
         System.out.println("LoanPlugin inicializado!");
         controller = new LoanController(loanService, loanUserService, loanBookService);
         return true;

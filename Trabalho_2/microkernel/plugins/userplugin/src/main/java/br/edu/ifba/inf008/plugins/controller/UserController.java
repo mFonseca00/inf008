@@ -3,7 +3,7 @@ package br.edu.ifba.inf008.plugins.controller;
 import java.util.List;
 import java.util.Optional;
 
-import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.models.User;
 import br.edu.ifba.inf008.plugins.service.UserService;
 import br.edu.ifba.inf008.plugins.service.UserValidationService;
 import br.edu.ifba.inf008.plugins.ui.components.UserMessageUtils;

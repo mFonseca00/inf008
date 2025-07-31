@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.edu.ifba.inf008.interfaces.models.Book;
-import br.edu.ifba.inf008.interfaces.models.Loan;
-import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
+import br.edu.ifba.inf008.models.User;
 import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
