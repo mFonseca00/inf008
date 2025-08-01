@@ -35,6 +35,7 @@ import javafx.scene.control.Tooltip;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanBookDAO;
 import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
+import javafx.scene.control.TitledPane;
 
 public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
 {
@@ -59,6 +60,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
     @FXML private Button btnReturn;
+    @FXML private TitledPane titlePaneCadastro;
     
     private LoanController controller;
     private LoanService loanService = new LoanService();
@@ -132,7 +134,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
         
         controller.initialize(
             cmbUser, cmbBook, txtUserFilter, txtBookFilter, dtpLoanDate, dtpReturnDate, lblReturnDate,
-            btnSave, btnCancel, lblMessage, txtSearch, tableLoans, cmbSearchType
+            btnSave, btnCancel, lblMessage, txtSearch, tableLoans, cmbSearchType, titlePaneCadastro
         );
     }
 

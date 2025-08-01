@@ -25,6 +25,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
 {
@@ -41,6 +42,7 @@ public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
     @FXML private Button btnRefresh;
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
+    @FXML private TitledPane titlePaneCadastro;
     
     private UserController controller;
     private UserService userService = new UserService();
@@ -112,7 +114,7 @@ public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
         
         controller.initialize(
             txtName, txtEmail, btnSave, btnCancel, lblMessage,
-            txtSearch, tableUsers, cmbSearchType
+            txtSearch, tableUsers, cmbSearchType, titlePaneCadastro
         );
     }
 

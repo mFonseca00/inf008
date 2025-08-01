@@ -20,6 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class LoanController {
 
@@ -40,6 +41,7 @@ public class LoanController {
     private TextField txtSearch;
     private TableView<Loan> tableLoans;
     private ComboBox<String> cmbSearchType;
+    private TitledPane titlePaneCadastro;
     
     private ObservableList<User> allUsers = FXCollections.observableArrayList();
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
@@ -65,7 +67,8 @@ public class LoanController {
             Label lblMessage,
             TextField txtSearch, 
             TableView<Loan> tableLoans, 
-            ComboBox<String> cmbSearchType) {
+            ComboBox<String> cmbSearchType,
+            TitledPane titlePaneCadastro) {
         
         this.cmbUser = cmbUser;
         this.cmbBook = cmbBook;
@@ -80,6 +83,7 @@ public class LoanController {
         this.txtSearch = txtSearch;
         this.tableLoans = tableLoans;
         this.cmbSearchType = cmbSearchType;
+        this.titlePaneCadastro = titlePaneCadastro;
         
         setupFilters();
         
@@ -302,6 +306,9 @@ public class LoanController {
         clearFilters();
 
         currentLoan = selectedLoan;
+
+        titlePaneCadastro.setExpanded(true);
+        titlePaneCadastro.setText("Edição de Empréstimos");
         
         cmbUser.setValue(selectedLoan.getUser());
         cmbBook.setValue(selectedLoan.getBook());
@@ -390,6 +397,7 @@ public class LoanController {
         lblReturnDate.setVisible(false);
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
+        titlePaneCadastro.setText("Cadastro de Empréstimos");
         currentLoan = null;
         LoanUIUtils.clearMessage(lblMessage);
     }

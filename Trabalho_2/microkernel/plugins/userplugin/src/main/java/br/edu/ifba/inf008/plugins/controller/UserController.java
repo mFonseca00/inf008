@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class UserController {
     
@@ -26,6 +27,7 @@ public class UserController {
     private TextField txtSearch;
     private TableView<User> tableUsers;
     private ComboBox<String> cmbSearchType;
+    private TitledPane titlePaneCadastro;
     
     public UserController(UserService userService) {
         this.userService = userService;
@@ -35,7 +37,8 @@ public class UserController {
             TextField txtName, TextField txtEmail, 
             Button btnSave, Button btnCancel, Label lblMessage,
             TextField txtSearch, TableView<User> tableUsers, 
-            ComboBox<String> cmbSearchType) {
+            ComboBox<String> cmbSearchType,
+            TitledPane titlePaneCadastro) {
         
         this.txtName = txtName;
         this.txtEmail = txtEmail;
@@ -45,6 +48,7 @@ public class UserController {
         this.txtSearch = txtSearch;
         this.tableUsers = tableUsers;
         this.cmbSearchType = cmbSearchType;
+        this.titlePaneCadastro = titlePaneCadastro;
         
         loadInitialData();
     }
@@ -110,6 +114,10 @@ public class UserController {
     public void handleEdit() {
         User selectedUser = tableUsers.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
+
+            titlePaneCadastro.setExpanded(true);
+            titlePaneCadastro.setText("Edição de Usuários");
+
             txtName.setText(selectedUser.getName());
             txtEmail.setText(selectedUser.getEmail());
                         
@@ -231,6 +239,7 @@ public class UserController {
         editingUserId = null;
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
+        titlePaneCadastro.setText("Cadastro de Usuários");
         UserMessageUtils.clearMessage(lblMessage);
     }
     
