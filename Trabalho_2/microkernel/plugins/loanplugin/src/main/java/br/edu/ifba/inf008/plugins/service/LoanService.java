@@ -8,8 +8,8 @@ import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.models.Book;
 import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.models.User;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanBookDAO;
 import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
 
 public class LoanService {
 
@@ -17,8 +17,8 @@ public class LoanService {
         return ICore.getInstance().getDAO(ILoanDAO.class);
     }
 
-    private IBookDAO getBookDAO() {
-        return ICore.getInstance().getDAO(IBookDAO.class);
+    private ILoanBookDAO getBookDAO() {
+        return ICore.getInstance().getDAO(ILoanBookDAO.class);
     }
 
     public List<Loan> getAllLoans() {
@@ -69,8 +69,16 @@ public class LoanService {
         }
         
         Loan originalLoan = originalLoanOpt.get();
-        Book originalBook = originalLoan.getBook();
-        Book newBook = loan.getBook();
+        
+        Optional<Book> originalBookOpt = getBookDAO().findById(originalLoan.getBook().getBookId());
+        Optional<Book> newBookOpt = getBookDAO().findById(loan.getBook().getBookId());
+        
+        if (!originalBookOpt.isPresent() || !newBookOpt.isPresent()) {
+            throw new IllegalArgumentException("Livro não encontrado");
+        }
+        
+        Book originalBook = originalBookOpt.get();
+        Book newBook = newBookOpt.get();
         
         if (originalLoan.getReturnDate() == null && 
                 !originalBook.getBookId().equals(newBook.getBookId())) {
@@ -81,6 +89,7 @@ public class LoanService {
             if (newBook.getCopiesAvailable() <= 0) {
                 throw new IllegalArgumentException("Não há cópias disponíveis do livro selecionado");
             }
+            
             newBook.setCopiesAvailable(newBook.getCopiesAvailable() - 1);
             getBookDAO().update(newBook);
         }
@@ -92,12 +101,11 @@ public class LoanService {
         }
         
         if (originalLoan.getReturnDate() != null && loan.getReturnDate() == null) {
-            Book bookToReborrow = newBook;
-            if (bookToReborrow.getCopiesAvailable() <= 0) {
+            if (newBook.getCopiesAvailable() <= 0) {
                 throw new IllegalArgumentException("Não há cópias disponíveis do livro para reativar o empréstimo");
             }
-            bookToReborrow.setCopiesAvailable(bookToReborrow.getCopiesAvailable() - 1);
-            getBookDAO().update(bookToReborrow);
+            newBook.setCopiesAvailable(newBook.getCopiesAvailable() - 1);
+            getBookDAO().update(newBook);
         }
         
         return getLoanDAO().update(loan);

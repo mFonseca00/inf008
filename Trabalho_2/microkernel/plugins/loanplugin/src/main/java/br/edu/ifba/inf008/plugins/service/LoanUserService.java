@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.models.User;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanUserDAO;
 
 public class LoanUserService {
 
-    private IUserDAO getUserDAO() {
-        return ICore.getInstance().getDAO(IUserDAO.class);
+    private ILoanUserDAO getUserDAO() {
+        return ICore.getInstance().getDAO(ILoanUserDAO.class);
     }
 
     public List<User> getAllUsers() {

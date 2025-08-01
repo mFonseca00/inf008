@@ -4,12 +4,12 @@ import java.util.List;
 
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.models.Loan;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IReportDAO;
 
 public class ReportService {
 
-    private ILoanDAO getLoanDAO() {
-        return ICore.getInstance().getDAO(ILoanDAO.class);
+    private IReportDAO getLoanDAO() {
+        return ICore.getInstance().getDAO(IReportDAO.class);
     }
 
     public List<Object[]> getUserLoanRanking() {

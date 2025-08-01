@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.models.Book;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanBookDAO;
 
 public class LoanBookService {
 
-    private IBookDAO getBookDAO() {
-        return ICore.getInstance().getDAO(IBookDAO.class);
+    private ILoanBookDAO getBookDAO() {
+        return ICore.getInstance().getDAO(ILoanBookDAO.class);
     }
 
     public List<Book> getAllBooks() {

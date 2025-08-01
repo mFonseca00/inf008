@@ -209,7 +209,8 @@ public class LoanController {
                 clearForm();
                 LoanUIUtils.displaySuccessMessage(lblMessage, "Empréstimo atualizado com sucesso!");
             }
-            
+            clearFilters();
+
             loadLoans();
             loadBooks();
             loadUsers();
@@ -220,6 +221,7 @@ public class LoanController {
     
     public void handleCancel() {
         clearForm();
+        clearFilters();
         LoanUIUtils.displayConfirmationMessage(lblMessage, "Edição cancelada");
     }
     
@@ -297,6 +299,8 @@ public class LoanController {
             return;
         }
         
+        clearFilters();
+
         currentLoan = selectedLoan;
         
         cmbUser.setValue(selectedLoan.getUser());

@@ -8,8 +8,8 @@ import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
 import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.plugins.controller.ReportController;
-import br.edu.ifba.inf008.plugins.persistence.LoanDAO;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
+import br.edu.ifba.inf008.plugins.persistence.ReportDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IReportDAO;
 import br.edu.ifba.inf008.plugins.service.ReportService;
 import br.edu.ifba.inf008.plugins.ui.ReportUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.ReportTableFactory;
@@ -36,7 +36,7 @@ public class ReportPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin 
     
     @Override
     public boolean init() {
-        ICore.getInstance().registerDAO(ILoanDAO.class, new LoanDAO());
+        ICore.getInstance().registerDAO(IReportDAO.class, new ReportDAO());
         System.out.println("ReportPlugin inicializado!");
         controller = new ReportController(reportService);
         return true;

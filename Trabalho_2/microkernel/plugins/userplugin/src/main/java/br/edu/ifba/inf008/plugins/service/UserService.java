@@ -7,9 +7,9 @@ import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.models.Book;
 import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.models.User;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserBookDAO;
 import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
-import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserLoanDAO;
 
 public class UserService {
 
@@ -17,12 +17,12 @@ public class UserService {
         return ICore.getInstance().getDAO(IUserDAO.class);
     }
 
-    private ILoanDAO getLoanDAO() {
-        return ICore.getInstance().getDAO(ILoanDAO.class);
+    private IUserLoanDAO getLoanDAO() {
+        return ICore.getInstance().getDAO(IUserLoanDAO.class);
     }
 
-    private IBookDAO getBookDAO() {
-        return ICore.getInstance().getDAO(IBookDAO.class);
+    private IUserBookDAO getBookDAO() {
+        return ICore.getInstance().getDAO(IUserBookDAO.class);
     }
 
     public List<User> getAllUsers() {

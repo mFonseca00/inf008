@@ -50,66 +50,6 @@ public class LoanDAO implements ILoanDAO {
     }
 
     @Override
-    public List<Loan> findByBookId(Integer bookId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.book.bookId = :bookId", 
-                Loan.class
-            );
-            query.setParameter("bookId", bookId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByUserId(Integer userId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.user.userId = :userId", 
-                Loan.class
-            );
-            query.setParameter("userId", userId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByUserIdWithDetails(Integer userId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.user.userId = :userId", 
-                Loan.class
-            );
-            query.setParameter("userId", userId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByBookIdWithDetails(Integer bookId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT u FROM Loan u JOIN FETCH u.user JOIN FETCH u.book WHERE u.book.bookId = :bookId", 
-                Loan.class
-            );
-            query.setParameter("bookId", bookId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
     public List<Loan> findByLoanDate(LocalDate loanDate) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -178,54 +118,6 @@ public class LoanDAO implements ILoanDAO {
             TypedQuery<Loan> query = em.createQuery(
                 "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user", 
                 Loan.class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findActiveLoans() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.returnDate IS NULL ORDER BY l.loanDate ASC", 
-                Loan.class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Object[]> findBookLoanRanking() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Object[]> query = em.createQuery(
-                "SELECT l.book.title, l.book.author, l.book.isbn, COUNT(l.book) as loanCount " +
-                "FROM Loan l " +
-                "GROUP BY l.book.title, l.book.author, l.book.isbn " +
-                "ORDER BY loanCount DESC", 
-                Object[].class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Object[]> findUserLoanRanking() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Object[]> query = em.createQuery(
-                "SELECT l.user.name, l.user.email, COUNT(l.user) as loanCount " +
-                "FROM Loan l " +
-                "GROUP BY l.user.name, l.user.email " +
-                "ORDER BY loanCount DESC", 
-                Object[].class
             );
             return query.getResultList();
         } finally {
