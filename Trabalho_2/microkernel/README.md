@@ -129,8 +129,8 @@ docker-compose down
 - [📖 README Principal](../README.md)
 - [📚 Plugin de Livros](plugins/bookplugin/README.md)
 - [👥 Plugin de Usuários](plugins/userplugin/README.md)
+- [📋 Plugin de Empréstimos](plugins/loanplugin/README.md)
 - [📊 Plugin de Relatórios](plugins/reportplugin/README.md)
-
 ---
 
 **Desenvolvido por:** Marcus Vinicius Silva da Fonseca  
