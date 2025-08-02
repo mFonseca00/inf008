@@ -57,7 +57,7 @@ reportplugin/
   ```
 
 ### 📋 Empréstimos Ativos
-- **Dados**:Id do empréstimo, Usuário, livro, autor, data de empréstimo, dias em aberto
+- **Dados**: Id do empréstimo, Usuário, livro, autor, data de empréstimo, dias em aberto
 - **Características**: Apenas empréstimos não devolvidos
 - **Cálculo**: Dias corridos desde o empréstimo
 
