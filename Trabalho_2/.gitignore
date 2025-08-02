@@ -1,3 +1,6 @@
+# Arquivos mp4
+*.mp4
+
 # Arquivos de Log e temporários
 *.log
 *.tmp
