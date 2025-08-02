@@ -39,6 +39,26 @@ public class UIController extends Application implements IUIController
     public UIController() {
     }
 
+    @FXML
+    private void handleGithubLink() {
+        try {
+            String url = "https://github.com/mFonseca00";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+        } catch (Exception e) {
+            System.err.println("Erro ao abrir o link: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleGithubRepositoryLink() {
+        try {
+            String url = "https://github.com/mFonseca00/inf008/tree/main/Trabalho_2";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+        } catch (Exception e) {
+            System.err.println("Erro ao abrir o link: " + e.getMessage());
+        }
+    }
+
     @Override
     public void init() {
         uiController = this;
