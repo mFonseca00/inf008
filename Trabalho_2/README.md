@@ -128,6 +128,7 @@ docker-compose down
 - [🏗️ README do Microkernel](microkernel/README.md)
 - [📚 Plugin de Livros](microkernel/plugins/bookplugin/README.md)
 - [👥 Plugin de Usuários](microkernel/plugins/userplugin/README.md)
+- [📋 Plugin de Empréstimos](plugins/loanplugin/README.md)
 - [📊 Plugin de Relatórios](microkernel/plugins/reportplugin/README.md)
 
 ---
