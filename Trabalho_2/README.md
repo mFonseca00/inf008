@@ -34,6 +34,8 @@ mvn -pl app exec:java
 
 O Sistema Alexandria é uma aplicação JavaFX para gerenciamento de bibliotecas que utiliza uma arquitetura de microkernel para fornecer flexibilidade e extensibilidade através de plugins. O sistema permite o gerenciamento completo de usuários, livros, empréstimos e relatórios através de uma interface gráfica moderna e intuitiva.
 
+### Vídeo demonstrativo: https://youtu.be/-rZAwp0MTIo
+
 ### Características Principais
 - **Arquitetura Microkernel**: Core mínimo com funcionalidades extensíveis
 - **Interface JavaFX**: Interface moderna e responsiva
