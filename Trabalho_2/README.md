@@ -126,9 +126,9 @@ docker-compose down
 ## 📚 Links Relacionados
 
 - [🏗️ README do Microkernel](microkernel/README.md)
-- [📚 Plugin de Livros](../bookplugin/README.md)
-- [👥 Plugin de Usuários](../userplugin/README.md)
-- [📊 Plugin de Relatórios](../reportplugin/README.md)
+- [📚 Plugin de Livros](microkernel/plugins/bookplugin/README.md)
+- [👥 Plugin de Usuários](microkernel/plugins/userplugin/README.md)
+- [📊 Plugin de Relatórios](microkernel/plugins/reportplugin/README.md)
 
 ---
 
