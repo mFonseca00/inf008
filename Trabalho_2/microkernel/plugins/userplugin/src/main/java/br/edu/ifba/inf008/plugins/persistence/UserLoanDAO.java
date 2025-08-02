@@ -34,7 +34,7 @@ public class UserLoanDAO implements IUserLoanDAO {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.user.userId = :userId", 
+                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.user.userId = :userId", 
                 Loan.class
             );
             query.setParameter("userId", userId);
