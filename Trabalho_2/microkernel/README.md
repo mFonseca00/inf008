@@ -127,9 +127,9 @@ docker-compose down
 ## 📚 Links Relacionados
 
 - [📖 README Principal](../README.md)
-- [📚 Plugin de Livros](../bookplugin/README.md)
-- [👥 Plugin de Usuários](../userplugin/README.md)
-- [📊 Plugin de Relatórios](../reportplugin/README.md)
+- [📚 Plugin de Livros](plugins/bookplugin/README.md)
+- [👥 Plugin de Usuários](plugins/userplugin/README.md)
+- [📊 Plugin de Relatórios](plugins/reportplugin/README.md)
 
 ---
 
