@@ -124,6 +124,14 @@ cd plugins/bookplugin && mvn clean package
 docker-compose down
 ```
 
+## 📚 Links Relacionados
+
+- [📖 README Principal](../../../README.md)
+- [🏗️ README do Microkernel](../../README.md)
+- [📚 Plugin de Livros](../bookplugin/README.md)
+- [👥 Plugin de Usuários](../userplugin/README.md)
+- [📊 Plugin de Relatórios](../reportplugin/README.md)
+
 ---
 
 **Desenvolvido por:** Marcus Vinicius Silva da Fonseca  
