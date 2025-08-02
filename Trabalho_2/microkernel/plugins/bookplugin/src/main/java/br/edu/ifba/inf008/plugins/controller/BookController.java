@@ -3,7 +3,7 @@ package br.edu.ifba.inf008.plugins.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.models.Book;
 import br.edu.ifba.inf008.plugins.service.BookService;
 import br.edu.ifba.inf008.plugins.service.BookValidationService;
 import br.edu.ifba.inf008.plugins.ui.components.BookMessageUtils;
@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class BookController {
 
@@ -29,6 +30,7 @@ public class BookController {
     private TextField txtSearch;
     private TableView<Book> tableBooks;
     private ComboBox<String> cmbSearchType;
+    private TitledPane titlePaneCadastro;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -40,7 +42,8 @@ public class BookController {
             TextField txtAvailableCopies, Button btnSave, 
             Button btnCancel, Label lblMessage,
             TextField txtSearch, TableView<Book> tableBooks, 
-            ComboBox<String> cmbSearchType) {
+            ComboBox<String> cmbSearchType,
+            TitledPane titlePaneCadastro) {
 
         this.txtTitle = txtTitle;
         this.txtAuthor = txtAuthor;
@@ -53,6 +56,7 @@ public class BookController {
         this.txtSearch = txtSearch;
         this.tableBooks = tableBooks;
         this.cmbSearchType = cmbSearchType;
+        this.titlePaneCadastro = titlePaneCadastro;
 
         loadInitialData();
     }
@@ -165,6 +169,10 @@ public class BookController {
     public void handleEdit() {
         Book selectedBook = tableBooks.getSelectionModel().getSelectedItem();
         if (selectedBook != null) {
+
+            titlePaneCadastro.setExpanded(true);
+            titlePaneCadastro.setText("Edição de Livros");
+
             txtTitle.setText(selectedBook.getTitle());
             txtAuthor.setText(selectedBook.getAuthor());
             txtIsbn.setText(selectedBook.getIsbn());
@@ -282,6 +290,7 @@ public class BookController {
         editingBookId = null;
         btnSave.setText("Cadastrar");
         btnCancel.setVisible(false);
+        titlePaneCadastro.setText("Cadastro de Livros");
         BookMessageUtils.clearMessage(lblMessage);
     }
 

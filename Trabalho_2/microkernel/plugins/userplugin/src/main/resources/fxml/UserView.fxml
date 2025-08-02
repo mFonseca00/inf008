@@ -22,7 +22,7 @@
    <children>
       <Label styleClass="section-title" text="Gerenciamento de Usuários" />
       
-      <TitledPane animated="true" expanded="false" text="Cadastrar Usuário" VBox.vgrow="NEVER" styleClass="titled-pane">
+      <TitledPane fx:id="titlePaneCadastro" animated="true" expanded="false" text="Cadastrar Usuário" VBox.vgrow="NEVER" styleClass="titled-pane">
          <content>
             <VBox spacing="12.0" styleClass="form-container">
                <children>

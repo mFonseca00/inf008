@@ -2,7 +2,7 @@ package br.edu.ifba.inf008.plugins.controller;
 
 import java.util.List;
 
-import br.edu.ifba.inf008.interfaces.models.Loan;
+import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.plugins.service.ReportService;
 import br.edu.ifba.inf008.plugins.ui.components.ReportExporter;
 import br.edu.ifba.inf008.plugins.ui.components.ReportMessageUtils;

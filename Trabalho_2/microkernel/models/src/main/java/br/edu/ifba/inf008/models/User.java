@@ -1,4 +1,4 @@
-package br.edu.ifba.inf008.interfaces.models;
+package br.edu.ifba.inf008.models;
 
 import java.time.LocalDateTime;
 

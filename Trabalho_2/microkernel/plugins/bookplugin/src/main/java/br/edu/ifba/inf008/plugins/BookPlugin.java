@@ -2,11 +2,14 @@ package br.edu.ifba.inf008.plugins;
 
 import java.io.IOException;
 
+import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
-import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.models.Book;
 import br.edu.ifba.inf008.plugins.controller.BookController;
+import br.edu.ifba.inf008.plugins.persistence.BookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
 import br.edu.ifba.inf008.plugins.service.BookService;
 import br.edu.ifba.inf008.plugins.ui.BookUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.BookTableFactory;
@@ -18,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class BookPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
 {
@@ -37,12 +41,14 @@ public class BookPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
     @FXML private Button btnRefresh;
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
+    @FXML private TitledPane titlePaneCadastro;
     
     private BookController controller;
     private BookService bookService = new BookService();
 
     @Override
     public boolean init() {
+        ICore.getInstance().registerDAO(IBookDAO.class, new BookDAO());
         System.out.println("BookPlugin inicializado!");
         controller = new BookController(bookService);
         return true;
@@ -105,7 +111,8 @@ public class BookPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
         
         controller.initialize(
             txtTitle, txtAuthor, txtIsbn, txtPublicationYear, txtAvailableCopies,
-            btnSave, btnCancel, lblMessage, txtSearch, tableBooks, cmbSearchType
+            btnSave, btnCancel, lblMessage, txtSearch, tableBooks, cmbSearchType,
+            titlePaneCadastro
         );
     }
 

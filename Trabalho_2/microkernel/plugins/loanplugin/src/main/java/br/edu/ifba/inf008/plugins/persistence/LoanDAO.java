@@ -1,12 +1,12 @@
-package br.edu.ifba.inf008.persistence;
+package br.edu.ifba.inf008.plugins.persistence;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import br.edu.ifba.inf008.interfaces.models.Loan;
-import br.edu.ifba.inf008.interfaces.persistence.ILoanDAO;
+import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -44,66 +44,6 @@ public class LoanDAO implements ILoanDAO {
         try {
             Loan loan = em.find(Loan.class, id);
             return Optional.ofNullable(loan);
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByBookId(Integer bookId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.book.bookId = :bookId", 
-                Loan.class
-            );
-            query.setParameter("bookId", bookId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByUserId(Integer userId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l WHERE l.user.userId = :userId", 
-                Loan.class
-            );
-            query.setParameter("userId", userId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByUserIdWithDetails(Integer userId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.user.userId = :userId", 
-                Loan.class
-            );
-            query.setParameter("userId", userId);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findByBookIdWithDetails(Integer bookId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT u FROM Loan u JOIN FETCH u.user JOIN FETCH u.book WHERE u.book.bookId = :bookId", 
-                Loan.class
-            );
-            query.setParameter("bookId", bookId);
-            return query.getResultList();
         } finally {
             em.close();
         }
@@ -178,54 +118,6 @@ public class LoanDAO implements ILoanDAO {
             TypedQuery<Loan> query = em.createQuery(
                 "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user", 
                 Loan.class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Loan> findActiveLoans() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Loan> query = em.createQuery(
-                "SELECT l FROM Loan l JOIN FETCH l.book JOIN FETCH l.user WHERE l.returnDate IS NULL ORDER BY l.loanDate ASC", 
-                Loan.class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Object[]> findBookLoanRanking() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Object[]> query = em.createQuery(
-                "SELECT l.book.title, l.book.author, l.book.isbn, COUNT(l.book) as loanCount " +
-                "FROM Loan l " +
-                "GROUP BY l.book.title, l.book.author, l.book.isbn " +
-                "ORDER BY loanCount DESC", 
-                Object[].class
-            );
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<Object[]> findUserLoanRanking() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Object[]> query = em.createQuery(
-                "SELECT l.user.name, l.user.email, COUNT(l.user) as loanCount " +
-                "FROM Loan l " +
-                "GROUP BY l.user.name, l.user.email " +
-                "ORDER BY loanCount DESC", 
-                Object[].class
             );
             return query.getResultList();
         } finally {

@@ -3,12 +3,17 @@ package br.edu.ifba.inf008.plugins;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
+import br.edu.ifba.inf008.models.User;
+import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
-import br.edu.ifba.inf008.interfaces.models.Book;
-import br.edu.ifba.inf008.interfaces.models.Loan;
-import br.edu.ifba.inf008.interfaces.models.User;
 import br.edu.ifba.inf008.plugins.controller.LoanController;
+import br.edu.ifba.inf008.plugins.persistence.LoanBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.LoanDAO;
+import br.edu.ifba.inf008.plugins.persistence.LoanUserDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanUserDAO;
 import br.edu.ifba.inf008.plugins.service.LoanBookService;
 import br.edu.ifba.inf008.plugins.service.LoanService;
 import br.edu.ifba.inf008.plugins.service.LoanUserService;
@@ -28,6 +33,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.scene.control.Tooltip;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.ILoanDAO;
+import javafx.scene.control.TitledPane;
 
 public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
 {
@@ -52,6 +60,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
     @FXML private Button btnReturn;
+    @FXML private TitledPane titlePaneCadastro;
     
     private LoanController controller;
     private LoanService loanService = new LoanService();
@@ -60,6 +69,9 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
     
     @Override
     public boolean init() {
+        ICore.getInstance().registerDAO(ILoanBookDAO.class, new LoanBookDAO());
+        ICore.getInstance().registerDAO(ILoanUserDAO.class, new LoanUserDAO());
+        ICore.getInstance().registerDAO(ILoanDAO.class, new LoanDAO());
         System.out.println("LoanPlugin inicializado!");
         controller = new LoanController(loanService, loanUserService, loanBookService);
         return true;
@@ -122,7 +134,7 @@ public class LoanPlugin implements IPluginUI, ILibraryPlugin, ITabRefreshable
         
         controller.initialize(
             cmbUser, cmbBook, txtUserFilter, txtBookFilter, dtpLoanDate, dtpReturnDate, lblReturnDate,
-            btnSave, btnCancel, lblMessage, txtSearch, tableLoans, cmbSearchType
+            btnSave, btnCancel, lblMessage, txtSearch, tableLoans, cmbSearchType, titlePaneCadastro
         );
     }
 

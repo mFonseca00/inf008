@@ -1,6 +1,6 @@
 package br.edu.ifba.inf008.plugins.ui.components;
 
-import br.edu.ifba.inf008.interfaces.models.Book;
+import br.edu.ifba.inf008.models.Book;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;

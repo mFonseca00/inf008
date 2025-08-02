@@ -2,11 +2,18 @@ package br.edu.ifba.inf008.plugins;
 
 import java.io.IOException;
 
+import br.edu.ifba.inf008.interfaces.ICore;
 import br.edu.ifba.inf008.interfaces.ILibraryPlugin;
 import br.edu.ifba.inf008.interfaces.IPluginUI;
 import br.edu.ifba.inf008.interfaces.ITabRefreshable;
-import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.models.User;
 import br.edu.ifba.inf008.plugins.controller.UserController;
+import br.edu.ifba.inf008.plugins.persistence.UserBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.UserDAO;
+import br.edu.ifba.inf008.plugins.persistence.UserLoanDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserBookDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserLoanDAO;
 import br.edu.ifba.inf008.plugins.service.UserService;
 import br.edu.ifba.inf008.plugins.ui.UserUIUtils;
 import br.edu.ifba.inf008.plugins.ui.components.UserTableFactory;
@@ -18,6 +25,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 
 public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
 {
@@ -34,12 +42,16 @@ public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
     @FXML private Button btnRefresh;
     @FXML private Button btnEdit;
     @FXML private Button btnDelete;
+    @FXML private TitledPane titlePaneCadastro;
     
     private UserController controller;
     private UserService userService = new UserService();
     
     @Override
     public boolean init() {
+        ICore.getInstance().registerDAO(IUserBookDAO.class, new UserBookDAO());
+        ICore.getInstance().registerDAO(IUserDAO.class, new UserDAO());
+        ICore.getInstance().registerDAO(IUserLoanDAO.class, new UserLoanDAO());
         System.out.println("UserPlugin inicializado!");
         controller = new UserController(userService);
         return true;
@@ -102,7 +114,7 @@ public class UserPlugin implements IPluginUI, ITabRefreshable, ILibraryPlugin
         
         controller.initialize(
             txtName, txtEmail, btnSave, btnCancel, lblMessage,
-            txtSearch, tableUsers, cmbSearchType
+            txtSearch, tableUsers, cmbSearchType, titlePaneCadastro
         );
     }
 

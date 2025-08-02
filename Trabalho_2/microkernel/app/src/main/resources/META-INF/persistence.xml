@@ -7,10 +7,9 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Classes de entidade -->
-        <class>br.edu.ifba.inf008.interfaces.models.User</class>
-        <class>br.edu.ifba.inf008.interfaces.models.Book</class>
-        <class>br.edu.ifba.inf008.interfaces.models.Loan</class>
-        
+        <class>br.edu.ifba.inf008.models.User</class>
+        <class>br.edu.ifba.inf008.models.Book</class>
+        <class>br.edu.ifba.inf008.models.Loan</class>
 
         <properties>
             <!-- Configurações de Conexão JDBC -->

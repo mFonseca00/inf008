@@ -1,14 +1,16 @@
-package br.edu.ifba.inf008.persistence;
+package br.edu.ifba.inf008.plugins.persistence;
 
 import java.util.List;
 import java.util.Optional;
 
-import br.edu.ifba.inf008.interfaces.models.Book;
-import br.edu.ifba.inf008.interfaces.persistence.IBookDAO;
+import br.edu.ifba.inf008.models.Book;
+import br.edu.ifba.inf008.models.Loan;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IBookDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+
 
 public class BookDAO implements IBookDAO {
 
@@ -158,6 +160,21 @@ public class BookDAO implements IBookDAO {
             }
             e.printStackTrace();
             return false;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Loan> findLoansByBookIdWithDetails(Integer bookId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Loan> query = em.createQuery(
+                "SELECT u FROM Loan u JOIN FETCH u.user JOIN FETCH u.book WHERE u.book.bookId = :bookId", 
+                Loan.class
+            );
+            query.setParameter("bookId", bookId);
+            return query.getResultList();
         } finally {
             em.close();
         }

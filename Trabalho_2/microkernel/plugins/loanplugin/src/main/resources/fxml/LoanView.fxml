@@ -24,7 +24,7 @@
    <children>
       <Label styleClass="section-title" text="Gerenciamento de Empréstimos" />
       
-      <TitledPane animated="true" text="Cadastro de Empréstimos" VBox.vgrow="NEVER" expanded="false">
+      <TitledPane fx:id="titlePaneCadastro" animated="true" text="Cadastro de Empréstimos" VBox.vgrow="NEVER" expanded="false">
          <content>
             <VBox spacing="15.0" styleClass="form-container">
                <children>

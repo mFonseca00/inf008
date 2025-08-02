@@ -1,11 +1,11 @@
-package br.edu.ifba.inf008.persistence;
+package br.edu.ifba.inf008.plugins.persistence;
 
 import java.util.List;
 import java.util.Optional;
 
-import br.edu.ifba.inf008.interfaces.models.User;
-import br.edu.ifba.inf008.interfaces.persistence.IUserDAO;
+import br.edu.ifba.inf008.models.User;
 import br.edu.ifba.inf008.persistence.util.JPAUtil;
+import br.edu.ifba.inf008.plugins.persistence.interfaces.IUserDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
@@ -95,6 +95,7 @@ public class UserDAO implements IUserDAO {
         }
     }
 
+    @Override
     public List<User> findByEmailLike(String email) {
         EntityManager em = emf.createEntityManager();
         try {

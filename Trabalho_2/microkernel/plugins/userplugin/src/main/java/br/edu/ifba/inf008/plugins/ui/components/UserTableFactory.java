@@ -3,7 +3,7 @@ package br.edu.ifba.inf008.plugins.ui.components;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import br.edu.ifba.inf008.interfaces.models.User;
+import br.edu.ifba.inf008.models.User;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
