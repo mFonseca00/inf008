@@ -1,10 +1,10 @@
-# Plugin de Gerenciamento de Livros - README
-
-Este documento descreve o plugin de gerenciamento de livros (`BookPlugin`) que faz parte do sistema baseado em microkernel para bibliotecas.
+# Plugin de Gerenciamento de Livros
 
 ## 📖 Visão Geral
 
-O `BookPlugin` é um componente plugável que implementa funcionalidades de gestão de livros para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica completa para:
+O `BookPlugin` é um plugin do sistema Alexandria que fornece funcionalidades completas para gerenciamento de livros em bibliotecas. Implementa operações CRUD (Create, Read, Update, Delete) com interface gráfica JavaFX e validações robustas.
+
+Este plugin fornece uma interface gráfica completa para:
 
 - ✅ Cadastrar novos livros
 - 🔍 Buscar livros existentes (por título, autor, ISBN ou ano de publicação)
@@ -12,145 +12,90 @@ O `BookPlugin` é um componente plugável que implementa funcionalidades de gest
 - ✏️ Editar informações dos livros
 - 🗑️ Excluir livros (com confirmação)
 - 📊 Controlar cópias disponíveis
+- 🔁 Atualização automática de informações da tabela
 
 ## 🏗️ Estrutura do Plugin
 
 ```
 bookplugin/
-├── pom.xml                           # Configuração Maven
-├── README.md                         # Esta documentação
+├── pom.xml
+├── README.md
 └── src/main/
     ├── java/br/edu/ifba/inf008/plugins/
-    │   ├── BookPlugin.java           # Classe principal do plugin
+    │   ├── BookPlugin.java                    # Classe principal do plugin
     │   ├── controller/
-    │   │   └── BookController.java   # Controlador MVC
+    │   │   └── BookController.java            # Controlador MVC
+    │   ├── persistence/
+    │   │   ├── BookDAO.java                   # Data Access Object
+    │   │   └── interfaces/                    # Interfaces de persistência
     │   ├── service/
-    │   │   ├── BookService.java      # Serviço de acesso a dados
-    │   │   └── BookValidationService.java # Validação de dados
-    │   └── ui/
-    │       ├── BookUIUtils.java      # Utilitários de UI
-    │       └── components/
-    │           ├── BookTableFactory.java    # Fábrica para tabela de livros
-    │           └── BookMessageUtils.java    # Utilitários de mensagens
+    │   │   ├── BookService.java               # Serviços de negócio
+    │   │   └── BookValidationService.java     # Serviços de validação
+    │   └── ui/                                # Componentes de interface
     └── resources/
         ├── fxml/
-        │   └── BookView.fxml         # Interface FXML
+        │   └── BookView.fxml                  # Layout da interface
         └── styles/
-            └── book-theme.css        # Estilos específicos do plugin
+            └── book-theme.css                 # Estilos específicos
 ```
 
-## ⚙️ Funcionalidades Detalhadas
+## ⚙️ Funcionalidades
 
 ### 📝 Cadastro de Livros
-
-**Campos disponíveis:**
-- **Título**: Nome do livro (obrigatório)
-- **Autor**: Nome do autor (obrigatório) 
-- **ISBN**: Código ISBN único (opcional, validado quando preenchido)
-- **Ano de Publicação**: Ano entre 1500 e ano atual
-- **Cópias Disponíveis**: Quantidade de exemplares
-
-**Validações implementadas:**
-- Campos obrigatórios não podem estar vazios
-- ISBN deve ter formato válido (10 ou 13 dígitos)
-- Ano deve estar em faixa válida
-- Título e autor devem ter pelo menos 2 caracteres
-- Cópias devem ser número positivo
+- **Campos**: Título, Autor, ISBN, Ano de Publicação, Cópias Disponíveis
+- **Validações**: Campos obrigatórios, formato e unicidade do ISBN, ano válido
+- **Exemplo**: 
+  ```
+  Título: "Clean Code"
+  Autor: "Robert Martin"
+  ISBN: "978-0132350884"
+  Ano: 2008
+  Cópias: 5
+  ```
 
 ### 🔍 Sistema de Busca
-
-**Tipos de busca disponíveis:**
-- **Por Título**: Busca parcial case-insensitive
-- **Por Autor**: Busca parcial case-insensitive  
-- **Por ISBN**: Busca parcial case-insensitive
-- **Por Ano**: Busca exata por ano de publicação
-
-**Características:**
-- Busca em dois passos com confirmação após a digitação
-- Resultados exibidos na tabela após confirmação
-- Busca funciona em qualquer parte do texto
+- **Tipos**: Por título, autor, ISBN ou ano de publicação
+- **Características**: Busca parcial, case-insensitive
+- **Exemplo**: Buscar por título "Clean" retorna "Clean Code", "Clean Architecture"
 
 ### ✏️ Edição de Livros
-
-**Processo de edição:**
-1. Selecionar livro na tabela
-2. Clicar em "Editar"
-3. Formulário é preenchido com dados atuais
-4. Modificar campos desejados
-5. Salvar alterações ou cancelar
-
-**Feedback visual:**
-- Mensagem de confirmação "Editando livro [título]"
-- Botão muda de "Cadastrar" para "Atualizar"
-- Botão "Cancelar" fica visível
+- Seleção por clique na tabela
+- Preenchimento automático do formulário
+- Validação de unicidade do ISBN
+- Feedback visual durante edição
 
 ### 🗑️ Exclusão de Livros
+- Confirmação obrigatória via pop-up
+- Verificação de empréstimos ativos
+- Mensagens informativas de sucesso/erro
 
-**Processo de exclusão:**
-1. Selecionar livro na tabela
-2. Clicar em "Excluir"
-3. **Pop-up de confirmação** aparece com:
-   - Título do livro
-   - Nome do autor
-   - Pergunta de confirmação
-4. Confirmar ou cancelar a exclusão
+## 🖥️ Fluxo de Uso da Interface
 
-**Regras de negócio:**
-- Não permite excluir livros com empréstimos ativos sem confirmação
-- Confirmação obrigatória para evitar exclusões acidentais
-- Mensagem de sucesso/erro após operação
+1. **Acessar Plugin**
+   - Menu "Gerenciamento" → "Gerenciar Livros"
+   - Interface carrega com tabela de livros existentes
 
-## 🎨 Interface do Usuário
+2. **Cadastrar Novo Livro**
+   - Preencher formulário no painel superior
+   - Clicar "Cadastrar"
+   - Verificar mensagem de sucesso/erro
 
-### Sistema de Mensagens
+3. **Buscar Livros**
+   - Selecionar tipo de busca no ComboBox
+   - Digite termo no campo de busca
+   - Clicar "Buscar"
+   - Usar "Limpar" para resetar filtros
 
-O plugin implementa um sistema consistente de feedback visual:
+4. **Editar Livro**
+   - Selecionar livro na tabela
+   - Clicar "Editar"
+   - Modificar campos necessários
+   - Clicar "Atualizar" ou "Cancelar"
 
-```java
-// Mensagens de erro (vermelho)
-BookMessageUtils.displayErrorMessage(lblMessage, "Título é obrigatório");
-
-// Mensagens de sucesso (verde)  
-BookMessageUtils.displaySuccessMessage(lblMessage, "Livro cadastrado com sucesso!");
-
-// Mensagens de confirmação/aviso (amarelo)
-BookMessageUtils.displayConfirmationMessage(lblMessage, "Editando livro...");
-
-// Limpar mensagens
-BookMessageUtils.clearMessage(lblMessage);
-```
-
-**Classes CSS aplicadas:**
-- `.message-error`: Texto vermelho para erros
-- `.message-success`: Texto verde para sucesso
-- `.message-warning`: Texto amarelo para avisos
-- `.message-info`: Texto azul para informações
-
-## 🚀 Uso
-
-- Plugin aparece na aba "Gerenciamento" como "Gerenciar Usuários"
-- Interface carrega automaticamente
-- Pronto para cadastrar livros!
-
-## 🔄 Ciclo de Vida do Plugin
-
-### Inicialização
-1. **Descoberta**: Core encontra JAR na pasta plugins
-2. **Carregamento**: ClassLoader carrega classes do plugin  
-3. **Instanciação**: Cria instância da classe principal
-4. **Inicialização**: Chama método `initialize()`
-5. **Integração**: Adiciona aba na interface principal
-
-### Durante Execução
-1. **Eventos**: Plugin processa cliques e interações
-2. **Validação**: Dados são validados antes de persistir
-3. **Persistência**: Operações são salvas no banco
-4. **Feedback**: Mensagens informam resultado das operações
-
-### Finalização
-1. **Shutdown**: Método `shutdown()` é chamado
-2. **Limpeza**: Recursos são liberados
-3. **Persistência**: Estado final é salvo
+5. **Excluir Livro**
+   - Selecionar livro na tabela
+   - Clicar "Excluir"
+   - Confirmar na caixa de diálogo
 
 ## 📚 Links Relacionados
 
@@ -162,6 +107,6 @@ BookMessageUtils.clearMessage(lblMessage);
 
 ---
 
-**Desenvolvido por:** Marcus Vinicius Silva da Fonseca
-**Disciplina:** INF008 - POO
+**Desenvolvido por:** Marcus Vinicius Silva da Fonseca  
+**Disciplina:** INF008 - POO  
 **Instituição:** IFBA
