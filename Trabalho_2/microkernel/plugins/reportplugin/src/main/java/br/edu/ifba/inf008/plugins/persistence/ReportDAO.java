@@ -87,7 +87,7 @@ public class ReportDAO implements IReportDAO {
 
         @Override
     public Loan save(Loan loan) {
-        System.out.println("Save methodnot implemented in ReportDAO");
+        System.out.println("Save method not implemented in ReportDAO");
         return null;
     }
 }
