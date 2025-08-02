@@ -123,6 +123,12 @@ cd plugins/bookplugin && mvn clean package
 # Parar o banco
 docker-compose down
 ```
+## 📚 Links Relacionados
+
+- [🏗️ README do Microkernel](microkernel/README.md)
+- [📚 Plugin de Livros](../bookplugin/README.md)
+- [👥 Plugin de Usuários](../userplugin/README.md)
+- [📊 Plugin de Relatórios](../reportplugin/README.md)
 
 ---
 
