@@ -1,5 +1,6 @@
-# Arquivos mp4
+# Demais arquivos e diretórios que não devem ser versionados
 *.mp4
+*.zip
 
 # Arquivos de Log e temporários
 *.log
