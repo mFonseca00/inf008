@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
 
@@ -31,11 +33,19 @@
                 <content>
                     <VBox styleClass="welcome-content">
                         <Label text="Alexandria" styleClass="title-label" />
-                        <Label text="Seu Sistema De Biblioteca Moderno" styleClass="subtitle" />
+                        <Label text="Seu Sistema De Biblioteca à prova de fogo" styleClass="subtitle" />
                         <VBox styleClass="welcome-info">
                             <Label text="Bem-vindo ao sistema Alexandria! Utilize o menu superior para acessar as funcionalidades disponíveis." styleClass="info-text" />
                             <Label text="Para adicionar mais funções, instale plugins adicionais no sistema." styleClass="info-text" />
                             <Label text="Este sistema foi desenvolvido com arquitetura de microkernel para máxima flexibilidade." styleClass="info-text" />
+                            <Hyperlink fx:id="githubRepositoryLink" onAction="#handleGithubRepositoryLink" text="Acessar repositório do projeto" styleClass="github-link" />
+                        </VBox>
+                        
+                        <Region VBox.vgrow="ALWAYS" />
+                        
+                        <VBox styleClass="developer-info" spacing="5">
+                            <Label text="Desenvolvido por: Marcus Vinicius Silva da Fonseca" styleClass="info-text" />
+                            <Hyperlink fx:id="githubLink" onAction="#handleGithubLink" text="Acessar perfil no GitHub" styleClass="github-link" />
                         </VBox>
                     </VBox>
                 </content>

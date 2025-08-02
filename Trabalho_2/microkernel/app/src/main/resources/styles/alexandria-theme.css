@@ -515,6 +515,31 @@
     -fx-wrap-text: true;
 }
 
+/* Informações do desenvolvedor */
+.developer-info {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+    -fx-padding: 20 0;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 0 0;
+    -fx-background-color: #f8f9fa;
+}
+
+.github-link {
+    -fx-text-fill: #6a88a8;
+    -fx-font-size: 13px;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.github-link:hover {
+    -fx-text-fill: #6a83a8;
+}
+
+.github-link:visited {
+    -fx-text-fill: #6784b1;
+}
+
 /* Mensagens de status */
 .message-error {
     -fx-text-fill: #d31414;

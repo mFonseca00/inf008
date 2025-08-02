@@ -1,10 +1,10 @@
-# Plugin de Gerenciamento de Empréstimos - README
-
-Este documento descreve o plugin de gerenciamento de empréstimos (`LoanPlugin`) que faz parte do sistema baseado em microkernel para bibliotecas.
+# Plugin de Gerenciamento de Empréstimos
 
 ## 📋 Visão Geral
 
-O `LoanPlugin` é um componente plugável que implementa funcionalidades de gestão de empréstimos para o sistema Alexandria, seguindo uma arquitetura de microkernel. Este plugin fornece uma interface gráfica completa para:
+O `LoanPlugin` é um plugin do sistema Alexandria que fornece funcionalidades completas para gerenciamento de empréstimos de livros. Controla o ciclo completo desde o registro até a devolução, com regras de negócio robustas.
+
+Este plugin fornece uma interface gráfica completa para:
 
 - ✅ Registrar novos empréstimos
 - 🔍 Buscar empréstimos existentes
@@ -13,187 +13,98 @@ O `LoanPlugin` é um componente plugável que implementa funcionalidades de gest
 - 📅 Registrar devoluções
 - 🗑️ Excluir empréstimos finalizados (com confirmação)
 - ⚠️ Controlar regras de negócio (disponibilidade, datas, etc.)
+- 🔁 Atualização automática de informações da tabela, usuáirios disponíveis e livros disponíveis
 
 ## 🏗️ Estrutura do Plugin
 
 ```
 loanplugin/
-├── pom.xml                           # Configuração Maven
-├── README.md                         # Esta documentação
+├── pom.xml
+├── README.md
 └── src/main/
     ├── java/br/edu/ifba/inf008/plugins/
-    │   ├── LoanPlugin.java           # Classe principal do plugin
+    │   ├── LoanPlugin.java                    # Classe principal do plugin
     │   ├── controller/
-    │   │   └── LoanController.java   # Controlador MVC
+    │   │   └── LoanController.java            # Controlador MVC
+    │   ├── persistence/
+    │   │   ├── LoanBookDAO.java               # DAO para acesso aos livros
+    │   │   ├── LoanDAO.java                   # Data Access Object principal
+    │   │   ├── LoanUserDAO.java               # DAO para acesso aos usuários
+    │   │   └── interfaces/                    # Interfaces de persistência
     │   ├── service/
-    │   │   ├── LoanService.java      # Serviço principal de empréstimos
-    │   │   ├── LoanBookService.java  # Serviço de acesso aos livros
-    │   │   └── LoanUserService.java  # Serviço de acesso aos usuários
-    │   └── ui/
-    │       ├── LoanUIUtils.java      # Utilitários de UI
-    │       └── components/
-    │           └── LoanTableFactory.java    # Fábrica para tabela de empréstimos
+    │   │   ├── LoanService.java               # Serviços de negócio
+    │   │   ├── LoanUserService.java           # Serviços de negócio integrado a usuários
+    │   │   └── LoanBookService.java           # Serviços de negócio integrado a livros
+    │   ├── ui/                                # Componentes de interface
+    │   └── util/                              # Utilitários auxiliares
     └── resources/
         ├── fxml/
-        │   └── LoanView.fxml         # Interface FXML
+        │   └── LoanView.fxml                  # Layout da interface
         └── styles/
-            └── loan-theme.css        # Estilos específicos do plugin
+            └── loan-theme.css                 # Estilos específicos
 ```
 
-## ⚙️ Funcionalidades Detalhadas
+## ⚙️ Funcionalidades
 
 ### 📝 Registro de Empréstimos
+- **Campos**: Usuário, Livro, Data de empréstimo, filtros avançados para seleção de usuário e livro
+- **Validações**: Disponibilidade do livro, usuário válido, data não futura
+- **Exemplo**:
+  ```
+  Usuário: "João Silva"
+  Livro: "Clean Code"
+  Data: 15/01/2024
+  ```
 
-**Processo de criação:**
-1. Selecionar usuário no ComboBox
-2. Selecionar livro disponível no ComboBox
-3. Definir data de empréstimo (padrão: hoje)
-4. Confirmar registro
-
-**Validações implementadas:**
-- Usuário deve estar selecionado
-- Livro deve estar selecionado e disponível
-- Data de empréstimo não pode ser futura
-- Livro deve ter cópias disponíveis (> 0)
-- Verificação automática de disponibilidade
-
-### 🔍 Sistema de Busca e Visualização
-
-**Características da interface:**
-- **Tabela de empréstimos**: Exibe todos os empréstimos com colunas:
-  - ID do Empréstimo
-  - Nome do usuário
-  - Email do usuário  
-  - Título do livro
-  - ISBN do livro
-  - Data de empréstimo
-  - Data de devolução (se houver)
-  - Status (Ativo/Devolvido)
-
-**Filtros e ordenação:**
-- Filtro de busca por usuário, livro e data de empréstimo
-- Destaque visual para empréstimos ativos
-- Identificação clara de empréstimos finalizados
+### 🔍 Sistema de Busca e Filtros
+- **Tipos**: Por usuário, livro, data de empréstimo, data de devolução
+- **Características**: Busca parcial (com exceção da busca por data), case-insensitive
+- **Exemplo**: Buscar por livro "Clean" retorna empréstimos de livros "Clean Code", "Clean Architecture"
 
 ### ✏️ Edição de Empréstimos
+- Registro de data de devolução
+- Atualização de dados do empréstimo
+- Controle automático de estoque
+- Validações de datas
 
-**Processo de edição:**
-1. Selecionar empréstimo na tabela
-2. Clicar em "Editar"
-3. Formulário é preenchido com dados atuais
-4. Campo de data de devolução fica visível
-5. Modificar dados conforme necessário
-6. Salvar ou cancelar
-
-**Características especiais:**
-- **Data de devolução**: Campo adicional aparece durante edição
-- **Validação de datas**: Data de devolução deve ser posterior à data de empréstimo
-- **Controle de estoque**: Atualização automática de cópias disponíveis
-
-### 📅 Registro de Devoluções
-
-**Processo simplificado:**
-1. Selecionar empréstimo ativo na tabela
-2. Clicar em "Registrar Devolução"
-3. Sistema automaticamente:
-   - Define data de devolução como hoje
-   - Atualiza status do empréstimo
-   - Incrementa cópias disponíveis do livro
-   - Exibe mensagem de confirmação
+### 📅 Controle de Devoluções
+- Registro simples de devolução
+- Atualização automática do estoque
+- Status visual (ativo/devolvido)
 
 ### 🗑️ Exclusão de Empréstimos
+- Apenas empréstimos devolvidos podem ser excluídos
+- Confirmação obrigatória
 
-**Processo com confirmação obrigatória:**
-1. Selecionar empréstimo na tabela
-2. Clicar em "Excluir"
-3. **Verificação de regras de negócio**:
-   - Só permite excluir empréstimos devolvidos
-   - Empréstimos ativos não podem ser excluídos
-4. **Pop-up de confirmação** com informações detalhadas:
-   - Título do livro
-   - Nome do usuário
-   - Pergunta de confirmação clara
-5. Confirmar ou cancelar exclusão
+## 🖥️ Fluxo de Uso da Interface
 
-## 🎨 Interface do Usuário
+1. **Acessar Plugin**
+   - Menu "Gerenciamento" → "Gerenciar Empréstimos"
+   - Interface carrega com lista de empréstimos
 
+2. **Registrar Novo Empréstimo**
+   - Usar filtros avançados se necessário
+   - Selecionar usuário no ComboBox
+   - Selecionar livro disponível no ComboBox
+   - Definir data de empréstimo (padrão: hoje)
+   - Clicar "Cadastrar"
 
-### Sistema de Mensagens
+3. **Buscar Empréstimos**
+   - Selecionar tipo de busca
+   - Digite critério de busca
+   - Clicar "Buscar"
+   - Usar "Limpar" para resetar filtros
 
-O plugin implementa sistema completo de feedback visual seguindo o padrão dos demais plugins:
+4. **Registrar Devolução**
+   - Selecionar empréstimo na tabela
+   - Clicar "Editar"
+   - Realizar edição
+   - Clicar "Atualizar"
 
-```java
-// Mensagens de erro (vermelho)
-LoanUIUtils.displayErrorMessage(lblMessage, "Selecione um usuário");
-
-// Mensagens de sucesso (verde)  
-LoanUIUtils.displaySuccessMessage(lblMessage, "Empréstimo cadastrado com sucesso!");
-
-// Mensagens de confirmação/aviso (amarelo)
-LoanUIUtils.displayConfirmationMessage(lblMessage, "Editando empréstimo...");
-
-// Limpar mensagens
-LoanUIUtils.clearMessage(lblMessage);
-
-// Pop-up de confirmação
-boolean confirmed = LoanUIUtils.showConfirmation("Deseja continuar com a exclusão?");
-```
-
-**Classes CSS aplicadas:**
-- `.message-error`: Texto vermelho para erros e validações
-- `.message-success`: Texto verde para operações bem-sucedidas
-- `.message-warning`: Texto amarelo para avisos e confirmações
-- `.message-info`: Texto azul para informações gerais
-
-## 🚀 Uso
-
-1. **Preparar dados** (usuários e livros devem estar cadastrados):
-
-2. **Usar funcionalidades do plugin**:
-   - Acessar aba "Gerenciamento" e 
-   - Selecionar usuário e livro
-   - Registrar empréstimo
-   - Gerenciar devoluções
-
-## 🔄 Ciclo de Vida e Regras de Negócio
-
-### Fluxo de um Empréstimo
-
-```mermaid
-graph TD
-    A[Usuário seleciona livro] --> B{Livro disponível?}
-    B -->|Não| C[Exibir erro]
-    B -->|Sim| D[Criar empréstimo]
-    D --> E[Decrementar estoque]
-    E --> F[Empréstimo ativo]
-    F --> G[Usuário pode devolver]
-    G --> H[Registrar devolução]
-    H --> I[Incrementar estoque]
-    I --> J[Empréstimo finalizado]
-    J --> K[Pode ser excluído]
-```
-
-### Regras de Negócio Implementadas
-
-1. **Disponibilidade de livros**:
-   - Só permite empréstimo se `copies_available > 0`
-   - Decrementa automaticamente ao criar empréstimo
-   - Incrementa automaticamente ao registrar devolução
-
-2. **Validação de datas**:
-   - Data de empréstimo não pode ser futura
-   - Data de devolução deve ser posterior à data de empréstimo
-   - Data de devolução padrão é a data atual
-
-3. **Exclusão de empréstimos**:
-   - Só permite excluir empréstimos devolvidos
-   - Empréstimos ativos não podem ser excluídos
-   - Confirmação obrigatória antes da exclusão
-
-4. **Integridade de dados**:
-   - Verificação de usuário válido
-   - Verificação de livro válido
-   - Transações atômicas para operações críticas
+5. **Visualizar Status**
+   - Tabela mostra status visual (ativo/devolvido)
+   - Colunas informam datas e detalhes
+   - Filtros permitem focar em empréstimos específicos
 
 ## 📚 Links Relacionados
 
@@ -205,6 +116,6 @@ graph TD
 
 ---
 
-**Desenvolvido por:** Marcus Vinicius Silva da Fonseca
-**Disciplina:** INF008 - POO
+**Desenvolvido por:** Marcus Vinicius Silva da Fonseca  
+**Disciplina:** INF008 - POO  
 **Instituição:** IFBA
